@@ -85,7 +85,7 @@ CACHES = {
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "CONNECTION_POOL_KWARGS": {"max_connections": 100},
-            "PASSWORD": "q63785095",
+            "PASSWORD": "********",
         }
     },
     "flysafely": {
@@ -94,7 +94,7 @@ CACHES = {
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "CONNECTION_POOL_KWARGS": {"max_connections": 100},
-            "PASSWORD": "q63785095",
+            "PASSWORD": "********",
         }
     },
 }
