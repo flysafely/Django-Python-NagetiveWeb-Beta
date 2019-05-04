@@ -1,0 +1,126 @@
+{% load CustomFuncTags %}
+{% include "TopNav.html" %}
+<div class="ProfileHeader" style="margin-top:35px;">
+    <div class="Card">
+        {% csrf_token %}
+        {% ifnotequal selforguest.0 'readonly' %}
+        <div class="UserAvatarEditor ProfileHeader-avatar" style="margin:2px 0px 0px 16px;">
+            <img title="点击切换头像" id="UserImageChangeShow" target="UserImageChangeInput" style="cursor:pointer;-webkit-border-radius: 10px;border:4px solid #ffffff;box-shadow:0 0 10px 0 #E8EAED;" src="{{export_userinfo.UT_Avatar}}" width="160" height="160" onclick="javascript:UploadImg('UserImageChangeInput',this.id)">
+        </div>
+        <div class="form-group" style="text-align:center;">
+            <input id="UserImageChangeInput" type="file" data-source="" style="opacity:0; filter:alpha(opacity=0); height: 0px; width: 0px; position: absolute; top: 0; left: 0; z-index: 9;" name="pclogo" onchange="javascript:UploadUserImg(this)" accept="image/*">
+        </div> 
+        {% endifnotequal %}
+        {% ifequal selforguest.0 'readonly' %}
+        <div class="UserAvatarEditor ProfileHeader-avatar" style="margin:2px 0px 0px 16px;">
+            <img id="UserImageChangeView" style="-webkit-border-radius: 10px;border:4px solid #ffffff;box-shadow:0 0 20px 0 #E8EAED;" src="{{export_userinfo.UT_Avatar}}" width="160" height="160">
+        </div>
+        {% endifequal %}
+        <div class="ProfileHeader-contentHead" style="margin:21px 0px 30px 190px;">
+            <span class="ProfileHeader-name">
+                <input id='UserProfileNickName' {{ selforguest.0 }} type="text" style="border:none;width:450px;" value="{{export_userinfo.UT_Nick}}">
+            </span>
+            {% if not selforguest.0 == 'readonly' %}
+            <span>
+                <button class="Button Button--blue" style="width:80px;margin:0px 0px 0px 0px;font-size:13px;" onclick="javascript:UserProfileUpdate('/UserProfileUpdate/','{{ csrf_token }}')">保存</button>
+            </span>
+            {% elif selforguest.0 == 'readonly' and selforguest.4 == 'link' %}
+            <span>
+                <button id='LinkButton' class="Button Button--blue" style="width:80px;margin:0px 0px 0px 0px;font-size:13px;" onclick="javascript:UserLink('/UserLink/','{{ csrf_token }}','{{export_userinfo.UT_Nick}}')">关注</button>
+            </span>
+            {% elif selforguest.0 == 'readonly' and selforguest.4 == 'linked' %}
+            <span>
+                <button id='LinkButton' class="Button Button--blue" style="width:90px;margin:0px 0px 0px 0px;font-size:13px;" onclick="javascript:UserLink('/UserLink/','{{ csrf_token }}','{{export_userinfo.UT_Nick}}')">取消关注</button>
+            </span>
+            {% elif selforguest.0 == 'readonly' and selforguest.4 == 'blocked' %} 
+            <span>
+                <button id='LinkButton' class="Button Button--blue" style="width:90px;margin:0px 0px 0px 0px;font-size:13px;" onclick="javascript:BlackListOperation('delete','{{export_userinfo.UT_Nick}}','{{ csrf_token }}')">取消拉黑</button>
+            </span>                       
+            {% endif %}
+            <div>
+                <input id='UserProfileDescription' type="text" style="border:none;width:450px;" {{ selforguest.0 }} placeholder="简介" value="{{export_userinfo.UT_Description}}">
+            </div>              
+        </div>
+        <hr style="margin:-15px 0px 12px 177px;width:80%;border-top:2px solid #F3F3F3">
+        <div class="ProfileHeader-contentBody" style="height: 180px;margin:0px 0px 0px 190px;">
+            <div>
+                <div class="ProfileHeader-info">
+                    <div class="ProfileHeader-infoItem">
+                        <div>
+                            <label for="">性别 :</label>
+                            <select id="UserProfileSexOptions" {{ selforguest.1 }} style="margin:0px 0px 5px 0px;border:none;width:200px;">
+                                {% if export_userinfo.UT_Sex == '男' %}
+                                <option selected="selected">男</option>
+                                <option>女</option>
+                                <option>未公开</option>
+                                {% elif export_userinfo.UT_Sex == '女' %}
+                                <option>男</option>
+                                <option selected="selected">女</option>
+                                <option>未公开</option>
+                                {% elif export_userinfo.UT_Sex == '未公开' %}
+                                <option>男</option>
+                                <option>女</option>
+                                <option selected="selected">未公开</option>
+                                {% endif %}
+                            </select>
+                            <svg viewBox="0 0 38 38" style="height: 20px; width: 20px;margin-bottom:0px" {{ selforguest.2 }}>
+                                <g>
+                                    <path d="M29.395 2.58c-1.645-1.643-3.811-2.58-5.946-2.58-1.801 0-3.459 0.668-4.67 1.877l-4.867 4.904c-0.015 0.014-0.032 0.023-0.047 0.038-0.008 0.008-0.013 0.019-0.021 0.026l0.002 0.002-10.329 10.409c-0.476 0.473-0.821 1.062-1.013 1.705l-2.349 8.508c-0.002 0.023-0.155 0.691-0.155 1.031 0 1.932 1.569 3.5 3.504 3.5 0.385 0 1.13-0.184 1.157-0.188l8.478-2.229c0.644-0.191 1.229-0.539 1.705-1.016l15.263-15.383c2.776-2.778 2.463-7.434-0.712-10.604zM16.014 23.795c-0.082-0.902-0.337-1.787-0.719-2.627l9.455-9.454c0.578 1.826 0.281 3.736-0.986 5.004-0.008 0.008-0.018 0.013-0.025 0.021l0.014 0.013-7.728 7.79c0-0.249 0.012-0.493-0.011-0.747zM14.793 20.256c-0.373-0.613-0.797-1.205-1.322-1.729-0.611-0.611-1.312-1.090-2.044-1.492l9.532-9.532c0.748 0.332 1.465 0.805 2.098 1.438 0.541 0.539 0.959 1.143 1.281 1.771l-9.545 9.544zM10.486 16.562c-0.926-0.373-1.896-0.586-2.868-0.599l7.703-7.762c1.179-1.15 2.896-1.481 4.587-1.062l-9.422 9.423zM4.167 29.873c-0.109 0.025-0.448 0.111-0.678 0.127-0.822-0.010-1.489-0.678-1.489-1.5 0.012-0.168 0.079-0.457 0.102-0.562l1.053-3.814c1.143-0.031 2.373 0.414 3.34 1.383 0.982 0.98 1.444 2.234 1.394 3.391l-3.722 0.975zM8.874 28.637c-0.024-1.342-0.57-2.738-1.672-3.838-1.042-1.043-2.406-1.645-3.766-1.699l0.996-3.607c0.072-0.24 0.215-0.477 0.391-0.684 2.006-1.436 5.091-1.012 7.234 1.133 2.267 2.266 2.617 5.586 0.871 7.568-0.116 0.061-0.233 0.119-0.359 0.156l-3.695 0.971zM28.691 11.772l-1.684 1.697c0-0.226 0.027-0.443 0.006-0.674-0.176-1.935-1.078-3.806-2.543-5.269-1.629-1.63-3.789-2.565-5.928-2.571l1.656-1.67c0.829-0.827 1.986-1.285 3.251-1.285 1.609 0 3.262 0.728 4.533 1.995 1.193 1.191 1.904 2.671 2.006 4.168 0.094 1.397-0.367 2.678-1.297 3.609z">
+                                    </path>  
+                                </g>
+                            </svg>
+                        </div>
+                        <div style="padding:5px 0px 0px 0px;">
+                            <label for="">星座 :</label>
+                            <input id='UserProfileConstellation' type="text" style="border:none;width:200px;" {{ selforguest.0 }} placeholder="星座" value="{{export_userinfo.UT_Constellation}}">
+                            <svg viewBox="0 0 38 38" style="height: 20px; width: 20px;margin-bottom:0px" {{ selforguest.2 }}>
+                                <g>
+                                    <path d="M29.395 2.58c-1.645-1.643-3.811-2.58-5.946-2.58-1.801 0-3.459 0.668-4.67 1.877l-4.867 4.904c-0.015 0.014-0.032 0.023-0.047 0.038-0.008 0.008-0.013 0.019-0.021 0.026l0.002 0.002-10.329 10.409c-0.476 0.473-0.821 1.062-1.013 1.705l-2.349 8.508c-0.002 0.023-0.155 0.691-0.155 1.031 0 1.932 1.569 3.5 3.504 3.5 0.385 0 1.13-0.184 1.157-0.188l8.478-2.229c0.644-0.191 1.229-0.539 1.705-1.016l15.263-15.383c2.776-2.778 2.463-7.434-0.712-10.604zM16.014 23.795c-0.082-0.902-0.337-1.787-0.719-2.627l9.455-9.454c0.578 1.826 0.281 3.736-0.986 5.004-0.008 0.008-0.018 0.013-0.025 0.021l0.014 0.013-7.728 7.79c0-0.249 0.012-0.493-0.011-0.747zM14.793 20.256c-0.373-0.613-0.797-1.205-1.322-1.729-0.611-0.611-1.312-1.090-2.044-1.492l9.532-9.532c0.748 0.332 1.465 0.805 2.098 1.438 0.541 0.539 0.959 1.143 1.281 1.771l-9.545 9.544zM10.486 16.562c-0.926-0.373-1.896-0.586-2.868-0.599l7.703-7.762c1.179-1.15 2.896-1.481 4.587-1.062l-9.422 9.423zM4.167 29.873c-0.109 0.025-0.448 0.111-0.678 0.127-0.822-0.010-1.489-0.678-1.489-1.5 0.012-0.168 0.079-0.457 0.102-0.562l1.053-3.814c1.143-0.031 2.373 0.414 3.34 1.383 0.982 0.98 1.444 2.234 1.394 3.391l-3.722 0.975zM8.874 28.637c-0.024-1.342-0.57-2.738-1.672-3.838-1.042-1.043-2.406-1.645-3.766-1.699l0.996-3.607c0.072-0.24 0.215-0.477 0.391-0.684 2.006-1.436 5.091-1.012 7.234 1.133 2.267 2.266 2.617 5.586 0.871 7.568-0.116 0.061-0.233 0.119-0.359 0.156l-3.695 0.971zM28.691 11.772l-1.684 1.697c0-0.226 0.027-0.443 0.006-0.674-0.176-1.935-1.078-3.806-2.543-5.269-1.629-1.63-3.789-2.565-5.928-2.571l1.656-1.67c0.829-0.827 1.986-1.285 3.251-1.285 1.609 0 3.262 0.728 4.533 1.995 1.193 1.191 1.904 2.671 2.006 4.168 0.094 1.397-0.367 2.678-1.297 3.609z">
+                                    </path>  
+                                </g>
+                            </svg>
+                        </div>
+                        <div style="padding:5px 0px 0px 0px;">
+                            <label for="">邮箱 :</label>
+                            <input id='UserProfileemail' type="text" style="border:none;width:200px;" {{ selforguest.0 }} placeholder="邮箱" value="{{export_userinfo.email}}">
+                            <svg viewBox="0 0 38 38" style="height: 20px; width: 20px;margin-bottom:0px" {{ selforguest.2 }}>
+                                <g>
+                                    <path d="M29.395 2.58c-1.645-1.643-3.811-2.58-5.946-2.58-1.801 0-3.459 0.668-4.67 1.877l-4.867 4.904c-0.015 0.014-0.032 0.023-0.047 0.038-0.008 0.008-0.013 0.019-0.021 0.026l0.002 0.002-10.329 10.409c-0.476 0.473-0.821 1.062-1.013 1.705l-2.349 8.508c-0.002 0.023-0.155 0.691-0.155 1.031 0 1.932 1.569 3.5 3.504 3.5 0.385 0 1.13-0.184 1.157-0.188l8.478-2.229c0.644-0.191 1.229-0.539 1.705-1.016l15.263-15.383c2.776-2.778 2.463-7.434-0.712-10.604zM16.014 23.795c-0.082-0.902-0.337-1.787-0.719-2.627l9.455-9.454c0.578 1.826 0.281 3.736-0.986 5.004-0.008 0.008-0.018 0.013-0.025 0.021l0.014 0.013-7.728 7.79c0-0.249 0.012-0.493-0.011-0.747zM14.793 20.256c-0.373-0.613-0.797-1.205-1.322-1.729-0.611-0.611-1.312-1.090-2.044-1.492l9.532-9.532c0.748 0.332 1.465 0.805 2.098 1.438 0.541 0.539 0.959 1.143 1.281 1.771l-9.545 9.544zM10.486 16.562c-0.926-0.373-1.896-0.586-2.868-0.599l7.703-7.762c1.179-1.15 2.896-1.481 4.587-1.062l-9.422 9.423zM4.167 29.873c-0.109 0.025-0.448 0.111-0.678 0.127-0.822-0.010-1.489-0.678-1.489-1.5 0.012-0.168 0.079-0.457 0.102-0.562l1.053-3.814c1.143-0.031 2.373 0.414 3.34 1.383 0.982 0.98 1.444 2.234 1.394 3.391l-3.722 0.975zM8.874 28.637c-0.024-1.342-0.57-2.738-1.672-3.838-1.042-1.043-2.406-1.645-3.766-1.699l0.996-3.607c0.072-0.24 0.215-0.477 0.391-0.684 2.006-1.436 5.091-1.012 7.234 1.133 2.267 2.266 2.617 5.586 0.871 7.568-0.116 0.061-0.233 0.119-0.359 0.156l-3.695 0.971zM28.691 11.772l-1.684 1.697c0-0.226 0.027-0.443 0.006-0.674-0.176-1.935-1.078-3.806-2.543-5.269-1.629-1.63-3.789-2.565-5.928-2.571l1.656-1.67c0.829-0.827 1.986-1.285 3.251-1.285 1.609 0 3.262 0.728 4.533 1.995 1.193 1.191 1.904 2.671 2.006 4.168 0.094 1.397-0.367 2.678-1.297 3.609z">
+                                    </path>  
+                                </g>
+                            </svg>
+                        </div>
+                        <div style="padding:5px 0px 0px 0px;"> 
+                            <label for="">城市 :</label>   
+                            <input id='UserProfileRegion' type="text" style="border:none;width:200px;" {{ selforguest.0 }} placeholder="城市" value="{{export_userinfo.UT_Region}}">
+                            <svg viewBox="0 0 38 38" style="height: 20px; width: 20px;margin-bottom:0px" {{ selforguest.2 }}>
+                                <g>
+                                    <path d="M29.395 2.58c-1.645-1.643-3.811-2.58-5.946-2.58-1.801 0-3.459 0.668-4.67 1.877l-4.867 4.904c-0.015 0.014-0.032 0.023-0.047 0.038-0.008 0.008-0.013 0.019-0.021 0.026l0.002 0.002-10.329 10.409c-0.476 0.473-0.821 1.062-1.013 1.705l-2.349 8.508c-0.002 0.023-0.155 0.691-0.155 1.031 0 1.932 1.569 3.5 3.504 3.5 0.385 0 1.13-0.184 1.157-0.188l8.478-2.229c0.644-0.191 1.229-0.539 1.705-1.016l15.263-15.383c2.776-2.778 2.463-7.434-0.712-10.604zM16.014 23.795c-0.082-0.902-0.337-1.787-0.719-2.627l9.455-9.454c0.578 1.826 0.281 3.736-0.986 5.004-0.008 0.008-0.018 0.013-0.025 0.021l0.014 0.013-7.728 7.79c0-0.249 0.012-0.493-0.011-0.747zM14.793 20.256c-0.373-0.613-0.797-1.205-1.322-1.729-0.611-0.611-1.312-1.090-2.044-1.492l9.532-9.532c0.748 0.332 1.465 0.805 2.098 1.438 0.541 0.539 0.959 1.143 1.281 1.771l-9.545 9.544zM10.486 16.562c-0.926-0.373-1.896-0.586-2.868-0.599l7.703-7.762c1.179-1.15 2.896-1.481 4.587-1.062l-9.422 9.423zM4.167 29.873c-0.109 0.025-0.448 0.111-0.678 0.127-0.822-0.010-1.489-0.678-1.489-1.5 0.012-0.168 0.079-0.457 0.102-0.562l1.053-3.814c1.143-0.031 2.373 0.414 3.34 1.383 0.982 0.98 1.444 2.234 1.394 3.391l-3.722 0.975zM8.874 28.637c-0.024-1.342-0.57-2.738-1.672-3.838-1.042-1.043-2.406-1.645-3.766-1.699l0.996-3.607c0.072-0.24 0.215-0.477 0.391-0.684 2.006-1.436 5.091-1.012 7.234 1.133 2.267 2.266 2.617 5.586 0.871 7.568-0.116 0.061-0.233 0.119-0.359 0.156l-3.695 0.971zM28.691 11.772l-1.684 1.697c0-0.226 0.027-0.443 0.006-0.674-0.176-1.935-1.078-3.806-2.543-5.269-1.629-1.63-3.789-2.565-5.928-2.571l1.656-1.67c0.829-0.827 1.986-1.285 3.251-1.285 1.609 0 3.262 0.728 4.533 1.995 1.193 1.191 1.904 2.671 2.006 4.168 0.094 1.397-0.367 2.678-1.297 3.609z">
+                                    </path>  
+                                </g>
+                            </svg>
+                        </div>
+                        <div style="padding:8px 0px 0px 0px;"> 
+                            <label for="">注册时间 :</label>
+                            <input id='UserProfileCheckInDate' type="text" style="border:none;width:200px;" placeholder="注册时间" readonly="readonly" value="{{export_userinfo.date_joined}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "UserProfileNavButton.html" %}
+    {% if export_type == 'Topic' %}
+    {% include "Topic.html" %}
+    {% elif export_type == 'Circusee' %}
+    {% include "RollCall.html" %}
+    {% elif export_type == 'Follow' %}
+    {% include "SpecialTopic.html" %}
+    {% elif export_type == 'Linking' %}
+    {% include "UserLink.html" %}
+    {% elif export_type == 'Linked' %}
+    {% include "UserLink.html" %}
+    {% endif %}
+</div>
+</body>
+</html>

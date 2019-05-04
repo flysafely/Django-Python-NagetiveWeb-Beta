@@ -1,0 +1,25 @@
+{% include "TopNav.html" %}
+    <main class="App-main">
+        <div class="Topstory">
+            <div class="Topstory-container">
+                <div class="Topstory-mainColumn">
+                    {% include "RollCallContent.html" %}
+                    {% ifequal Replay_Display 'show' %}
+                    <div class="in2" style="margin:0px 0px 6px 0px">
+                        {% csrf_token %}
+                        <div align="{{Replay_location}}">
+                            <textarea id='RollCallReplayTextArea' name='RollCallReplayTextArea' class='commentbox' style="width:49.8%;" placeholder="哇嘎你共!" spellcheck="false" onkeydown="if(event.keyCode==13){RollCallReplay('/RollCallReplay/','{{ csrf_token }}');}"></textarea>
+                        </div>
+                        <div align="{{Replay_location}}" style="padding:3px 0px 0px 0px;">
+                            <button type="submit" data-loading-text="加载中" class="Button FollowButton ColumnPageHeader-FollowButton Button--primary Button--blue" onclick="javascript:RollCallReplay('/RollCallReplay/','{{ csrf_token }}','{{export_RollCallDialogue.0.RCD_ID.RCI_ID}}')">
+                            <b>怼怼怼</b>
+                            </button>
+                        </div>
+                    </div>
+                    {% endifequal %}
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

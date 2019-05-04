@@ -1,0 +1,68 @@
+<div class="Card AnswerCard" id='ArticleBody' articleid='{{TopicsContent.TI_ID}}'>
+    <div class="QuestionAnswer-content">
+        <div class="ContentItem AnswerItem">
+            <h1 style="font-size:22px">
+                <B>{{TopicsContent.TI_Title}}</B>
+            </h1></br>
+            <div class="FeedSource-firstline" style="margin:-10px 0px 10px 0px;">
+                <div>
+                    <img width=25 height=25 style="cursor:pointer;-webkit-border-radius: 12.5px;" src="{{TopicsContent.TI_Publisher.UT_Avatar}}" title="{{TopicsContent.TI_Publisher.username}}">
+                    <a style="color:black;text-decoration:none;" href="/UserProfile?UserNickName={{TopicsContent.TI_Publisher}}&Select=Publish&PageNumber=1"><b>{{TopicsContent.TI_Publisher}}</b></a>  
+                    <span style="padding: 0px 5px 0px 0px">,</span>                  
+                    <span style="padding: 0px 0px 0px 0px">{{TopicsContent.TI_Publisher.UT_Description}}</span>
+                </div>
+            </div>
+            <div>
+                <button id="LikeButton#{{TopicsContent.TI_ID}}" class="Button VoteButton VoteButton--up" onclick="StatisticTaste('Article','LikeSpan#{{TopicsContent.TI_ID}}','LikeButton#{{TopicsContent.TI_ID}}')">
+                    <span>
+                        <svg viewBox="0 0 30 30" width="16" height="14" fill="#FF7575">
+                            <path d="M23.6 2c-3.363 0-6.258 2.736-7.599 5.594-1.342-2.858-4.237-5.594-7.601-5.594-4.637 0-8.4 3.764-8.4 8.401 0 9.433 9.516 11.906 16.001 21.232 6.13-9.268 15.999-12.1 15.999-21.232 0-4.637-3.763-8.401-8.4-8.401z" fill-rule="evenodd">
+                            </path>
+                        </svg>
+                    </span>
+                    <span id='LikeSpan#{{TopicsContent.TI_ID}}'>{{TopicsContent.TI_Like}}</span>
+                </button>
+                <button id="DislikeButton#{{TopicsContent.TI_ID}}" class="Button VoteButton VoteButton--up" onclick="StatisticTaste('Article','DislikeSpan#{{TopicsContent.TI_ID}}','DislikeButton#{{TopicsContent.TI_ID}}')">
+                    <span>
+                        <svg viewBox="0 0 30 30" width="16" height="14" fill="#4F4F4F">
+                            <path d="M23.6 2c4.637 0 8.4 3.764 8.4 8.401 0 9.132-9.87 11.964-15.999 21.232-6.485-9.326-16.001-11.799-16.001-21.232 0-4.637 3.763-8.401 8.4-8.401 1.886 0 3.625 0.86 5.025 2.12l-2.425 3.88 7 4-4 10 11-12-7-4 1.934-2.901c1.107-0.68 2.35-1.099 3.665-1.099z" fill-rule="evenodd">
+                                
+                            </path>
+                        </svg>
+                    </span>
+                    <span id='DislikeSpan#{{TopicsContent.TI_ID}}'>{{TopicsContent.TI_Dislike}}</span>
+                </button>
+                <span style="color:#8590A6;float:right;padding:1px 0px 0px 0px;">被阅读 {{TopicsContent.TI_Read}}次</span>
+                <button title="分享" class="button button-primary button-box button-small" style="float:right;padding:0px 0px 0px 0px;" data-toggle='modal' data-target="#QRcodeBoard" onclick="javascript:QRcodeShare('/Topics?Part=Content&FilterWord={{TopicsContent.TI_ID}}&PageNumber=1')">
+                    <span>
+                        <svg viewBox="0 0 40 40" width="40" height="40" fill="#2894FF">
+                            <path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="enenodd">
+                                
+                            </path>
+                        </svg>
+                    </span>
+                </button>
+                {% if export_collectstatus == 'show' %}
+                <button id="CollectButton" title="收藏" style="float:right;color:black;padding:0px 0px 0px 0px;" class="button button-primary button-box button-small" onclick="javascript:UserCollect('/Collect/','{{ csrf_token }}','{{TopicsContent.TI_ID}}')">
+                    <svg viewBox='0 0 40 40' width='40' hight='40' fill='#2894FF'>
+                        <path d='M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z' fill='evenodd'></path>
+                    </svg>
+                </button> 
+                {% endif %}                                    
+            </div>
+            <div>
+                <hr style=" width:925px;height:1px;border:none;border-top:1px solid #F3F3F3;margin-bottom: 6px;margin-top: 0px;">                      
+            </div>
+          
+            <div class="RichContent RichContent--unescapable">
+                <div class="RichContent-inner">
+                    <span class="RichText ztext CopyrightRichText-richText">
+                        {{TopicsContent.TI_Content|safe}}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

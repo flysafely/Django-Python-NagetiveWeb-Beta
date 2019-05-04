@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>差评!</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/nagetive.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/NTCSS.css">
+    <link rel="shorcut icon" type="imagx/x-icon" href="/static/media/favicon.ico">
+    <script type="text/javascript" src="/static/js/jQuery.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/aes.min.js"></script>
+    <script type="text/javascript" src="/static/js/NTCustomFunctions.js"></script>
+    <script type="text/javascript" src="/static/js/QRcode.min.js"></script>
+    {% load static %}
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+
+    <script type="text/javascript">
+        // 不要括号
+        window.onload = TickDiv;
+    </script>
+</head>
+<body>
+    {% include "ModalWindows.html" %}
+        <div class="stickUpHeader">
+            <header class="Sticky AppHeader" data-za-modeule='TopNavBar'>
+                <div class="AppHeader-inner">
+                    <a href="/Topics?Part=Index&PageNumber=1" aria-label="差评">
+                        <svg viewBox="0 0 36 28" width="50" height="50" aria-hidden="true" style="height: 50px; width: 50px;">
+                            <g>
+                                <path d="M36 0c-4.547 3.016-5.031 5.203-5.422 5.875-0.375 0.688-0.656 3.391-1.313 4.703-0.656 1.328-3.047 2.375-3.719 2.812-0.656 0.438-1.594 2.141-2.359 3.609-3.453-0.141-6.875 0.703-9.844 2.469 0 0-1.437 0.828-4.734 2.797 1.656-0.547 2.438-0.938 2.438-0.938 4.125-1.578 5.219-2.328 8.547-2.875 2.562-0.422 5.875-0.078 7.266 0.109 0.063 0 0.109 0.031 0.156 0.047 0.219 0.125 0.297 0.391 0.172 0.609l-3.031 5.391c-0.141 0.266-0.438 0.406-0.734 0.344-0.75-0.141-2.469-0.375-5.531-0.375-4.438 0-8.047 1.359-12.406 1.422-3.672 0.047-5.109-1.453-5.469-1.937 0-0.016-0.016-0.031-0.016-0.047 0-0.063 0.031-0.094 0.094-0.094 0 0 2.156 0 5.797-0.859 4.141-7.891 7.828-10.656 11.844-10.656 0 0 4.031 0 5.094 3.484 1.281-2.234 1.594-2.766 1.594-2.766 0.297-0.531 1.969-4.344 4.859-7.953v0c2.906-3.609 5.094-4.5 6.719-5.172z" style="display:inline-block;width:1em;height:1em;stroke-width: 0;stroke:currentColor;fill:#0077E6;"></path>
+                            </g>
+                        </svg>
+                    </a>
+                    <nav class="AppHeader-nav">
+                        {% if SearchSource == 'Topic' %}
+                        <a class="AppHeader-navItem is-active" style="text-decoration:none;" href="/Topics?Part=Index&PageNumber=1">瞅瞅</a>
+                        <a class="AppHeader-navItem" style="text-decoration:none;" href="/RollCallSquare?Part=RollCallIndex&PageNumber=1">素质广场</a>
+                        <a class="AppHeader-navItem" style="text-decoration:none;" href="/SpecialTopicSquare?Part=SpecialTopicHot&PageNumber=1">X评专题</a>
+                        {% elif SearchSource == 'Article' %}
+                        <a class="AppHeader-navItem is-active" style="text-decoration:none;" href="/Topics?Part=Index&PageNumber=1">瞅瞅</a>
+                        <a class="AppHeader-navItem" style="text-decoration:none;" href="/RollCallSquare?Part=RollCallIndex&PageNumber=1">素质广场</a>
+                        <a class="AppHeader-navItem" style="text-decoration:none;" href="/SpecialTopicSquare?Part=SpecialTopicHot&PageNumber=1">X评专题</a>
+                        {% elif SearchSource == 'RollCall' %}
+                        <a class="AppHeader-navItem" style="text-decoration:none;" href="/Topics?Part=Index&PageNumber=1">瞅瞅</a>
+                        <a class="AppHeader-navItem is-active" style="text-decoration:none;" href="/RollCallSquare?Part=RollCallIndex&PageNumber=1">素质广场</a>
+                        <a class="AppHeader-navItem" style="text-decoration:none;" href="/SpecialTopicSquare?Part=SpecialTopicHot&PageNumber=1">X评专题</a>
+                        {% elif SearchSource == 'SpecialTopic' %}
+                        <a class="AppHeader-navItem" style="text-decoration:none;" href="/Topics?Part=Index&PageNumber=1">瞅瞅</a>
+                        <a class="AppHeader-navItem" style="text-decoration:none;" href="/RollCallSquare?Part=RollCallIndex&PageNumber=1">素质广场</a>
+                        <a class="AppHeader-navItem is-active" style="text-decoration:none;" href="/SpecialTopicSquare?Part=SpecialTopicHot&PageNumber=1">X评专题</a>
+                        {% endif %}
+                    </nav>
+                    <div class="SearchBar">
+                        <div class="SearchBar-toolWrapper">
+                            <form class="SearchBar-tool">
+                                <div>
+                                    <div class="Poppover">
+                                        <div class="SearchBar-input Input-wrapper Input-wrapper--grey">
+                                            <input style="display:none" type="text">
+                                            <input id='searchinput' type="text" placeholder='{{search_placeholder}}' maxlength="100" class="Input" onkeydown="if(event.keyCode==13){SearchTitle('{{SearchSource}}');}">
+                                            <div class="Input-after">
+                                                <button id="SearchButton" aria-label="搜索" type="button" class=" SearchBar-searchIcon Button--primary" onclick="javascript:SearchTitle('{{SearchSource}}')">
+                                                    <svg viewBox="0 0 16 16" class="Icon Icon--search" width="16" height="16" style="height: 16px; width: 16px;">
+                                                        <g fill="#8590A6">
+                                                            <path d="M12.054 10.864c.887-1.14 1.42-2.57 1.42-4.127C13.474 3.017 10.457 0 6.737 0S0 3.016 0 6.737c0 3.72 3.016 6.737 6.737 6.737 1.556 0 2.985-.533 4.127-1.42l3.103 3.104c.765.46 1.705-.37 1.19-1.19l-3.103-3.104zm-5.317.925c-2.786 0-5.053-2.267-5.053-5.053S3.95 1.684 6.737 1.684 11.79 3.95 11.79 6.737 9.522 11.79 6.736 11.79z">
+                                                            </path>  
+                                                        </g>
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <button title="开源主页" type="button" class="Button--plain" style="outline:none;outline: 0;-webkit-tap-highlight-color:rgba(0,0,0,0);" onclick="javascript:window.open('https://github.com/flysafely/Python-Diary/blob/master/main.md','Flysafely GitHub','menubar=0,scrollbars=1, resizable=1,status=1,titlebar=0,toolbar=0,location=1')">
+                            <svg width="32" height="32" viewBox="0 0 32 32" style="display:inline-flex;align-items:center;margin:0px 0px 0px 20px">
+                                <g style="display:inline-block;width:1em;height:1em;stroke-width:0;stroke:currentColor;fill:#974995;">
+                                    <path d="M16 0.395c-8.836 0-16 7.163-16 16 0 7.069 4.585 13.067 10.942 15.182 0.8 0.148 1.094-0.347 1.094-0.77 0-0.381-0.015-1.642-0.022-2.979-4.452 0.968-5.391-1.888-5.391-1.888-0.728-1.849-1.776-2.341-1.776-2.341-1.452-0.993 0.11-0.973 0.11-0.973 1.606 0.113 2.452 1.649 2.452 1.649 1.427 2.446 3.743 1.739 4.656 1.33 0.143-1.034 0.558-1.74 1.016-2.14-3.554-0.404-7.29-1.777-7.29-7.907 0-1.747 0.625-3.174 1.649-4.295-0.166-0.403-0.714-2.030 0.155-4.234 0 0 1.344-0.43 4.401 1.64 1.276-0.355 2.645-0.532 4.005-0.539 1.359 0.006 2.729 0.184 4.008 0.539 3.054-2.070 4.395-1.64 4.395-1.64 0.871 2.204 0.323 3.831 0.157 4.234 1.026 1.12 1.647 2.548 1.647 4.295 0 6.145-3.743 7.498-7.306 7.895 0.574 0.497 1.085 1.47 1.085 2.963 0 2.141-0.019 3.864-0.019 4.391 0 0.426 0.288 0.925 1.099 0.768 6.354-2.118 10.933-8.113 10.933-15.18 0-8.837-7.164-16-16-16z">
+                                    </path>
+                                </g> 
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="AppHeader-userInfo">
+                        <button title="通知栏" style="margin: -25px 70px 0px 0px;position:relative;" type="button" class="AppHeader-fakeButton Button--plain Button--withIcon Button--iconOnly" data-toggle='modal' data-target="#NotificationBar" onclick="javascript:GetNotificationInfo()">
+                            <span style="align-items: center;position:absolute; margin:0xp 0px 0px 0px;">
+                                <svg fill="#8590A6" viewBox="0 0 38 32" width="1.2em" height="1.2em">
+                                    <g>
+                                        <path d="M16 0c-6.076 0-11 4.924-11 11 0 4.031 3.688 8.303 5.031 12.055 2.003 5.595 1.781 8.945 5.969 8.945 4.25 0 3.965-3.334 5.969-8.922 1.347-3.76 5.031-8.078 5.031-12.078 0-6.076-4.926-11-11-11zM18.592 27.176l-4.958 0.619c-0.177-0.512-0.367-1.111-0.598-1.893-0.003-0.010-0.007-0.021-0.009-0.031l6.188-0.773c-0.088 0.295-0.182 0.605-0.264 0.883-0.131 0.449-0.248 0.839-0.359 1.195zM12.736 24.908c-0.182-0.602-0.387-1.236-0.615-1.908h7.766c-0.123 0.359-0.246 0.719-0.352 1.059l-6.799 0.849zM16 30c-1.013 0-1.479-0.117-1.997-1.25l4.238-0.531c-0.614 1.654-1.061 1.781-2.241 1.781zM20.672 21h-9.333c-0.498-1.080-1.096-2.16-1.686-3.217-1.305-2.335-2.653-4.75-2.653-6.783 0-4.963 4.037-9 9-9s9 4.037 9 9c0 2.018-1.35 4.446-2.656 6.795-0.584 1.053-1.178 2.131-1.672 3.205zM16 5c0.275 0 0.5 0.224 0.5 0.5s-0.224 0.5-0.5 0.5c-2.757 0-5 2.243-5 5 0 0.276-0.224 0.5-0.5 0.5s-0.5-0.224-0.5-0.5c0-3.309 2.691-6 6-6z"></path>
+                                    </g>
+                                </svg>
+                            </span>
+                            {% ifnotequal NotificationCount '0' %}
+                            <span id="NotificationCount" style="position:absolute;margin:-5px 10px;color:#fff;font-size:12px;background-color:#FABCBA;border:2px solid #fff;border-radius:30px;width:20px;text-shadow:1px 1px 2px #F1303C;">{{NotificationCount}}</span>
+                            {% endifnotequal %}
+                        </button>
+                        <button title="消息栏" style="margin: -19px 70px 0px 0px;position:relative;" type="button" class="AppHeader-fakeButton Button--plain Button--withIcon Button--iconOnly" data-toggle='modal' data-target="#BulletinBoard">
+                            <span style="align-items: center;position:absolute; margin:0xp 0px 0px 0px;">
+                                <svg fill="#8590A6" viewBox="0 2 35 35" width="1.2em" height="1.2em">
+                                    <g>
+                                        <path d="M31.924 18.455l-4.002-15.006c-0.242-0.853-1.033-1.449-1.922-1.449h-20c-0.89 0-1.68 0.596-1.922 1.449l-4.002 15.006c-0.051 0.182-0.076 0.365-0.076 0.545v7c0 2.209 1.791 4 4 4h24c2.209 0 4-1.791 4-4v-7c0-0.18-0.025-0.363-0.076-0.545zM30 26c0 1.102-0.898 2-2 2h-24c-1.103 0-2-0.898-2-2v-7l4.001-15.001h19.997l4.002 15.001v7zM23.742 6h-15.484c-0.453 0-0.85 0.305-0.967 0.743l-3.445 12c-0.079 0.301-0.016 0.621 0.174 0.867s0.482 0.39 0.792 0.39h4.568l1.447 2.895c0.34 0.677 1.032 1.105 1.79 1.105h6.766c0.758 0 1.449-0.428 1.789-1.105l1.447-2.895h4.568c0.311 0 0.604-0.145 0.793-0.391s0.252-0.566 0.174-0.867l-3.445-12c-0.117-0.438-0.514-0.742-0.967-0.742zM24.281 18h-1.662c-0.762 0-1.447 0.422-1.789 1.105l-1.447 2.895h-6.766l-1.447-2.895c-0.342-0.683-1.027-1.105-1.789-1.105h-4.047l2.924-11h15.484l2.924 11h-2.385z" fill-rule="evenodd"></path>
+                                    </g>
+                                </svg>
+                            </span>
+                            <span style="position:absolute;margin:-7px 10px;color:#fff;font-size:12px;background-color:#FABCBA;border:2px solid #fff;border-radius:30px;width:20px;text-shadow:1px 1px 2px #F1303C;">1</span>
+                        </button>
+                        {% if request.user.is_authenticated %}
+                        <img title="{{request.user.UT_Nick}}" src="{{request.user.UT_Avatar}}" height="32" width="32" style="cursor:pointer;-webkit-border-radius: 16px;" onclick="javascript:window.location.href='/UserProfile?UserNickName={{request.user.UT_Nick}}&Select=Publish&PageNumber=1'">
+                        <button title="注销" style="margin: 19px 0px 0px 44px;" id='logoutbutton' type="button" class="AppHeader-fakeButton Button--plain Button--withIcon Button--iconOnly" onclick="javascript:Logout('/logout/');">
+                            <span style="display: inline-flex; align-items: center;">
+                                <svg fill="#8590A6" viewBox="0 0 40 40" width='35' height='35'>
+                                    <g>
+                                        <path d="M22 15.453v4.047c0 2.484-2.016 4.5-4.5 4.5h-13c-2.484 0-4.5-2.016-4.5-4.5v-13c0-2.484 2.016-4.5 4.5-4.5h3.984c0.266 0 0.5 0.219 0.5 0.5 0 0.25-0.172 0.453-0.406 0.5-0.781 0.266-1.484 0.578-2.078 0.938-0.078 0.031-0.156 0.063-0.25 0.063h-1.75c-1.375 0-2.5 1.125-2.5 2.5v13c0 1.375 1.125 2.5 2.5 2.5h13c1.375 0 2.5-1.125 2.5-2.5v-3.344c0-0.187 0.109-0.359 0.281-0.453 0.313-0.141 0.594-0.344 0.844-0.578 0.141-0.141 0.359-0.203 0.547-0.125s0.328 0.25 0.328 0.453zM25.703 7.703l-6 6c-0.187 0.203-0.438 0.297-0.703 0.297-0.125 0-0.266-0.031-0.391-0.078-0.359-0.156-0.609-0.516-0.609-0.922v-3h-2.5c-3.437 0-5.625 0.656-6.844 2.047-1.266 1.453-1.641 3.797-1.156 7.391 0.031 0.219-0.109 0.438-0.313 0.531-0.063 0.016-0.125 0.031-0.187 0.031-0.156 0-0.313-0.078-0.406-0.203-0.109-0.156-2.594-3.672-2.594-6.797 0-4.188 1.313-9 11.5-9h2.5v-3c0-0.406 0.25-0.766 0.609-0.922 0.125-0.047 0.266-0.078 0.391-0.078 0.266 0 0.516 0.109 0.703 0.297l6 6c0.391 0.391 0.391 1.016 0 1.406z" fill-rule="evenodd"></path>
+                                    </g>
+                                </svg>
+                            </span>
+                        </button> 
+                        {% else %}
+                        <button title="登录差评" style="padding: 5px 0px 0px 0px;" id='loginbutton' type="button" class="AppHeader-fakeButton Button--plain Button--withIcon Button--iconOnly" data-toggle='modal' data-target="#LoginBoard">
+                            <span style="display: inline-flex; align-items: center;padding:4px 0px 0px 0px">
+                                <svg fill="#8590A6" viewBox="0 0 38 38" width="1.2em" height="1.2em">
+                                    <g>
+                                        <path d="M31.11 28.336c-0.201-0.133-3.848-2.525-9.273-3.699 1.99-2.521 3.268-5.912 3.811-8.169 0.754-3.128 0.461-9.248-2.543-13.062-1.756-2.229-4.213-3.406-7.105-3.406s-5.349 1.178-7.104 3.406c-3.004 3.813-3.296 9.933-2.543 13.061 0.543 2.257 1.82 5.648 3.811 8.169-5.425 1.174-9.072 3.566-9.272 3.699-0.733 0.488-1.061 1.4-0.805 2.242 0.254 0.845 1.033 1.423 1.913 1.423h28c0.881 0 1.658-0.578 1.914-1.422 0.257-0.842-0.071-1.754-0.804-2.242zM20.267 23.398l-0.326 0.414c-2.385 2.74-5.495 2.74-7.879 0l-0.327-0.414c-2.785-3.529-4.167-8.197-3.572-12.65 0.545-4.279 2.997-8.748 7.837-8.748s7.293 4.47 7.838 8.749c0.593 4.455-0.784 9.118-3.571 12.649zM2 30c0.138-0.092 3.526-2.314 8.586-3.408l2.484-0.537c0.887 0.582 1.86 0.945 2.93 0.945 1.071 0 2.043-0.363 2.93-0.945l2.484 0.537c5.020 1.086 8.396 3.283 8.586 3.408h-28z" fill-rule="evenodd"></path>
+                                    </g>
+                                </svg>
+                            </span>
+                        </button>               
+                        {% endif %}               
+                    </div>
+                </div>      
+            </header>
+        </div>

@@ -1,0 +1,71 @@
+<div class="Card AnswerCard" id='ArticleBody' articleid='{{SpecialTopicContent.STI_ID}}'>
+    <div class="QuestionAnswer-content">
+        <div class="ContentItem AnswerItem">
+            <img src="{{SpecialTopicContent.STI_Cover_SR965x300.url}}" width="965" height="300" alt="" style="position:absolute;left:1.6%;top:0%;-webkit-border-radius: 2px;box-shadow:0 0 2px 0 #000000;">
+            <div style="padding:300px 0px 0px 0px;">
+                <h1 style="font-size:22px">
+                    <B>{{SpecialTopicContent.STI_Title}}</B>
+                </h1></br>
+                <div class="FeedSource-firstline" style="margin:-10px 0px 10px 0px;">
+                    <div>
+                        <img width=25 height=25 style="cursor:pointer;-webkit-border-radius: 12.5px;" src="{{SpecialTopicContent.STI_Publisher.UT_Avatar}}" title="{{SpecialTopicContent.STI_Publisher.username}}">
+                        <a style="color:black;text-decoration:none;" href="/UserProfile?UserNickName={{SpecialTopicContent.STI_Publisher}}&Select=Publish&PageNumber=1"><b>{{SpecialTopicContent.STI_Publisher}}</b></a>  
+                        <span style="padding: 0px 5px 0px 0px">,</span>                  
+                        <span style="padding: 0px 0px 0px 0px">{{SpecialTopicContent.STI_Publisher.UT_Description}}</span>
+                    </div>
+                </div>
+                <div>
+                    <div style="display:inline-block;padding:0px 4px 0px 0px;">
+                        <span>
+                            <svg viewBox="-5 -4 24 24" width="18" height="18" fill="#77839C">
+                                <path d="M14.553 20.78c.862-.651 1.39-1.792 1.583-3.421.298-2.511-.656-4.904-2.863-7.179.209 2.291.209 3.73 0 4.314-.41 1.143-1.123 1.983-1.91 2.03-1.35.079-2.305-.512-2.863-1.774-.676 1.25-.782 2.556-.318 3.915.31.906.94 1.684 1.89 2.333C7.144 20.131 5 17.336 5 14.022c0-2.144.898-4.072 2.325-5.4.062 2.072.682 3.598 2.13 4.822-.67-1.112-.734-2.11-.734-3.517 0-3.253 2.067-6.007 4.913-6.927a7.35 7.35 0 0 0 2.157 4.918C17.722 9.214 19 11.463 19 14.022c0 3.073-1.844 5.7-4.447 6.758z" fill-rule="enenodd">
+                                </path>
+                            </svg>
+                        </span>
+                        <span style="color:#8590A6;padding:1px 0px 0px 0px;font-size:13px;">{{SpecialTopicContent.STI_Hot}}</span>
+                    </div>
+                    <div style="display:inline-block;padding:0px 4px 0px 0px;">
+                        <div style="color:#8590A6;display:inline-block;position:absolute;padding:0px 0px 0px 0px;">
+                            <svg viewBox="0 -6 38 38" width="17" height="17">
+                                <g style="fill:#8590AE;">
+                                    <path d="M12.048 16.961c-0.178 0.257-0.395 0.901-0.652 1.059-0.257 0.157-0.547 0.267-0.869 0.328-0.323 0.062-0.657 0.089-1.002 0.079v1.527h2.467v6.046h1.991v-9.996h-1.584c-0.056 0.381-0.173 0.7-0.351 0.957zM23 8h2c0.553 0 1-0.448 1-1v-6c0-0.552-0.447-1-1-1h-2c-0.553 0-1 0.448-1 1v6c0 0.552 0.447 1 1 1zM7 8h2c0.552 0 1-0.448 1-1v-6c0-0.552-0.448-1-1-1h-2c-0.552 0-1 0.448-1 1v6c0 0.552 0.448 1 1 1zM30 4h-2v5c0 0.552-0.447 1-1 1h-6c-0.553 0-1-0.448-1-1v-5h-8v5c0 0.552-0.448 1-1 1h-6c-0.552 0-1-0.448-1-1v-5h-2c-1.104 0-2 0.896-2 2v24c0 1.104 0.896 2 2 2h28c1.104 0 2-0.896 2-2v-24c0-1.104-0.896-2-2-2zM30 29c0 0.553-0.447 1-1 1h-26c-0.552 0-1-0.447-1-1v-16c0-0.552 0.448-1 1-1h26c0.553 0 1 0.448 1 1v16zM15.985 17.982h4.968c-0.936 1.152-1.689 2.325-2.265 3.705-0.575 1.381-0.638 2.818-0.749 4.312h2.131c0.009-0.666-0.195-1.385-0.051-2.156 0.146-0.771 0.352-1.532 0.617-2.285 0.267-0.752 0.598-1.461 0.996-2.127 0.396-0.667 0.853-1.229 1.367-1.686v-1.742h-7.015v1.979z" fill-rule="evenodd">
+                                    </path>                            
+                                </g>
+                            </svg>
+                        </div>
+                        <span style="color:#8590A6;padding:0px 0px 0px 20px;font-size:13px;">{{SpecialTopicContent.STI_EditDate}}</span>
+                    </div>
+                    <button title="分享" class="button button-primary button-box button-small" style="float:right;padding:0px 0px 0px 0px;" data-toggle='modal' data-target="#QRcodeBoard" onclick="javascript:QRcodeShare('/SpecialTopicSquare?Part=SpecialTopicContent&FilterWord={{SpecialTopicContent.STI_ID}}&PageNumber=1')">
+                        <span>
+                            <svg viewBox="0 0 40 40" width="40" height="40" fill="#2894FF">
+                                <path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="enenodd">
+                                    
+                                </path>
+                            </svg>
+                        </span>
+                    </button>
+                    {% if export_collectstatus == 'show' %}
+                    <button id="CollectButton" title="关注" style="float:right;color:black;padding:0px 0px 0px 0px;" class="button button-primary button-box button-small" onclick="javascript:SpecialTopicFollow('/Follow/','{{ csrf_token }}','{{SpecialTopicContent.STI_ID}}')">
+                        <svg viewBox='0 0 49 49' width='40' hight='40' fill='#2894FF'>
+                            <path d='M16 6c-8.837 0-16 10-16 10s7.163 10 16 10 16-10 16-10-7.163-10-16-10zM16 22c-3.313 0-6-2.687-6-6s2.687-6 6-6 6 2.687 6 6-2.687 6-6 6zM16 12c-2.209 0-4 1.791-4 4s1.791 4 4 4 4-1.791 4-4-1.791-4-4-4z' fill='evenodd'></path>
+                        </svg>
+                    </button> 
+                    {% endif %}                                    
+                </div>
+                <div>
+                    <hr style=" width:925px;height:1px;border:none;border-top:1px solid #F3F3F3;margin-bottom: 6px;margin-top: 0px;">                      
+                </div>
+              
+                <div class="RichContent RichContent--unescapable">
+                    <div class="RichContent-inner">
+                        <span class="RichText ztext CopyrightRichText-richText">
+                            {{SpecialTopicContent.STI_Content|safe}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

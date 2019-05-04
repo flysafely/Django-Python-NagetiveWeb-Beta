@@ -1,0 +1,113 @@
+<div name="anchorDiv" id="anchorDiv" class="CardList">
+    {% for commentcard in exportList_cards %}
+        <div id="{{commentcard.2.CI_ID}}" class="Card TopstoryItem cardItem">
+            <div class="Feed">
+                <div class="FeedSource">
+                    <div class="FeedSource-firstline" style="margin:0px 0px 0px 0px;">
+                        <img width=24 height=24 style="cursor:pointer;-webkit-border-radius: 5px;" src="{{commentcard.2.CI_UserNickName.UT_Avatar}}" title="{{commentcard.2.CI_UserNickName.UT_Nick}}">
+                        <a style="text-decoration:none;" href="/UserProfile?UserNickName={{commentcard.2.CI_UserNickName.UT_Nick}}&Select=Publish&PageNumber=1"><b style="font-size:14px;color;#77839C;">{{commentcard.2.CI_UserNickName.UT_Nick}}</b></a>
+                    </div>
+                    <div class="FeedSource-firstline">
+                        <span style="padding: 0px 0px 0px 0px;font-size:10px">评论时间:</span>
+                        <span style="padding: 0px 5px 0px 0px;font-size:10px">{{commentcard.2.CI_EditDate}}</span>
+                    </div>
+                </div>
+                <div>
+                    <hr style=" height:1px;border:none;border-top:1px solid #F3F3F3;margin-bottom: 6px;margin-top: -2px;">
+                </div>
+                <div class="ContentItem AnswerItem">
+
+                    <div style="margin-top:8px;"></div>
+                    <div>
+                        {% if commentcard.0 == 'HasParent' %}
+                        <div style="font-size:13px;color:#8590a6;border:1px solid #F3F3F3;background:#f6f6f6;">
+                            <span>
+                                <svg viewBox="0 -5 38 38" width="14" height="14" fill="#4F4F4F">
+                                    <path d="M7.031 14c3.866 0 7 3.134 7 7s-3.134 7-7 7-7-3.134-7-7l-0.031-1c0-7.732 6.268-14 14-14v4c-2.671 0-5.182 1.040-7.071 2.929-0.364 0.364-0.695 0.751-0.995 1.157 0.357-0.056 0.724-0.086 1.097-0.086zM25.031 14c3.866 0 7 3.134 7 7s-3.134 7-7 7-7-3.134-7-7l-0.031-1c0-7.732 6.268-14 14-14v4c-2.671 0-5.182 1.040-7.071 2.929-0.364 0.364-0.695 0.751-0.995 1.157 0.358-0.056 0.724-0.086 1.097-0.086z" fill-rule="evenodd">
+                                        
+                                    </path>
+                                </svg>
+                            </span>
+                            <a style="text-decoration:none;font-size:13px;color;#8590A6;" href="/UserProfile?UserNickName={{commentcard.1.CI_UserNickName}}&Select=Publish&PageNumber=1">{{commentcard.1.CI_UserNickName}}：
+                            </a>
+                            <i style="font-size:13px;color;#333333;">{{commentcard.1.CI_Comment}}</i>
+                            <span>
+                                <svg viewBox="0 -5 38 38" width="14" height="14" fill="#4F4F4F">
+                                    <path d="M25 20c-3.866 0-7-3.134-7-7s3.134-7 7-7 7 3.134 7 7l0.031 1c0 7.732-6.268 14-14 14v-4c2.671 0 5.182-1.040 7.071-2.929 0.364-0.364 0.695-0.75 0.995-1.157-0.357 0.056-0.724 0.086-1.097 0.086zM7 20c-3.866 0-7-3.134-7-7s3.134-7 7-7 7 3.134 7 7l0.031 1c0 7.732-6.268 14-14 14v-4c2.671 0 5.182-1.040 7.071-2.929 0.364-0.364 0.695-0.75 0.995-1.157-0.357 0.056-0.724 0.086-1.097 0.086z" fill-rule="evenodd">
+                                        
+                                    </path>
+                                </svg>
+                            </span>                            
+                        </div>
+                        <hr style=" height:1px;border:none;border-top:1px solid #F3F3F3;margin-bottom: 6px;margin-top: 8px;">
+                        {% endif %}
+                        <span style="font-size:15px">{{commentcard.2.CI_Comment}}</span>
+                        <div id='{{commentcard.2.CI_ID}}'></div>
+                    </div>
+                    <div class="ContentItem-actions">
+                        {% if IsCommentConversation == 'False' %}
+                        <span>
+                            <button id="LikeButton#{{commentcard.2.CI_ID}}" class="Button VoteButton VoteButton--up" onclick="javascript:StatisticTaste('Comment','LikeSpan#{{commentcard.2.CI_ID}}','LikeButton#{{commentcard.2.CI_ID}}')">
+                                <span>
+                                    <svg viewBox="0 -5 38 38" width="14" height="14" fill="#FF0080">
+                                        <path d="M23.6 2c-3.363 0-6.258 2.736-7.599 5.594-1.342-2.858-4.237-5.594-7.601-5.594-4.637 0-8.4 3.764-8.4 8.401 0 9.433 9.516 11.906 16.001 21.232 6.13-9.268 15.999-12.1 15.999-21.232 0-4.637-3.763-8.401-8.4-8.401z" fill-rule="evenodd">
+                                            
+                                        </path>
+                                    </svg>
+                                </span>
+                                <span id='LikeSpan#{{commentcard.2.CI_ID}}'>{{commentcard.2.CI_Like}}</span>
+                            </button>
+                            <button id="DislikeButton#{{commentcard.2.CI_ID}}" type="button" class="Button VoteButton VoteButton--down"  onclick="javascript:StatisticTaste('Comment','DislikeSpan#{{commentcard.2.CI_ID}}','DislikeButton#{{commentcard.2.CI_ID}}')">
+                                <span>
+                                    <svg viewBox="0 -5 38 38" width="14" height="14" fill="#4F4F4F">
+                                        <path d="M23.6 2c4.637 0 8.4 3.764 8.4 8.401 0 9.132-9.87 11.964-15.999 21.232-6.485-9.326-16.001-11.799-16.001-21.232 0-4.637 3.763-8.401 8.4-8.401 1.886 0 3.625 0.86 5.025 2.12l-2.425 3.88 7 4-4 10 11-12-7-4 1.934-2.901c1.107-0.68 2.35-1.099 3.665-1.099z" fill-rule="evenodd">
+                                        </path>
+                                    </svg>
+                                </span>
+                                <span id='DislikeSpan#{{commentcard.2.CI_ID}}'>{{commentcard.2.CI_Dislike}}</span>
+                            </button>
+                        </span>
+                        <a type="button" class="ContentItem-action Button--plain Button--withIcon Button--withLabel" style="display: inline-flex; align-items: center;text-decoration:none;cursor:pointer;" onclick="javascript:ShowReplayBox(this,'{{commentcard.2.CI_ID}}','{{ csrf_token }}','Topic')">
+                            <span style="padding:3px 0px 0px 0px;">
+                                <svg viewBox="0 0 20 20" width="18" height="18" fill="#77839C">
+                                    <path d="M19 16.685c0 0-2.225-9.732-11-9.732v-3.984l-7 6.573 7 6.69v-4.357c4.763-0.001 8.516 0.421 11 4.81z" fill-rule="enenodd">
+                                        
+                                    </path>
+                                </svg>
+                            </span>
+                            <span style="margin-right:5px;"></span>
+                            回复
+                        </a>
+                        {% endif %}
+                        <button type="button" class="ContentItem-action Button--plain Button--withIcon Button--withLabel" style="display: inline-flex; align-items: center;">
+                            <span style="padding:3px 0px 0px 0px;">
+                                <svg viewBox="0 0 20 20" width="15" height="15" fill="#77839C">
+                                    <path d="M19.511 17.98l-8.907-16.632c-0.124-0.215-0.354-0.348-0.604-0.348s-0.481 0.133-0.604 0.348l-8.906 16.632c-0.121 0.211-0.119 0.471 0.005 0.68 0.125 0.211 0.352 0.34 0.598 0.34h17.814c0.245 0 0.474-0.129 0.598-0.34 0.124-0.209 0.126-0.469 0.006-0.68zM11 17h-2v-2h2v2zM11 13.5h-2v-6.5h2v6.5z" fill-rule="enenodd">     
+                                    </path>
+                                </svg>
+                            </span>
+                            <span style="margin-right:5px;"></span>
+                            举报
+                        </button>
+                        {% if IsCommentConversation == 'False' %}
+                        {% if commentcard.0 == 'HasParent' %}
+                        <button type="button" class="ContentItem-action Button--plain Button--withIcon Button--withLabel" style="display: inline-flex; align-items: center;" onclick="javascript:location.href='/CommentConversation?ObjectID={{TopicsContent.TI_ID}}&replayeduser={{commentcard.1.CI_UserNickName}}&replayuser={{commentcard.2.CI_UserNickName.UT_Nick}}&from=Article'">
+                            <span style="padding:3px 0px 0px 0px;">
+                                <svg viewBox="0 0 20 20" width="15" height="15" fill="#77839C">
+                                    <path d="M17 3c-1.104 0-2 0.895-2 2s0.896 2 2 2 2-0.895 2-2c0-1.105-0.896-2-2-2zM12.5 4h-11c-0.276 0-0.5 0.224-0.5 0.5v1c0 0.276 0.224 0.5 0.5 0.5h11c0.276 0 0.5-0.224 0.5-0.5v-1c0-0.276-0.224-0.5-0.5-0.5zM12.5 9h-11c-0.276 0-0.5 0.224-0.5 0.5v1c0 0.276 0.224 0.5 0.5 0.5h11c0.276 0 0.5-0.224 0.5-0.5v-1c0-0.276-0.224-0.5-0.5-0.5zM12.5 14h-11c-0.276 0-0.5 0.224-0.5 0.5v1c0 0.276 0.224 0.5 0.5 0.5h11c0.276 0 0.5-0.224 0.5-0.5v-1c0-0.276-0.224-0.5-0.5-0.5z" fill-rule="enenodd">
+                                        
+                                    </path>
+                                </svg>
+                            </span>
+                            <span style="margin-right:5px;"></span>
+                            查看对话
+                        </button>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% include "Paginator.html" %}    
+</div> 

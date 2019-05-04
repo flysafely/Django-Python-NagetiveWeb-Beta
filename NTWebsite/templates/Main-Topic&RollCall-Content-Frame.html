@@ -1,0 +1,8 @@
+{% load CustomFuncTags %}
+{% if Layout_Sizer|GetDictValue:'Region' == 'RollCall' %}
+    {% include "Content-RollCallContent-Frame.html" %}
+{% else %}
+    {% include "Content-TopicContent-Block.html" %}
+    {% include "Content-TopicCommit-Block.html" %}
+    {% include "Content-TopicComment-Block.html" %} 
+{% endif %}  

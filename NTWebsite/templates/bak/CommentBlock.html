@@ -1,0 +1,10 @@
+<div class="in2" style="margin:0px 0px 6px 0px">
+    {% csrf_token %}
+    <textarea id='CommentTextArea' name='CommentTextArea' class='commentbox' placeholder="你不准备留下点什么吗？" spellcheck="false" onkeydown="if(event.keyCode==13){CommentSubmit('/CommentSubmit/');}"></textarea>
+    </br>
+    <div align="left">
+        <button type="submit" data-loading-text="加载中" class="Button FollowButton ColumnPageHeader-FollowButton Button--primary Button--blue" onclick="javascript:CommentSubmit('/CommentSubmit/','{{ csrf_token }}','Topic')">
+        发表评论
+        </button>
+    </div>
+</div>

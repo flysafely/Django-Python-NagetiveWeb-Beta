@@ -1,0 +1,14 @@
+<ul class="GlobalSideBar-categoryList">
+    {% for Publisher in ExportList_Publishers %}
+    <li title="{{Publisher.Publisher.Nick}}" class="GlobalSideBar-categoryItem">
+        <a style="text-decoration:none;" href="/UserProfile/Topic/{{Publisher.Publisher.id}}/LE/1/" type="button" class="Button Button--plain" style="color: rgb(255, 128, 0);">
+            <span class="GlobalSideBar-categoryIcon">
+                <img src="{{MEDIA_URL}}{{Publisher.Publisher.Avatar}}" style="cursor:pointer;-webkit-border-radius: 16px;" width="32" height="32">
+            </span>
+            <span class="GlobalSideBar-categoryLabel" style="font-size:13px;height:23px;width:70px;overflow: hidden;text-overflow:ellipsis; white-space:nowrap;">
+                {{Publisher.Publisher.Nick}}
+            </span>
+        </a>
+    </li>
+    {% endfor %}
+</ul>

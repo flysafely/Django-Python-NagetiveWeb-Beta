@@ -1,0 +1,21 @@
+{% load CustomFuncTags %}
+{% if Layout_Sizer|GetDictValue:'Part' == 'List' %}
+{% include "List-OrderModeButton-Block.html" %}
+{% endif %}
+{% if Layout_Sizer|GetDictValue:'Region' == 'RollCall' %}
+{% include "List-RollCall-Frame.html" %}
+{% elif Layout_Sizer|GetDictValue:'Region' == 'Topic' %}
+{% include "List-Topic-Frame.html" %}
+{% elif Layout_Sizer|GetDictValue:'Region' == 'SpecialTopic' %}
+{% include "List-Topic-Frame.html" %}
+{% elif Layout_Sizer|GetDictValue:'Region' == 'Search' %}
+    {% if Layout_Sizer|GetDictValue:'Part' == 'Topic' %}
+    {% include "List-Topic-Frame.html" %}    
+    {% elif Layout_Sizer|GetDictValue:'Part' == 'SpecialTopic' %}
+    {% include "List-Topic-Frame.html" %}
+    {% elif Layout_Sizer|GetDictValue:'Part' == 'RollCall' %}
+    {% include "List-RollCall-Frame.html" %}
+    {% elif Layout_Sizer|GetDictValue:'Part' == 'User' %}
+    {% include "List-User-Frame.html" %}
+    {% endif %}
+{% endif %}

@@ -1,0 +1,98 @@
+{% ifnotequal export_type 'Circusee' %}
+<div class="TopstoryMain" style="width:70%;position:absolute;left:50%;top:50%;transform:translate(-50%,-1%);padding:12px 0px 0px 0px;">
+{% else %}
+<div class="TopstoryMain" style="width:100%;">
+{% endifnotequal %}
+    <div class="CardList">
+        {% for rollcallcard in exportList_cards %}
+        <div id="{{rollcallcard.RCI_ID}}" class="Card TopstoryItem" style="padding:10px 14px 10px 14px;">
+            <div name='{{rollcallcard.RCI_ID}}' class="Button TopstoryItem-rightButton Button--plain" style="margin:-10px -6px 0px 0px;" type="button" onclick="javascript:CloseTopic(this)">
+                <svg viewBox="0 0 14 14" class="Icon Icon--remove" width="10" height="10" aria-hidden="true" style="width:10px;height:10px;">
+                    <g>
+                        <path d="M8.486 7l5.208-5.207c.408-.408.405-1.072-.006-1.483-.413-.413-1.074-.413-1.482-.005L7 5.515 1.793.304C1.385-.103.72-.1.31.31-.103.724-.103 1.385.305 1.793L5.515 7l-5.21 5.207c-.407.408-.404 1.072.007 1.483.413.413 1.074.413 1.482.005L7 8.485l5.207 5.21c.408.407 1.072.404 1.483-.007.413-.413.413-1.074.005-1.482L8.485 7z">
+                        </path>
+                    </g>
+                </svg>
+            </div>
+            <div>
+                <span>
+                    <svg viewBox="0 -5 38 38" width="14" height="14" fill="#4F4F4F">
+                        <path d="M7.031 14c3.866 0 7 3.134 7 7s-3.134 7-7 7-7-3.134-7-7l-0.031-1c0-7.732 6.268-14 14-14v4c-2.671 0-5.182 1.040-7.071 2.929-0.364 0.364-0.695 0.751-0.995 1.157 0.357-0.056 0.724-0.086 1.097-0.086zM25.031 14c3.866 0 7 3.134 7 7s-3.134 7-7 7-7-3.134-7-7l-0.031-1c0-7.732 6.268-14 14-14v4c-2.671 0-5.182 1.040-7.071 2.929-0.364 0.364-0.695 0.751-0.995 1.157 0.358-0.056 0.724-0.086 1.097-0.086z" fill-rule="evenodd">
+                        </path>
+                    </svg>
+                </span>
+                <a href="/RollCallSquare?Part=RollCallContent&FilterWord={{rollcallcard.RCI_ID}}&PageNumber=1" style="text-decoration:none;font-size:18px;">
+                    <b>{{rollcallcard.RCI_Title}}</b>
+                </a>
+                <span>
+                    <svg viewBox="0 -5 38 38" width="14" height="14" fill="#4F4F4F">
+                        <path d="M25 20c-3.866 0-7-3.134-7-7s3.134-7 7-7 7 3.134 7 7l0.031 1c0 7.732-6.268 14-14 14v-4c2.671 0 5.182-1.040 7.071-2.929 0.364-0.364 0.695-0.75 0.995-1.157-0.357 0.056-0.724 0.086-1.097 0.086zM7 20c-3.866 0-7-3.134-7-7s3.134-7 7-7 7 3.134 7 7l0.031 1c0 7.732-6.268 14-14 14v-4c2.671 0 5.182-1.040 7.071-2.929 0.364-0.364 0.695-0.75 0.995-1.157-0.357 0.056-0.724 0.086-1.097 0.086z" fill-rule="evenodd"></path>
+                    </svg>
+                </span>                         
+            </div>  
+            <div>             
+                <div style="display:inline;">
+                    <div style="display:inline-block;padding:4px 150px 0px 0px;position:absolute;">
+                        <svg viewBox="0 0 38 38" width="17" height="17">
+                            <g style="fill:#8590AE;">
+                                <path d="M12.048 16.961c-0.178 0.257-0.395 0.901-0.652 1.059-0.257 0.157-0.547 0.267-0.869 0.328-0.323 0.062-0.657 0.089-1.002 0.079v1.527h2.467v6.046h1.991v-9.996h-1.584c-0.056 0.381-0.173 0.7-0.351 0.957zM23 8h2c0.553 0 1-0.448 1-1v-6c0-0.552-0.447-1-1-1h-2c-0.553 0-1 0.448-1 1v6c0 0.552 0.447 1 1 1zM7 8h2c0.552 0 1-0.448 1-1v-6c0-0.552-0.448-1-1-1h-2c-0.552 0-1 0.448-1 1v6c0 0.552 0.448 1 1 1zM30 4h-2v5c0 0.552-0.447 1-1 1h-6c-0.553 0-1-0.448-1-1v-5h-8v5c0 0.552-0.448 1-1 1h-6c-0.552 0-1-0.448-1-1v-5h-2c-1.104 0-2 0.896-2 2v24c0 1.104 0.896 2 2 2h28c1.104 0 2-0.896 2-2v-24c0-1.104-0.896-2-2-2zM30 29c0 0.553-0.447 1-1 1h-26c-0.552 0-1-0.447-1-1v-16c0-0.552 0.448-1 1-1h26c0.553 0 1 0.448 1 1v16zM15.985 17.982h4.968c-0.936 1.152-1.689 2.325-2.265 3.705-0.575 1.381-0.638 2.818-0.749 4.312h2.131c0.009-0.666-0.195-1.385-0.051-2.156 0.146-0.771 0.352-1.532 0.617-2.285 0.267-0.752 0.598-1.461 0.996-2.127 0.396-0.667 0.853-1.229 1.367-1.686v-1.742h-7.015v1.979z" fill-rule="evenodd">
+                                </path>                            
+                            </g>
+                        </svg>
+                    </div>
+                    <a style="font-size:5px;color:#8590A6;text-decoration:none;padding:0px 0px 0px 20px;">{{rollcallcard.RCI_EditDate}}</a>
+                </div>
+
+                <div style="float:right;">
+                    <div style="display:inline-block;padding:4px 150px 0px 0px;position:absolute;left:91%;">
+                        <svg viewBox="0 0 36 36" width="17" height="17">
+                            <g style="fill:#8590AE;">
+                                <path d="M16 6c-8.837 0-16 10-16 10s7.163 10 16 10 16-10 16-10-7.163-10-16-10zM16 22c-3.313 0-6-2.687-6-6s2.687-6 6-6 6 2.687 6 6-2.687 6-6 6zM16 12c-2.209 0-4 1.791-4 4s1.791 4 4 4 4-1.791 4-4-1.791-4-4-4z" fill-rule="evenodd">
+                                </path>                            
+                            </g>
+                        </svg>
+                    </div>
+                    <div style="display:inline-block;margin-top:0px;">
+                        <a style="font-size:5px;color:#8590A6;text-decoration:none;">{{rollcallcard.RCI_Read}}</a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <hr style=" height:1px;border:none;border-top:1px solid #F3F3F3;margin-bottom: 4px;margin-top: 4px;">
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-6 column" style="padding:0px 30px 0px 0px;">
+                    <div style="float:right;">
+                        <a href="/UserProfile?UserNickName={{rollcallcard.RCI_Publisher.UT_Nick}}&Select=Publish&PageNumber=1">
+                            <img style="cursor:pointer;-webkit-border-radius: 12.5px;margin:5px 0px 0px 10px;display:inline-block;float:left;width:50px;width:25px;height:25px;" src="{{rollcallcard.RCI_Publisher.UT_Avatar}}" alt="">
+                        </a>
+                    </div>
+                    <div style="float:right;display:inline-block;width:200px;padding:7px 0px 0px 0px;">
+                        <a href="/UserProfile?UserNickName={{rollcallcard.RCI_Publisher.UT_Nick}}&Select=Publish&PageNumber=1" style="font-size:14px;float:right;color:#8590A6;text-decoration:none;background:#A5CFF6;border-radius:5px;padding:0px 6px 2px 6px;color:#FFFFFF;text-shadow:1px 1px 2px #2894FF;">
+                            {{rollcallcard.RCI_Publisher.UT_Nick}}
+                        </a>
+                    </div>
+                </div>
+                <div style="padding:24px 0px 0px 5px;position:absolute;left:50%;transform:translate(-50%,-31%);">
+                    <svg viewBox="0 0 25 25" width="25" height="25">
+                        <g style="fill:#0077e6;">
+                            <path d="M3 6c0-1.1 0.9-2 2-2h8l4-4h2v16h-2l-4-4h-8c-1.105 0-2-0.895-2-2v0h-2v-4h2zM11 15v5h-3l-1.67-5h-1.33v-2h8v2h-2z" fill-rule="evenodd">
+                            </path>                            
+                        </g>
+                    </svg>
+                </div>
+                <div class="col-md-6 column" style="padding:0px 0px 0px 30px;">
+                    <div>
+                        <a href="/UserProfile?UserNickName={{rollcallcard.RCI_Target.UT_Nick}}&Select=Publish&PageNumber=1"><img style="cursor:pointer;-webkit-border-radius: 12.5px;margin:5px 10px 0px 0px;display:inline-block;float:left;width:50px;width:25px;height:25px;" src="{{rollcallcard.RCI_Target.UT_Avatar}}" alt="">
+                        </a>
+                    </div>
+                    <div style="display:inline-block;float:left;width:200px;padding:7px 0px 0px 0px;">
+                        <a href="/UserProfile?UserNickName={{rollcallcard.RCI_Target.UT_Nick}}&Select=Publish&PageNumber=1"  style="font-size:14px;color:#8590A6;text-decoration:none;background:#FABCBA;border-radius:5px;padding:0px 6px 2px 6px;color:#FFFFFF;text-shadow:1px 1px 2px #F1303C;">{{rollcallcard.RCI_Target.UT_Nick}}</a>
+                    </div>      
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% include "Paginator.html" %} 
+    </div>                                                        
+</div>

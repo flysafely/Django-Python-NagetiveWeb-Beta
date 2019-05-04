@@ -1,0 +1,18 @@
+{% load CustomFuncTags %}
+{% if LayoSizer|GetDictValue:'Region' == 'UserProfile' %}
+    <div class="TopstoryMain" style="width:100%" >
+{% else %}
+    <div class="TopstoryMain">
+{% endif %}
+    <div class="CardList">
+        {% for Card in ExportList_Cards %}
+            <div id="{{Card.0.ObjectID}}" class="Card TopstoryItem">
+                {% include "RollCall-CloseBtn-Block.html" %}
+                {% include "RollCall-Detail-Block.html" %}
+                {% include "RollCall-Actions-Block.html" %}
+                {% include "RollCall-Participant-Block.html" %}
+            </div>
+        {% endfor %}
+        {% include "Paginator.html" %}
+    </div>                                                        
+</div>

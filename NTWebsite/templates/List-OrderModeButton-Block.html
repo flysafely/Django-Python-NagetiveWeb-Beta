@@ -1,0 +1,33 @@
+{% load CustomFuncTags %}
+<div class="Card Topstory-noMarginCard Topstory-tabCard">
+    <ul role="tablist" class="Tabs">
+        <li role="tab" class="Tabs-item">
+        {% if Layout_Sizer|GetDictValue:'Order' == 'RC' %}
+            <a class="Tabs-link is-active" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/{{Layout_Sizer|GetDictValue:'Part'}}/{{Layout_Sizer|GetDictValue:'FilterValue'}}/RC/1">推荐</a>
+        {% else %}
+            <a class="Tabs-link" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/{{Layout_Sizer|GetDictValue:'Part'}}/{{Layout_Sizer|GetDictValue:'FilterValue'}}/RC/1">推荐</a>
+        {% endif %}
+        </li>
+        <li role="tab" class="Tabs-item" style="text-decoration:none;">
+        {% if Layout_Sizer|GetDictValue:'Order' == 'CL' %}
+            <a class="Tabs-link is-active" href="/{{Layout_Sizer|GetDictValue:'Region'}}/{{Layout_Sizer|GetDictValue:'Part'}}/{{Layout_Sizer|GetDictValue:'FilterValue'}}/CL/1">关注</a>
+        {% else %}
+            <a class="Tabs-link" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/{{Layout_Sizer|GetDictValue:'Part'}}/{{Layout_Sizer|GetDictValue:'FilterValue'}}/CL/1">关注</a>
+        {% endif %}
+        </li>
+        <li role="tab" class="Tabs-item" style="text-decoration:none;">
+        {% if Layout_Sizer|GetDictValue:'Order' == 'HT' %}
+            <a class="Tabs-link is-active" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/{{Layout_Sizer|GetDictValue:'Part'}}/{{Layout_Sizer|GetDictValue:'FilterValue'}}/HT/1">热度</a>
+        {% else %}
+            <a class="Tabs-link" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/{{Layout_Sizer|GetDictValue:'Part'}}/{{Layout_Sizer|GetDictValue:'FilterValue'}}/HT/1">热度</a>
+        {% endif %}
+        </li>
+        <li role="tab" class="Tabs-item" style="text-decoration:none;">
+        {% if Layout_Sizer|GetDictValue:'Order' == 'LE' %}
+            <a class="Tabs-link is-active" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/{{Layout_Sizer|GetDictValue:'Part'}}/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">时间</a>
+        {% else %}
+            <a class="Tabs-link" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/{{Layout_Sizer|GetDictValue:'Part'}}/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">时间</a>
+        {% endif %}
+        </li>
+    </ul>
+</div>

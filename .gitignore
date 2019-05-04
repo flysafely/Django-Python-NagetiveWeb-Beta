@@ -1,0 +1,8 @@
+/static/
+db.sqlite3
+dump.rdb
+*.ini
+*.conf
+*.log
+*.png
+*.jpg

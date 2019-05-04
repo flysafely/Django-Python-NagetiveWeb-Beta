@@ -1,0 +1,58 @@
+{% load CustomFuncTags %}
+<div class="FeedSource">
+    <div class="FeedSource-firstline">
+        <span class="ThemeTagSVG TagSVG" style="margin:2px 2px 0px 0px;">
+            <svg viewBox="0 -4 33 33" width="1.2em" height="1.2em" fill="#0077E6">
+                <path d="M2 26h4.5v-4.5h-4.5v4.5zM7.5 26h5v-4.5h-5v4.5zM2 20.5h4.5v-5h-4.5v5zM7.5 20.5h5v-5h-5v5zM2 14.5h4.5v-4.5h-4.5v4.5zM13.5 26h5v-4.5h-5v4.5zM7.5 14.5h5v-4.5h-5v4.5zM19.5 26h4.5v-4.5h-4.5v4.5zM13.5 20.5h5v-5h-5v5zM8 7v-4.5c0-0.266-0.234-0.5-0.5-0.5h-1c-0.266 0-0.5 0.234-0.5 0.5v4.5c0 0.266 0.234 0.5 0.5 0.5h1c0.266 0 0.5-0.234 0.5-0.5zM19.5 20.5h4.5v-5h-4.5v5zM13.5 14.5h5v-4.5h-5v4.5zM19.5 14.5h4.5v-4.5h-4.5v4.5zM20 7v-4.5c0-0.266-0.234-0.5-0.5-0.5h-1c-0.266 0-0.5 0.234-0.5 0.5v4.5c0 0.266 0.234 0.5 0.5 0.5h1c0.266 0 0.5-0.234 0.5-0.5zM26 6v20c0 1.094-0.906 2-2 2h-22c-1.094 0-2-0.906-2-2v-20c0-1.094 0.906-2 2-2h2v-1.5c0-1.375 1.125-2.5 2.5-2.5h1c1.375 0 2.5 1.125 2.5 2.5v1.5h6v-1.5c0-1.375 1.125-2.5 2.5-2.5h1c1.375 0 2.5 1.125 2.5 2.5v1.5h2c1.094 0 2 0.906 2 2z">
+                </path>
+            </svg>
+        </span>
+        {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
+        <a class="ExponentTagItem TagSVG" style="text-decoration:none;color:#0077E6;" href="/{{Card.0.Type}}/Time/{{Card.0.EditDate | date:'Y-m-d' }}/LE/1">{{Card.0.EditDate}}</a> 
+        {% else %}
+        <a class="ExponentTagItem TagSVG" style="text-decoration:none;color:#0077E6;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Time/{{Card.0.EditDate | date:'Y-m-d' }}/LE/1">{{Card.0.EditDate}}</a> 
+        {% endif %}
+        <span style="padding: 0px 0px 0px 2px;float:left;"><b>·</b></span>
+        <span class="ThemeTagSVG">
+            <svg viewBox="0 0 20 20" width="1.2em" height="1.2em" fill="#0077E6">
+                <path d="M14.553 20.78c.862-.651 1.39-1.792 1.583-3.421.298-2.511-.656-4.904-2.863-7.179.209 2.291.209 3.73 0 4.314-.41 1.143-1.123 1.983-1.91 2.03-1.35.079-2.305-.512-2.863-1.774-.676 1.25-.782 2.556-.318 3.915.31.906.94 1.684 1.89 2.333C7.144 20.131 5 17.336 5 14.022c0-2.144.898-4.072 2.325-5.4.062 2.072.682 3.598 2.13 4.822-.67-1.112-.734-2.11-.734-3.517 0-3.253 2.067-6.007 4.913-6.927a7.35 7.35 0 0 0 2.157 4.918C17.722 9.214 19 11.463 19 14.022c0 3.073-1.844 5.7-4.447 6.758z">
+                </path>
+            </svg>
+        </span>
+        <a class="ExponentTagItem TagSVG" style="text-decoration:none;color:#0077E6;">{{Card.0.Hot}}</a> 
+        <span style="padding: 0px 0px 0px 2px;float:left;"><b>·</b></span>
+        <span class="ThemeTagSVG">
+            <svg viewBox="0 -1 23 23" width="1.2em" height="1.2em" fill="#0077E6">
+                <path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z">
+                </path>
+            </svg>
+        </span>
+        <a class="ExponentTagItem TagSVG" style="text-decoration:none;color:#0077E6;">{{Card.0.Collect}}</a> 
+        <span style="padding: 0px 0px 0px 2px;float:left;"><b>·</b></span>
+        <span class="CategoryTagSVG">
+            <svg viewBox="0 -1 20 20" width="1.2em" height="1.2em" fill="#0077E6">
+                <path d="M3.179 5.998c-0.423-0.35-1.057-0.29-1.408 0.132l-1.277 1.539c-0.35 0.423-0.291 1.058 0.131 1.407l7.888 6.542-3.807-8.354-1.527-1.266zM7.013 2.683l-1.82 0.829c-0.499 0.228-0.722 0.825-0.495 1.324l4.25 9.325 0.213-9.179-0.822-1.804c-0.23-0.5-0.826-0.723-1.326-0.495zM14.211 2.887c0.013-0.55-0.427-1.010-0.976-1.023l-2-0.046c-0.549-0.013-1.009 0.427-1.022 0.976l-0.239 10.243 4.19-8.167 0.047-1.983zM19.191 3.837l-1.779-0.913c-0.489-0.25-1.096-0.055-1.347 0.434l-6.391 12.456c-0.251 0.489-0.056 1.096 0.434 1.347l1.779 0.913c0.489 0.251 1.095 0.056 1.346-0.433l6.391-12.456c0.251-0.491 0.056-1.097-0.433-1.348zM12.799 16.293c-0.252 0.492-0.855 0.686-1.346 0.434s-0.685-0.854-0.433-1.346 0.854-0.685 1.346-0.433c0.492 0.251 0.685 0.854 0.433 1.345z">
+                </path>
+            </svg>
+        </span>
+        {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
+        <a class="TagItem" style="background:#77839C;text-decoration:none;color:#FFFFFF;" href="/{{Card.0.Type}}/Category/{{Card.0.Category.Name}}/LE/1">{{Card.0.Category.Name}}</a>
+        {% else %}
+        <a class="TagItem" style="background:#77839C;text-decoration:none;color:#FFFFFF;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Category/{{Card.0.Category.Name}}/LE/1">{{Card.0.Category.Name}}</a>
+        {% endif %}
+        <span style="padding: 0px 0px 0px 2px;float:left;"><b>·</b></span>
+        <span class="ThemeTagSVG TagSVG">
+            <svg viewBox="0 1 20 20" width="1.2em" height="1.2em" fill="#0077E6">
+                <path d="M18.364 6.635c-1.561-1.559-4.1-1.559-5.658 0l-4.534 4.535c-0.473 0.473-0.733 1.1-0.733 1.77 0 0.668 0.261 1.295 0.732 1.768 0.487 0.486 1.128 0.73 1.769 0.73s1.279-0.242 1.767-0.73l2.122-2.121c0.391-0.395 0.586-0.904 0.586-1.414 0-0.512-0.195-1.023-0.586-1.414l-3.536 3.535c-0.193 0.195-0.511 0.195-0.708-0.002-0.127-0.127-0.146-0.275-0.146-0.352s0.019-0.227 0.146-0.354l4.535-4.537c0.778-0.779 2.048-0.779 2.83 0 0.779 0.779 0.779 2.049 0 2.828l-7.072 7.072c-0.779 0.779-2.049 0.779-2.828 0-0.78-0.779-0.78-2.049 0-2.828l0.095-0.096c-0.451-0.6-0.702-1.359-0.702-2.125l-0.807 0.807c-1.56 1.559-1.56 4.098 0 5.656 0.779 0.779 1.804 1.17 2.828 1.17s2.049-0.391 2.828-1.17l7.072-7.072c1.56-1.559 1.56-4.096 0-5.656z">
+                </path>
+            </svg>
+        </span>
+        {% for theme in Card.0.Theme.all %}
+        {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
+        <a class="TagItem" style="background:#77839C;text-decoration:none;color:#FFFFFF;" href="/{{Card.0.Type}}/Theme/{{theme.Name}}/LE/1">{{theme.Name}}</a> 
+        {% else %}
+        <a class="TagItem" style="background:#77839C;text-decoration:none;color:#FFFFFF;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Theme/{{theme.Name}}/LE/1">{{theme.Name}}</a> 
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>

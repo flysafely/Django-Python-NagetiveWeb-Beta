@@ -1,0 +1,43 @@
+<div class="GlobalSideBar">    
+    <div class="Sticky">
+        <div class="Card">
+            <div style="padding:0px 0px 0px 30px;margin:10px 0px -10px 0px;">
+                <b style="font-size:15px;color:#444444;">来自类目</b>
+            </div>
+            <ul class="GlobalSideBar-categoryList">
+                {% for categoryitem in exportList_category %}
+                <li class="GlobalSideBar-categoryItem">
+                    <a style="text-decoration:none;" href="/Topics?Part=Category&FilterWord={{categoryitem.TCI_Name}}&PageNumber=1" type="button" class="Button Button--plain" style="color: rgb(255, 128, 0);">
+                        <span class="GlobalSideBar-categoryIcon">
+                            <svg viewBox="-3 0 40 40" width="32" hight="32" fill="#77839C">
+                                {{categoryitem.TCI_SVG|safe}}
+                            </svg>
+                        </span>
+                        <span class="GlobalSideBar-categoryLabel">
+                            {{categoryitem.TCI_Name}}
+                        </span>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            <hr style="width:80%;height:1px;border:none;border-top:1px solid #F3F3F3;margin:0px 0px 25px 25px;">
+            <div style="padding:0px 0px 0px 30px;margin:-15px 0px 0px 0px;">
+                <b style="font-size:15px;color:#444444;">推荐作者</b>
+            </div>
+            <ul class="GlobalSideBar-categoryList">
+                {% for authoritem in exportList_author %}
+                <li title="{{authoritem.RA_Author.UT_Nick}}" class="GlobalSideBar-categoryItem">
+                    <a style="text-decoration:none;" href="/UserProfile?UserNickName={{authoritem.RA_Author.UT_Nick}}&Select=Publish&PageNumber=1" type="button" class="Button Button--plain" style="color: rgb(255, 128, 0);">
+                        <span class="GlobalSideBar-categoryIcon">
+                            <img src="{{authoritem.RA_Author.UT_Avatar}}" style="cursor:pointer;-webkit-border-radius: 16px;" width="30" height="30">
+                        </span>
+                        <span class="GlobalSideBar-categoryLabel" style="font-size:11px;height:23px;width:70px;overflow: hidden;text-overflow:ellipsis; white-space:nowrap;">
+                            {{authoritem.RA_Author.UT_Nick}}
+                        </span>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>

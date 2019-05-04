@@ -1,0 +1,12 @@
+{% load CustomFuncTags %}
+{% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
+    {% include "Main-UserProfile-Part-Frame.html" %}
+{% else %}
+    <main class="App-main">
+        <div class="Topstory">
+            <div class="Topstory-container">
+                {% include "Main-Topic&RollCall-Part-Frame.html" %}
+            </div>
+        </div>
+    </main>
+{% endif %}

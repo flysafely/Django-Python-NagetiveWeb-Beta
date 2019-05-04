@@ -1,0 +1,30 @@
+{% load CustomFuncTags %}
+{% if Card.0.Type == 'SpecialTopic' %}
+    <div class="ContentItem ArticleItem">
+        <h2 class="ContentItem-title">
+            <a class="ContentFontColor" style="text-decoration:none;" href="/SpecialTopic/Content/{{ Card.0.ObjectID }}/LE/1">{{ Card.0.Title }}</a>
+        </h2>
+        <div class="RichContent is-collapsed">
+            <div class="RichContent-cover">
+                <div class="RichContent-cover-inner">
+                    <img src="{{ Card.0.Cover_210x140.url }}" href="/SpecialTopic/Content/{{ Card.0.ObjectID }}/LE/1">
+                </div>
+            </div>
+            <div class="RichContent-inner">
+                <span>
+                    <a class="RichText ztext CopyrightRichText-richText ContentFontColor" style="text-decoration:none;" href="/SpecialTopic/Content/{{ Card.0.ObjectID }}/LE/1">{{Card.0.Description}}</a>
+                </span>
+            </div>
+        </div>
+    </div>
+{% elif Card.0.Type == 'Topic' %}
+    <div class="ContentItem AnswerItem">
+        <h2 class="ContentItem-title">
+            <a class="ContentFontColor" style="text-decoration:none;" href="/Topic/Content/{{Card.0.ObjectID}}/LE/1">{{Card.0.Title}}</a>
+        </h2>
+        <div style="margin-top:8px;"></div>
+        <div>
+            <span>{{Card.0.Description}}</span>
+        </div>
+    </div> 
+{% endif %}

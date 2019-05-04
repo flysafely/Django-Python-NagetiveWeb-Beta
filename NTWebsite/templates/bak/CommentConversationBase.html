@@ -1,0 +1,17 @@
+{% include "TopNav.html" %}
+    <main class="App-main">
+        <div class="Topstory">
+            <div class="Topstory-container" >
+                <div class="Topstory-mainColumn" style="width:100%;">
+                    {% if SearchSource == 'Article' %}
+                    {% include "TopicComment.html" %}
+                    {% elif SearchSource == 'SpecialTopic' %}
+                    {% include "SpecialTopicComment.html" %}
+                    {% endif %}
+                    {% include "Paginator.html" %}  
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

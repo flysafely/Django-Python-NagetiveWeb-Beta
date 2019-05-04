@@ -1,0 +1,89 @@
+<div class="TopstoryMain" style="width:100%;">
+    <div class="CardList">
+        {% ifequal export_type 'Linking' %}
+        {% for userinfo in exportList_info %}
+        <div id="{{useritem.UL_UserBeLinked.UT_Nick}}" class="Card TopstoryItem" style="width:49.75%;display:inline-block;margin:0px 0px 0px 0px;">
+            <div style="display:inline-block;margin:0px 0px 0px 10px;">
+                <img src="{{userinfo.UL_UserBeLinked.UT_Avatar}}" style="position:absolute;top:50%;transform: translate(-7%,-35%);margin:-10px 0px 0px 0px;cursor:pointer;-webkit-border-radius: 35px;box-shadow:0 0 2px 0 #000000;" width="70" height="70">
+            </div>
+            <div style="display:inline-block;margin:0px 0px 0px 85px;width:260px;">
+                <div>
+                    <a href="/UserProfile?UserNickName={{userinfo.UL_UserBeLinked.UT_Nick}}&Select=Publish&PageNumber=1" style="font-size:18px;text-decoration:none;"><b>{{userinfo.UL_UserBeLinked.UT_Nick}}</b></a>
+                </div>
+                <div style="display:inline-block;padding:4px 0px 0px 0px;font-size:14px;color:#646464;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:90%;">
+                    {{userinfo.UL_UserBeLinked.UT_Description}}
+                </div>
+                <div>
+                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                        {{userinfo.UL_UserBeLinked.UT_TopicsCount}}文章 ·
+                    </div>
+                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                        {{userinfo.UL_UserBeLinked.UT_TreplayCount}}回答 ·
+                    </div>
+                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                        {{userinfo.UL_UserBeLinked.UT_FansCount}}关注者
+                    </div>
+                </div>
+            </div>
+            {% ifnotequal selforguest.0 'readonly' %}
+            <div style="display:inline-block;margin:0px 0px 0px 0px;">
+                <button id='LinkButton' class="Button Button--blue" style="position:absolute;top:50%;transform:translate(-20%,-50%);width:80px;margin:0px 0px 0px 0px;font-size:13px;" onclick="javascript:UserLink('/UserLink/','{{ csrf_token }}','{{userinfo.UL_UserBeLinked.UT_Nick}}')">取消关注</button>
+            </div>
+            {% endifnotequal %}
+        </div>
+        {% endfor %}
+        {% else %}
+        {% for userinfo in exportList_info %}
+        <div id="{{userinfo.UL_UserLinking.UT_Nick}}" class="Card TopstoryItem" style="width:49.75%;display:inline-block;margin:0px 0px 0px 0px;">
+            <div style="display:inline-block;margin:0px 0px 0px 10px;">
+                <img src="{{userinfo.UL_UserLinking.UT_Avatar}}" style="position:absolute;top:50%;transform: translate(-7%,-35%);margin:-10px 0px 0px 0px;cursor:pointer;-webkit-border-radius: 35px;box-shadow:0 0 2px 0 #000000;" width="70" height="70">
+            </div>
+            <div style="display:inline-block;margin:0px 0px 0px 85px;width:260px;">
+                <div>
+                    <a href="/UserProfile?UserNickName={{userinfo.UL_UserLinking.UT_Nick}}&Select=Publish&PageNumber=1" style="font-size:18px;text-decoration:none;"><b>{{userinfo.UL_UserLinking.UT_Nick}}</b></a>
+                </div>
+                <div style="display:inline-block;padding:4px 0px 0px 0px;font-size:14px;color:#646464;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:90%;">
+                    {{userinfo.UL_UserLinking.UT_Description}}
+                </div>
+                <div>
+                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                        {{userinfo.UL_UserBeLinking.UT_TopicsCount}}文章 ·
+                    </div>
+                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                        {{userinfo.UL_UserBeLinking.UT_RreplayCount}}回答 ·
+                    </div>
+                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                        {{userinfo.UL_UserBeLinking.UT_FansCount}}关注者
+                    </div>
+                </div>
+            </div>
+            {% if not selforguest.0 == 'readonly' %}
+            <div style="display:inline-block;margin:0px 0px 0px 0px;">
+                <button id='LinkButton' class="Button Button--blue" style="position:absolute;top:50%;transform:translate(-20%,-50%);width:80px;margin:0px 0px 0px 0px;font-size:13px;" onclick="javascript:BlackListOperation('add','{{userinfo.UL_UserLinking.UT_Nick}}','{{ csrf_token }}')">拉黑</button>
+            </div>
+            {% endif %}
+            
+        </div>      
+        {% endfor %}
+        {% endifequal %}
+        {% ifequal topic_display 'show' %}
+        <div class="Card TopstoryItem">
+            <div style="text-align:center;">
+                <span class="step-links" style="display:table-cell;font-size:12px;vertical-align:middle;text-align:center;display:inline">
+                {% if exportList_info.has_previous %}
+                    <a style="color:#FFFFFF;margin:2px 3px 0px 0px;background:#8590A6;border-radius:5px;padding:0px 6px 2px 6px;text-decoration:none;" href="{{export_href}}{{exportList_info.previous_page_number}}#anchorDiv">上一页</a>
+                {% endif %}
+                    <a style="color:#0084FF;margin:2px 3px 0px 0px;background:#D9EDFF;border-radius:5px;padding:0px 6px 2px 6px;text-decoration:none;" href = "javascript:void(0);" onclick = "javascript:JumpToPage('{{export_href}}','pagenuminput','anchorDiv')">前往</a>
+                    <input id='pagenuminput' type="text" class='form-control' style="width:7%;height:3%;display:inline;" value={{exportList_info.number}}>
+                    <span class="current">
+                        页,共计{{ exportList_info.paginator.num_pages }}页
+                    </span>
+                {% if exportList_info.has_next %}
+                    <a style="color:#FFFFFF;margin:2px 3px 0px 0px;background:#8590A6;border-radius:5px;padding:0px 6px 2px 6px;text-decoration:none;" href="{{export_href}}{{exportList_info.next_page_number}}#anchorDiv">下一页</a>
+                {% endif %}
+                </span>
+            </div>
+        </div>
+        {% endifequal %} 
+    </div>                                                        
+</div>

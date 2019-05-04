@@ -1,0 +1,13 @@
+{% load CustomFuncTags %}
+<div {{ExportList_Topic.0.1|GetDictValue:'ReplayBtn'}} class="Comments-container">
+    <div class="CommentsV2 CommentsV2--withEditor CommentsV2-withPagination CommentsV2-footer" style="padding:20px 20px;">
+        {% csrf_token %}
+        <textarea id='CommentTextArea' name='CommentTextArea' class='commentbox' placeholder="你不准备留下点什么吗？" spellcheck="false" onkeydown=""></textarea>
+        </br>
+        <div align="left">
+            <button type="submit" data-loading-text="加载中" class="Button FollowButton ColumnPageHeader-FollowButton Button--primary Button--blue" onclick="javascript:Replay('{{ csrf_token }}','','{{Layout_Sizer|GetDictValue:'Region'}}')">
+            发表评论
+            </button>
+        </div>
+    </div>
+</div>

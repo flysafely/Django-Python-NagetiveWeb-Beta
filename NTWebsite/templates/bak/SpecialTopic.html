@@ -1,0 +1,86 @@
+{% if export_from == 'UserProfile' %}
+<div class="TopstoryMain" style="width:100%;">
+{% elif export_from == 'SelfProfile' %}
+<div class="TopstoryMain" style="width:100%;">
+{% elif export_from == 'SpecialTopicsSquare' %}
+<div class="TopstoryMain" style="width:70%;position:absolute;left:50%;top:50%;transform:translate(-50%,-1%);padding:8px 0px 0px 0px;">
+{% endif %}
+    <div class="CardList">
+        {% for specialtopic in exportList_cards %}
+        <div id="{{specialtopic.STI_ID}}" class="Card TopstoryItem">
+            {% if export_from == 'SpecialTopicsSquare' %}
+            <div name="{{specialtopic.STI_ID}}" class="Button TopstoryItem-rightButton Button--plain" type="button" onclick="javascript:CloseTopic(this)">
+            {% elif export_from == 'SelfProfile' %}
+            <div name="{{specialtopic.STI_ID}}" class="Button TopstoryItem-rightButton Button--plain" type="button" onclick="javascript:SpecialTopicFollow('/Follow/','{{ csrf_token }}','{{specialtopic.STI_ID}}')">       
+            {% elif export_from == 'UserProfile' %}
+            <div name="{{specialtopic.STI_ID}}" class="Button TopstoryItem-rightButton Button--plain" type="button" style="display:none;">            
+            {% endif %}
+                <svg viewBox="0 0 14 14" class="Icon Icon--remove" width="10" height="10" aria-hidden="true" style="width:10px;height:10px;">
+                    <g fill="#77839C">
+                        <path d="M8.486 7l5.208-5.207c.408-.408.405-1.072-.006-1.483-.413-.413-1.074-.413-1.482-.005L7 5.515 1.793.304C1.385-.103.72-.1.31.31-.103.724-.103 1.385.305 1.793L5.515 7l-5.21 5.207c-.407.408-.404 1.072.007 1.483.413.413 1.074.413 1.482.005L7 8.485l5.207 5.21c.408.407 1.072.404 1.483-.007.413-.413.413-1.074.005-1.482L8.485 7z">
+                        </path>
+                    </g>
+                </svg>
+            </div>
+            <div class="row clearfix" style="vertical-align: top;">
+                <div style="display:inline-block;margin:0px 12px;">
+                    <img style="width:210px;hight:140px;cursor:pointer;-webkit-border-radius: 5px;" src="{{specialtopic.STI_Cover_210x140.url}}" />
+                </div>
+                <div style="display:inline-block;">
+                    <div style="position:absolute;width:60%;top:11%;">
+                        <a href="/SpecialTopic?Part=Content&FilterWord={{specialtopic.STI_ID}}&PageNumber=1" style="text-decoration:none;">
+                            <b style="font-size:18px;">{{specialtopic.STI_Title}}</b>
+                        </a>                        
+                    </div>
+                    <div style="position:absolute;width:58%;top:45%;">
+                        <h1 style="color:#444444;">
+                            {{specialtopic.STI_Abstract}}...
+                        </h1>                         
+                    </div>
+                    <div style="position:absolute;top:70.5%;">
+                        <div style="display:inline-block;padding:0px 8px 0px 0px;">
+                            <span style="width:15px;display:block; float:left;">
+                                <svg viewBox="4 -1 24 24" width="18" height="18" fill="#77839C">
+                                    <path d="M14.553 20.78c.862-.651 1.39-1.792 1.583-3.421.298-2.511-.656-4.904-2.863-7.179.209 2.291.209 3.73 0 4.314-.41 1.143-1.123 1.983-1.91 2.03-1.35.079-2.305-.512-2.863-1.774-.676 1.25-.782 2.556-.318 3.915.31.906.94 1.684 1.89 2.333C7.144 20.131 5 17.336 5 14.022c0-2.144.898-4.072 2.325-5.4.062 2.072.682 3.598 2.13 4.822-.67-1.112-.734-2.11-.734-3.517 0-3.253 2.067-6.007 4.913-6.927a7.35 7.35 0 0 0 2.157 4.918C17.722 9.214 19 11.463 19 14.022c0 3.073-1.844 5.7-4.447 6.758z" fill-rule="enenodd">
+                                    </path>
+                                </svg>
+                            </span>
+                            <span style="font-size:14px;color:#8B96AB;display:inline-block;padding:0px 0px 0px 0px;">
+                                {{specialtopic.STI_Hot}}热度
+                            </span>
+                        </div>
+                        <div style="display:inline-block;padding:0px 7px 0px 0px;">
+                            <span style="width:15px;display:block; float:left;">
+                                <svg viewBox="0 -6 36 36" width="17" height="17" fill="#77839C">
+                                    <path d="M16 6c-8.837 0-16 10-16 10s7.163 10 16 10 16-10 16-10-7.163-10-16-10zM16 22c-3.313 0-6-2.687-6-6s2.687-6 6-6 6 2.687 6 6-2.687 6-6 6zM16 12c-2.209 0-4 1.791-4 4s1.791 4 4 4 4-1.791 4-4-1.791-4-4-4z" fill-rule="enenodd">
+                                    </path>
+                                </svg>
+                            </span>
+                            <span style="font-size:14px;color:#8B96AB;display:inline-block;padding:0px 0px 0px 3px;">
+                                {{specialtopic.STI_Follower}}关注
+                            </span>                            
+                        </div>
+                        <div style="display:inline-block;">
+                            <button type="button" class="ContentItem-action Button--plain Button--withIcon Button--withLabel" style="display: inline-flex; align-items: center;margin:0px 0px 0px -9px;" data-toggle='modal' data-target="#QRcodeBoard" onclick="javascript:QRcodeShare('/SpecialTopic?Part=Content&FilterWord={{specialtopic.STI_ID}}&PageNumber=1')">
+                                <span>
+                                    <svg viewBox="-16 -16 38 38" width="24" height="24" fill="#77839C">
+                                        <path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="enenodd">
+                                        </path>
+                                    </svg>
+                                </span>
+                                <h1 style="padding:9px 0px 0px 4px;color:#8B96AB;font-size:14px;">分享</h1>
+                            </button>                            
+                        </div>                        
+                    </div>
+                    {% ifequal export_from 'SpecialTopicsSquare' %}
+                    <div style="position:absolute;top:71%;left:82.5%;">
+                        <button id='LinkButton' class="Button Button--blue" style="width:80px;font-size:13px;" onclick="javascript:SpecialTopicFollow('/Follow/','{{ csrf_token }}','{{specialtopic.STI_ID}}')">关注</button>
+                    </div>
+                    {% endifequal %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% include "Nagetive-Paginator.html" %} 
+    </div>                                                        
+</div>

@@ -1,0 +1,30 @@
+{% load CustomFuncTags %}
+{% for Card in ExportList_Topic %}
+<div id='ObjectContent' class="Comments-container" ObjectID='{{Card.0.ObjectID}}' style="padding:20px 20px;">
+    <div class="ContentItem AnswerItem">
+        {% if Layout_Sizer|GetDictValue:'Region' == 'SpecialTopic' %}
+        <div>
+            <img class="CoverPic" src="{{Card.0.Cover_SR965x300.url}}" width="965" height="300">
+        {% elif Layout_Sizer|GetDictValue:'Region' == 'Topic' %}
+        <div>
+        {% endif %}
+            <h1 class="ContentFontColor" style="font-size:22px;">
+                <B>{{Card.0.Title}}</B>
+            </h1></br>
+            {% include 'Topic-PublisherInfo-Block.html' %}
+            {% include 'Topic-Actions-Block.html' %}
+            {% include 'Topic-Tags-Block.html' %}                       
+            <div>
+                <hr style=" width:100%;height:1px;border:none;border-top:1px solid #F3F3F3;margin:15px 0px 6px 0px;">     
+            </div>
+            <div class="RichContent RichContent--unescapable">
+                <div class="RichContent RichContent--unescapable RichContent-inner">
+                    <span class="RichText ztext CopyrightRichText-richText ContentFontColor">
+                        {{Card.0.Content|safe}}
+                    </span>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>
+{% endfor %}

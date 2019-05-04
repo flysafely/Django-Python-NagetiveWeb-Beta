@@ -1,0 +1,163 @@
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+temlatesDIR = os.path.join(BASE_DIR, 'NTWebsite\\templates')
+
+JoinStringMap = {'Comment': {'评论了', 'TopicInfo'},
+                 'CommentReplay': {'回复了', 'CommentInfo'},}
+'''
+Topic_Card_Item = "TopicCardItem.html"
+
+Category_Card_Item = "CategoryCard.html"
+
+Index_html = "IndexBase.html"
+
+IndexCardLimit = 100
+
+CommentCardLimit = 100
+
+IndexTopicRead = '10'
+
+Part_Dict = {"Theme": {"TableName": "TopicInfo",
+                       "DefaultField": "TI_Theme__contains",
+                       "Operations": ".order_by('TI_Read')",
+                       "Template": Index_html,
+                       "Limit": IndexCardLimit, },
+             "Category": {"TableName": "TopicInfo",
+                          "DefaultField": "TI_Type",
+                          "Operations": ".order_by('TI_Read')",
+                          "Template": Index_html,
+                          "Limit": IndexCardLimit, },
+             "Index": {"TableName": "TopicInfo",
+                       "DefaultField": "TI_Read__gte",
+                       "Operations": ".order_by('TI_Read')",
+                       "Template": Index_html,
+                       "Limit": IndexCardLimit, },
+             "IndexOrderDate": {"TableName": "TopicInfo",
+                                "DefaultField": "TI_Read__gte",
+                                "Operations": ".order_by('-TI_EditDate')",
+                                "Template": Index_html,
+                                "Limit": IndexCardLimit, },
+             "Content": {"TableName": "TopicInfo",
+                         "DefaultField": "TI_ID",
+                         "Operations": ".order_by('TI_ID')",
+                         "Template": "TopicContentBase.html",
+                         "Limit": CommentCardLimit, },
+             "TopicSearch": {"TableName": "TopicInfo",
+                             "DefaultField": "TI_Title__contains",
+                             "Operations": ".order_by('TI_Read')",
+                             "Template": Index_html,
+                             "Limit": IndexCardLimit, },
+             # UserProfile
+             "Publish": {"TableName": "TopicInfo",
+                         "DefaultField": "TI_Author",
+                         "Operations": ".order_by('TI_Read')",
+                         "ForeignKeyField": '',
+                         "ExtraCondition": '',
+                         "Template": 'UserProfile.html'},
+             "Likes": {"TableName": "TopicAttitude",
+                       "DefaultField": "TA_UserNickName",
+                       "Operations": ".order_by('TA_EditDate')",
+                       "ForeignKeyField": 'TA_ArticleID',
+                       "ExtraCondition": "TA_StandPoint=1",
+                       "Template": 'UserProfile.html'},
+             "Dislikes": {"TableName": "TopicAttitude",
+                          "DefaultField": "TA_UserNickName",
+                          "Operations": ".order_by('TA_EditDate')",
+                          "ForeignKeyField": 'TA_ArticleID',
+                          "ExtraCondition": "TA_StandPoint=2",
+                          "Template": 'UserProfile.html'},
+             "Circusee": {"TableName": "UserCircuseeCollect",
+                          "DefaultField": "UCC_UserNickName",
+                          "Operations": ".order_by('-UCC_CollectTime')",
+                          "ForeignKeyField": '',
+                          "ExtraCondition": '',
+                          "Template": 'UserProfile.html'},
+             "Collect": {"TableName": "TopicCollect",
+                         "DefaultField": "TC_UserNickName",
+                         "Operations": ".order_by('-TC_CollectTime')",
+                         "ForeignKeyField": 'TC_Article',
+                         "ExtraCondition": '',
+                         "Template": 'UserProfile.html'},
+             "Comment": {"TableName": "CommentInfo",
+                         "DefaultField": "CI_UserNickName",
+                         "Operations": ".order_by('-CI_EditDate')",
+                         "ForeignKeyField": 'CI_ArticleID',
+                         "ExtraCondition": '',
+                         "Template": 'UserProfile.html'},
+             "Follow": {"TableName": "SpecialTopicCollect",
+                        "DefaultField": "STC_UserNickName",
+                        "Operations": ".order_by('-STC_CollectTime')",
+                        "ForeignKeyField": 'STC_SpecialTopic',
+                        "ExtraCondition": '',
+                        "Template": 'UserProfile.html'},
+
+
+             "RollCallIndex": {"TableName": "RollCallInfo",
+                               "DefaultField": "RCI_Read__gte",
+                               "Operations": ".order_by('-RCI_EditDate')",
+                               "ForeignKeyField": '',
+                               "ExtraCondition": '',
+                               "Template": 'RollCallSquare.html'},
+             "RollCallContent": {"TableName": "RollCallDialogue",
+                                 "DefaultField": "RCD_ID",
+                                 "Operations": ".order_by('RCD_EditDate')",
+                                 "ForeignKeyField": '',
+                                 "ExtraCondition": '',
+                                 "Template": 'RollCallContentBase.html'},
+
+             "RollCallSearch": {"TableName": "RollCallInfo",
+                                "DefaultField": "RCI_Title__contains",
+                                "Operations": ".order_by('-RCI_EditDate')",
+                                "ForeignKeyField": '',
+                                "ExtraCondition": '',
+                                "Template": 'RollCallSquare.html'},
+             "SpecialTopicHot": {"TableName": "SpecialTopicInfo",
+                                 "DefaultField": "STI_Hot__gte",
+                                 "Operations": ".order_by('-STI_Hot')",
+                                 "ForeignKeyField": '',
+                                 "ExtraCondition": '',
+                                 "Template": 'SpecialTopicSquare.html'},
+             "SpecialTopicDate": {"TableName": "SpecialTopicInfo",
+                                  "DefaultField": "STI_Hot__gte",
+                                  "Operations": ".order_by('-STI_EditDate')",
+                                  "ForeignKeyField": '',
+                                  "ExtraCondition": '',
+                                  "Template": 'SpecialTopicSquare.html'},
+             "SpecialTopicContent": {"TableName": "SpecialTopicInfo",
+                                     "DefaultField": "STI_ID",
+                                     "Operations": "",
+                                     "ForeignKeyField": '',
+                                     "ExtraCondition": '',
+                                     "Template": 'SpecialContentBase.html'},
+             "SpecialTopicSearch": {"TableName": "SpecialTopicInfo",
+                                    "DefaultField": "STI_Title__contains",
+                                    "Operations": "",
+                                    "ForeignKeyField": '',
+                                    "ExtraCondition": '',
+                                    "Template": 'SpecialTopicSquare.html'},
+             "Focuslist": {"TableName": "UserLink",
+                           "DefaultField": "UL_UserLinking",
+                           "Operations": "",
+                           "ForeignKeyField": '',
+                           "ExtraCondition": '',
+                           "Template": 'UserProfile.html'},
+             "Fanslist": {"TableName": "UserLink",
+                          "DefaultField": "UL_UserBeLinked",
+                          "Operations": "",
+                          "ForeignKeyField": '',
+                          "ExtraCondition": '',
+                          "Template": 'UserProfile.html'},
+             }
+
+
+StantPointStatusNumber = {'Like': 1,
+                          'LikeCancel': -1,
+                          'Dislike': 2,
+                          'DislikeCancel': -2}
+'''
+
+UNIQUE_ERROR = {'UNIQUE constraint failed: NTWebsite_user.UT_Nick': '昵称已经存在!',
+                'UNIQUE constraint failed: NTWebsite_user.username': '用户名已经存在!',
+                'UNIQUE constraint failed: NTWebsite_topicinfo.Title': '文章标题已经存在!'}

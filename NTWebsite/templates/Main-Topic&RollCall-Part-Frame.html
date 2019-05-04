@@ -1,0 +1,45 @@
+{% load CustomFuncTags %}
+{% if Layout_Sizer|GetDictValue:'Part' == 'Content' %}
+    <div class="Topstory-mainColumn" style="width:100%;">
+        <div class="Card AnswerCard" id='ArticleBody' articleid='{{Card.0.ID}}'>
+        {% include "Main-Topic&RollCall-Content-Frame.html" %}
+        </div>
+    </div>
+{% else %}
+    <div class="Topstory-mainColumn">
+        {% include "Main-Topic&RollCall-List-Frame.html" %}
+    </div>
+    <div class="GlobalSideBar" style="position: fixed;margin:0px 0px 0px 704px;width:260px;">    
+        <div class="Sticky">
+            <div class="Card">
+                <div class="GlobalSideBarLabel">
+                    <div>
+                        <b>功能</b> 
+                    </div>
+                </div>
+                {% include "List-FuncButton-Block.html" %}
+            </div>
+            {% if Layout_Sizer|GetDictValue:'Region' == 'Topic' %}
+            <div class="Card">
+                <div class="GlobalSideBarLabel">
+                    <b>热门</b>
+                </div>
+                {% include "List-Category-Block.html" %}                  
+            </div>
+            {% elif Layout_Sizer|GetDictValue:'Region' == 'SpecialTopic' %}
+            <div class="Card">
+                <div class="GlobalSideBarLabel">
+                    <b>热门</b>
+                </div>
+                {% include "List-Category-Block.html" %}                  
+            </div>
+            {% endif %}
+            <div class="Card">
+                <div class="GlobalSideBarLabel">
+                    <b>推荐</b>
+                </div>
+                {% include "List-Publisher-Block.html" %}                        
+            </div>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,114 @@
+<div class="TopstoryMain" style="width:100%;">
+    <div class="CardList" style="width:49.5%;">
+        {% for useritem in exportList_info %}
+        <div id="{{useritem.RCI_ID}}" class="Card TopstoryItem" style="padding:10px 14px 10px 14px;">
+            <div name='{{useritem.RCI_ID}}' class="Button TopstoryItem-rightButton Button--plain" style="margin:-10px -6px 0px 0px;" type="button" onclick="javascript:CloseTopic(this)">
+                <svg viewBox="0 0 14 14" class="Icon Icon--remove" width="10" height="10" aria-hidden="true" style="width:10px;height:10px;">
+                    <g>
+                        <path d="M8.486 7l5.208-5.207c.408-.408.405-1.072-.006-1.483-.413-.413-1.074-.413-1.482-.005L7 5.515 1.793.304C1.385-.103.72-.1.31.31-.103.724-.103 1.385.305 1.793L5.515 7l-5.21 5.207c-.407.408-.404 1.072.007 1.483.413.413 1.074.413 1.482.005L7 8.485l5.207 5.21c.408.407 1.072.404 1.483-.007.413-.413.413-1.074.005-1.482L8.485 7z">
+                        </path>
+                    </g>
+                </svg>
+            </div>
+            <div>
+                <span>
+                    <svg viewBox="0 -5 38 38" width="14" height="14" fill="#4F4F4F">
+                        <path d="M7.031 14c3.866 0 7 3.134 7 7s-3.134 7-7 7-7-3.134-7-7l-0.031-1c0-7.732 6.268-14 14-14v4c-2.671 0-5.182 1.040-7.071 2.929-0.364 0.364-0.695 0.751-0.995 1.157 0.357-0.056 0.724-0.086 1.097-0.086zM25.031 14c3.866 0 7 3.134 7 7s-3.134 7-7 7-7-3.134-7-7l-0.031-1c0-7.732 6.268-14 14-14v4c-2.671 0-5.182 1.040-7.071 2.929-0.364 0.364-0.695 0.751-0.995 1.157 0.358-0.056 0.724-0.086 1.097-0.086z" fill-rule="evenodd">
+                        </path>
+                    </svg>
+                </span>
+                <a href="/RollCallSquare?Part=RollCallContent&FilterWord={{useritem.RCI_ID}}&PageNumber=1" style="text-decoration:none;font-size:18px;">
+                    <b>{{useritem.RCI_Title}}</b>
+                </a>
+                <span>
+                    <svg viewBox="0 -5 38 38" width="14" height="14" fill="#4F4F4F">
+                        <path d="M25 20c-3.866 0-7-3.134-7-7s3.134-7 7-7 7 3.134 7 7l0.031 1c0 7.732-6.268 14-14 14v-4c2.671 0 5.182-1.040 7.071-2.929 0.364-0.364 0.695-0.75 0.995-1.157-0.357 0.056-0.724 0.086-1.097 0.086zM7 20c-3.866 0-7-3.134-7-7s3.134-7 7-7 7 3.134 7 7l0.031 1c0 7.732-6.268 14-14 14v-4c2.671 0 5.182-1.040 7.071-2.929 0.364-0.364 0.695-0.75 0.995-1.157-0.357 0.056-0.724 0.086-1.097 0.086z" fill-rule="evenodd"></path>
+                    </svg>
+                </span>                         
+            </div>  
+            <div>             
+                <div style="display:inline;">
+                    <div style="display:inline-block;padding:4px 150px 0px 0px;position:absolute;">
+                        <svg viewBox="0 0 38 38" width="17" height="17">
+                            <g style="fill:#8590AE;">
+                                <path d="M12.048 16.961c-0.178 0.257-0.395 0.901-0.652 1.059-0.257 0.157-0.547 0.267-0.869 0.328-0.323 0.062-0.657 0.089-1.002 0.079v1.527h2.467v6.046h1.991v-9.996h-1.584c-0.056 0.381-0.173 0.7-0.351 0.957zM23 8h2c0.553 0 1-0.448 1-1v-6c0-0.552-0.447-1-1-1h-2c-0.553 0-1 0.448-1 1v6c0 0.552 0.447 1 1 1zM7 8h2c0.552 0 1-0.448 1-1v-6c0-0.552-0.448-1-1-1h-2c-0.552 0-1 0.448-1 1v6c0 0.552 0.448 1 1 1zM30 4h-2v5c0 0.552-0.447 1-1 1h-6c-0.553 0-1-0.448-1-1v-5h-8v5c0 0.552-0.448 1-1 1h-6c-0.552 0-1-0.448-1-1v-5h-2c-1.104 0-2 0.896-2 2v24c0 1.104 0.896 2 2 2h28c1.104 0 2-0.896 2-2v-24c0-1.104-0.896-2-2-2zM30 29c0 0.553-0.447 1-1 1h-26c-0.552 0-1-0.447-1-1v-16c0-0.552 0.448-1 1-1h26c0.553 0 1 0.448 1 1v16zM15.985 17.982h4.968c-0.936 1.152-1.689 2.325-2.265 3.705-0.575 1.381-0.638 2.818-0.749 4.312h2.131c0.009-0.666-0.195-1.385-0.051-2.156 0.146-0.771 0.352-1.532 0.617-2.285 0.267-0.752 0.598-1.461 0.996-2.127 0.396-0.667 0.853-1.229 1.367-1.686v-1.742h-7.015v1.979z" fill-rule="evenodd">
+                                </path>                            
+                            </g>
+                        </svg>
+                    </div>
+                    <a style="font-size:5px;color:#8590A6;text-decoration:none;padding:0px 0px 0px 20px;">{{useritem.RCI_EditDate}}</a>
+                </div>
+
+                <div style="float:right;">
+                    <div style="display:inline-block;padding:4px 150px 0px 0px;position:absolute;left:91%;">
+                        <svg viewBox="0 0 36 36" width="17" height="17">
+                            <g style="fill:#8590AE;">
+                                <path d="M16 6c-8.837 0-16 10-16 10s7.163 10 16 10 16-10 16-10-7.163-10-16-10zM16 22c-3.313 0-6-2.687-6-6s2.687-6 6-6 6 2.687 6 6-2.687 6-6 6zM16 12c-2.209 0-4 1.791-4 4s1.791 4 4 4 4-1.791 4-4-1.791-4-4-4z" fill-rule="evenodd">
+                                </path>                            
+                            </g>
+                        </svg>
+                    </div>
+                    <div style="display:inline-block;margin-top:0px;">
+                        <a style="font-size:5px;color:#8590A6;text-decoration:none;">{{useritem.RCI_Read}}</a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <hr style=" height:1px;border:none;border-top:1px solid #F3F3F3;margin-bottom: 4px;margin-top: 4px;">
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-6 column" style="padding:0px 30px 0px 0px;">
+                    <div style="float:right;">
+                        <a href="/UserProfile?UserNickName={{useritem.RCI_Publisher.UT_Nick}}&Select=Publish&PageNumber=1">
+                            <img style="cursor:pointer;-webkit-border-radius: 4px;margin:5px 0px 0px 10px;display:inline-block;float:left;width:50px;width:25px;height:25px;" src="{{useritem.RCI_Publisher.UT_Avatar}}" alt="">
+                        </a>
+                    </div>
+                    <div style="float:right;display:inline-block;width:200px;padding:7px 0px 0px 0px;">
+                        <a href="/UserProfile?UserNickName={{useritem.RCI_Publisher.UT_Nick}}&Select=Publish&PageNumber=1" style="font-size:14px;float:right;color:#8590A6;text-decoration:none;background:#A5CFF6;border-radius:5px;padding:0px 6px 2px 6px;">
+                            <b style="color:#FFFFFF;text-shadow:1px 1px 0px #000;">{{useritem.RCI_Publisher.UT_Nick}}</b>
+                        </a>
+                    </div>
+                </div>
+                <div style="padding:24px 0px 0px 5px;position:absolute;left:50%;transform:translate(-50%,-31%);">
+                    <button title="围观" type="button" onclick="javascript:alert('围观')">
+                        <svg viewBox="0 0 25 25" width="25" height="25">
+                            <g style="fill:#000000;">
+                                <path d="M13.6 13.47c-0.91 0.953-2.191 1.545-3.61 1.545-2.756 0-4.99-2.234-4.99-4.99 0-0.009 0-0.018 0-0.026v0.001c0-2.761 2.239-5 5-5 1.131 0 2.175 0.376 3.013 1.009l-0.013-0.009v-1h2v6.5c0 0.828 0.672 1.5 1.5 1.5s1.5-0.672 1.5-1.5v0-1.5c-0.003-4.416-3.584-7.994-8-7.994-4.418 0-8 3.582-8 8s3.582 8 8 8c1.305 0 2.537-0.312 3.625-0.867l-0.045 0.021 0.9 1.79c-1.305 0.668-2.847 1.060-4.48 1.060-5.523 0-10-4.477-10-10s4.477-10 10-10c5.519 0 9.994 4.472 10 9.99v0.001h-0.010v1.5c0 0.003 0 0.007 0 0.010 0 1.933-1.567 3.5-3.5 3.5-1.202 0-2.262-0.606-2.892-1.528l-0.008-0.012zM10 13c1.657 0 3-1.343 3-3s-1.343-3-3-3v0c-1.657 0-3 1.343-3 3s1.343 3 3 3v0z" fill-rule="evenodd">
+                                </path>                            
+                            </g>
+                        </svg>
+                    </button>
+                </div>
+                <div class="col-md-6 column" style="padding:0px 0px 0px 30px;">
+                    <div>
+                        <a href="/UserProfile?UserNickName={{useritem.RCI_Target.UT_Nick}}&Select=Publish&PageNumber=1"><img style="cursor:pointer;-webkit-border-radius: 4px;margin:5px 10px 0px 0px;display:inline-block;float:left;width:50px;width:25px;height:25px;" src="{{useritem.RCI_Target.UT_Avatar}}" alt="">
+                        </a>
+                    </div>
+                    <div style="display:inline-block;float:left;width:200px;padding:7px 0px 0px 0px;">
+                        <a href="/UserProfile?UserNickName={{useritem.RCI_Target.UT_Nick}}&Select=Publish&PageNumber=1"  style="font-size:14px;color:#8590A6;text-decoration:none;background:#FABCBA;border-radius:5px;padding:0px 6px 2px 6px;"><b style="color:#FFFFFF;text-shadow:1px 1px 0px #000;">{{useritem.RCI_Target.UT_Nick}}</b></a>
+                    </div>      
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% ifequal topic_display 'show' %}
+        <div class="Card TopstoryItem">
+            <div style="text-align:center;">
+                <span class="step-links" style="display:table-cell;font-size:12px;vertical-align:middle;text-align:center;display:inline">
+                {% if exportList_info.has_previous %}
+                    <a style="color:#FFFFFF;margin:2px 3px 0px 0px;background:#8590A6;border-radius:5px;padding:0px 6px 2px 6px;text-decoration:none;" href="{{export_href}}{{exportList_info.previous_page_number}}#anchorDiv">上一页</a>
+                {% endif %}
+                    <a style="color:#0084FF;margin:2px 3px 0px 0px;background:#D9EDFF;border-radius:5px;padding:0px 6px 2px 6px;text-decoration:none;" href = "javascript:void(0);" onclick = "javascript:JumpToPage('{{export_href}}','pagenuminput','anchorDiv')">前往</a>
+                    <input id='pagenuminput' type="text" class='form-control' style="width:7%;height:3%;display:inline;" value={{exportList_info.number}}>
+                    <span class="current">
+                        页,共计{{ exportList_info.paginator.num_pages }}页
+                    </span>
+                {% if exportList_info.has_next %}
+                    <a style="color:#FFFFFF;margin:2px 3px 0px 0px;background:#8590A6;border-radius:5px;padding:0px 6px 2px 6px;text-decoration:none;" href="{{export_href}}{{exportList_info.next_page_number}}#anchorDiv">下一页</a>
+                {% endif %}
+                </span>
+            </div>
+        </div>
+        {% endifequal %} 
+    </div>                                                        
+</div>

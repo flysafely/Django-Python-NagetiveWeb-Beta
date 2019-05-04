@@ -1,0 +1,88 @@
+<div class="TopstoryMain">
+        <div class="CardList">
+        {% for topicitem in exportList_info %}
+        <div id="{{topicitem.TAS_ID}}" class="Card TopstoryItem">
+            <div name="{{topicitem.TAS_ID}}"  class="Button TopstoryItem-rightButton Button--plain" type="button" onclick="javascript:CloseTopic(this)">
+                <svg viewBox="0 0 14 14" class="Icon Icon--remove" width="10" height="10" aria-hidden="true" style="width:10px;height:10px;">
+                    <g>
+                        <path d="M8.486 7l5.208-5.207c.408-.408.405-1.072-.006-1.483-.413-.413-1.074-.413-1.482-.005L7 5.515 1.793.304C1.385-.103.72-.1.31.31-.103.724-.103 1.385.305 1.793L5.515 7l-5.21 5.207c-.407.408-.404 1.072.007 1.483.413.413 1.074.413 1.482.005L7 8.485l5.207 5.21c.408.407 1.072.404 1.483-.007.413-.413.413-1.074.005-1.482L8.485 7z">
+                        </path>
+                    </g>
+                </svg>
+            </div>
+            <div class="Feed">
+                <div class="FeedSource">
+                    <div class="FeedSource-firstline">
+                        <li style="float:left;padding:0px 3px 0px 0px;font-size:14px">推荐主题 :</li>
+                        <a style="font-size:14px;float:left" href="/Topics/theme/{{topicitem.TAS_Theme.TAT_Name}}">{{topicitem.TAS_Theme.TAT_Name}}</a>
+                    </div><br>
+                    <div class="FeedSource-firstline">
+                    	<img width=25 height=25 style="cursor:pointer;-webkit-border-radius: 5px;" src="{{topicitem.TAS_Author.UT_Avatar}}" title="{{topicitem.TAS_Author.username}}">
+                        <a style="color:black;font-size:14px;" href="../user/{{topicitem.TAS_Author}}"><b>{{topicitem.TAS_Author}}</b></a>
+                        <span style="padding: 0px 0px 0px 2px">,</span>
+                        <span style="padding: 0px 0px 0px 0px;font-size:14px;color:#2B2B2B">{{topicitem.TAS_Author.UT_Description}}</span>
+                    </div>
+                </div>
+                <div>
+                    <hr style=" height:1px;border:none;border-top:1px solid #F3F3F3;margin-bottom: 6px;margin-top: -2px;">
+                </div>
+                <div class="ContentItem AnswerItem">
+                    <h2 class="ContentItem-title">
+                        <a href="/Topics/content/{{topicitem.TAS_ID}}">{{topicitem.TAS_Title}}</a>
+                    </h2>
+                    <div style="margin-top:8px;"></div>
+                    <div>
+                        <span>{{topicitem.TAS_Description}}</span>
+                    </div>
+                    <div class="ContentItem-actions">
+                        <span>
+                            <button id="LikeButton#{{topicitem.TAS_ID}}" class="Button VoteButton VoteButton--up" onclick="LikeOrDislike('LikeSpan#{{topicitem.TAS_ID}}','LikeButton#{{topicitem.TAS_ID}}')">
+                                <span>
+                                    <svg viewBox="0 -5 38 38" width="14" height="14" fill="#FF0000">
+                                        <path d="M23.6 2c-3.363 0-6.258 2.736-7.599 5.594-1.342-2.858-4.237-5.594-7.601-5.594-4.637 0-8.4 3.764-8.4 8.401 0 9.433 9.516 11.906 16.001 21.232 6.13-9.268 15.999-12.1 15.999-21.232 0-4.637-3.763-8.401-8.4-8.401z" fill-rule="evenodd">
+                                            
+                                        </path>
+                                    </svg>
+                                </span>
+                                <span id='LikeSpan#{{topicitem.TAS_ID}}'>{{topicitem.TAS_Like}}</span>
+                            </button>
+                            <button id="DislikeButton#{{topicitem.TAS_ID}}" class="Button VoteButton VoteButton--up" onclick="LikeOrDislike('DislikeSpan#{{topicitem.TAS_ID}}','DislikeButton#{{topicitem.TAS_ID}}')">
+                                <span>
+                                    <svg viewBox="0 -5 38 38" width="14" height="14" fill="#4F4F4F">
+                                        <path d="M23.6 2c4.637 0 8.4 3.764 8.4 8.401 0 9.132-9.87 11.964-15.999 21.232-6.485-9.326-16.001-11.799-16.001-21.232 0-4.637 3.763-8.401 8.4-8.401 1.886 0 3.625 0.86 5.025 2.12l-2.425 3.88 7 4-4 10 11-12-7-4 1.934-2.901c1.107-0.68 2.35-1.099 3.665-1.099z" fill-rule="evenodd">
+                                            
+                                        </path>
+                                    </svg>
+                                </span>
+                                <span id='DislikeSpan#{{topicitem.TAS_ID}}'>{{topicitem.TAS_Dislike}}</span>
+                            </button>
+                        </span>
+                        <a type="button" href="/Topics/content/{{topicitem.TAS_ID}}#commentdiv" class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" style="display: inline-flex; align-items: center;">
+                            <span>
+                                <svg viewBox="0 0 32 32" width="12" height="12" fill="currentColor">
+                                    <path d="M16 2c8.837 0 16 5.82 16 13s-7.163 13-16 13c-0.849 0-1.682-0.054-2.495-0.158-3.437 3.437-7.539 4.053-11.505 4.144v-0.841c2.142-1.049 4-2.961 4-5.145 0-0.305-0.024-0.604-0.068-0.897-3.619-2.383-5.932-6.024-5.932-10.103 0-7.18 7.163-13 16-13z" fill-rule="enenodd">
+                                        
+                                    </path>
+                                </svg>
+                            </span>
+                            <span style="margin-right:5px;"></span>
+                            {{topicitem.TAS_Comment}} 条评论
+                        </a>
+                        <button type="button" class="Button ContentItem-action Button--plain Button--withIcon Button--withLabel" style="display: inline-flex; align-items: center;" data-toggle='modal' data-target="#QRcodeBoard" onclick="javascript:QRcodeShare('/Topics/content/{{topicitem.TAS_ID}}')">
+                            <span>
+                                <svg viewBox="-14 -10 38 38" width="24" height="24" fill="currentColor">
+                                    <path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="enenodd">
+                                        
+                                    </path>
+                                </svg>
+                            </span>
+                            <span style="margin-right:5px;"></span>
+                            分享
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>                                                          
+</div>
