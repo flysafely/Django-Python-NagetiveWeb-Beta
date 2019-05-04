@@ -35,10 +35,8 @@
 
 `bin`目录是在`linux`环境中使用`Nginx`+`Gunicorn`+`virtualenv`+`supervisor`来部署的脚本和`Nginx`配置文件.可以参考我的文章:
 
->[使用Nginx+Gunicorn+virtualenv+supervisor来部署django项目](https://www.lylinux.org/%E4%BD%BF%E7%94%A8nginxgunicornvirtualenvsupervisor%E6%9D%A5%E9%83%A8%E7%BD%B2django%E9%A1%B9%E7%9B%AE.html)
-
+>[使用Nginx+uWSGI来部署django项目](https://www.cnblogs.com/chenice/p/6921727.html)
 有详细的部署介绍.
-
 
 ## 运行
  先生成测试sqlite
