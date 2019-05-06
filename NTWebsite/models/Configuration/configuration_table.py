@@ -11,6 +11,8 @@ class ConfigParams(models.Model):
     TimeOut = models.IntegerField(
         default=60, blank=False, verbose_name='缓存时间')
 
+    IndexURL = models.CharField(max_length=200,
+                                      default='/Topic/List/0/LE/1', blank=False, verbose_name='首页URL')
     ReadsThreshold = models.CharField(max_length=20,
                                       default=10, blank=False, verbose_name='阅读量阈值')
     TopicHotKeyWord = models.CharField(max_length=20,
@@ -55,8 +57,8 @@ class ConfigParams(models.Model):
 
     class Meta:
         # 末尾不加s
-        verbose_name = '配置参数'
-        verbose_name_plural = '**2**配置参数**2**'
+        verbose_name = '参数配置表'
+        verbose_name_plural = '2.参数配置表'
         app_label = 'NTWebsite'
         #app_label = "配置表"
 
@@ -66,22 +68,22 @@ class ConfigParams(models.Model):
 
 class PreferredConfigName(models.Model):
     Name = models.ForeignKey(
-        ConfigParams, to_field='Name', null=True, on_delete=models.CASCADE, verbose_name='首选配置名称')
+        ConfigParams, to_field='Name', null=True, on_delete=models.CASCADE, verbose_name='目前配置')
 
     class Meta:
-        verbose_name = '首选配置'
+        verbose_name = '配置设置'
         app_label = 'NTWebsite'
         # 末尾不加s
 
-        verbose_name_plural = '**2**首选配置设置**2**'
+        verbose_name_plural = '3.配置设置'
         pass
 
 
 class FilterQueryString(models.Model):
     Name = models.CharField(
-        max_length=100, verbose_name='过滤器名称')
+        max_length=100, verbose_name='过滤器关键')
     MethodString = models.CharField(
-        max_length=200, blank=False, default='',verbose_name='使用方法')
+        max_length=200, blank=False, default='',verbose_name='匹配方法')
     QueryString = models.CharField(
         max_length=200, blank=False, verbose_name='查询语句')
     Template = models.CharField(
@@ -91,5 +93,4 @@ class FilterQueryString(models.Model):
         verbose_name = '过滤器'
         app_label = 'NTWebsite'
         # 末尾不加s
-
-        verbose_name_plural = '**2**过滤器查询语句设置**2**'
+        verbose_name_plural = '4.URL过滤器'

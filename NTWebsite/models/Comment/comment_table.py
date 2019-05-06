@@ -23,9 +23,9 @@ class CommentInfo(models.Model):
         User, to_field='id', default=0, on_delete=models.CASCADE, verbose_name='用户名')
 
     class Meta:
-        verbose_name = '评论'
+        verbose_name = '评论统计'
         # 末尾不加s
-        verbose_name_plural = '**1**评论信息**1**'
+        verbose_name_plural = '1.评论统计'
         app_label = 'NTWebsite'
 
     def __str__(self):

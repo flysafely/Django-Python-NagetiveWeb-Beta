@@ -22,9 +22,12 @@ from django.views.generic.base import RedirectView
 from NTConfig import settings
 from django.views.static import serve
 import re
+import xadmin
+
 urlpatterns = [
     # views中有返回页面的导航
-    path('admin/', admin.site.urls),
+    #path('admin/', admin.site.urls),
+    path('admin19901101/', xadmin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),    
     #path('RollCall', V.RollCallsInfoGet),
     #path('Topic', V.TopicsInfoGet),

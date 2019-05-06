@@ -5,7 +5,8 @@ from NTWebsite.Config import DBConfig as DC
 
 
 def indexView(request):
-    return HttpResponseRedirect("/Topic/List/0/LE/1")
+    APPConf = AC()
+    return HttpResponseRedirect(APPConf.IndexURL)
 
 
 def PaginatorInfoGet(objects, number, URLParams):
@@ -205,6 +206,7 @@ def PermissionConfirm(type, Object, request, URLParams):
                 Permission_Sizer['ReplayBlock'] = 'hidden'
                 Permission_Sizer['ReplayBlockSite'] = ''
         else:
+            print(URLParams['FilterValue'])
             TargetUser = QRC('User.objects.get(id=%s)',
                              None, URLParams['FilterValue'])
             if TargetUser == request.user:
@@ -218,9 +220,9 @@ def PermissionConfirm(type, Object, request, URLParams):
                 Permission_Sizer['VisitorOAuth-Read'] = 'readonly'
                 Permission_Sizer['VisitorOAuth-Edit'] = 'hidden'
                 Permission_Sizer['VisitorOAuth-Link'] = 'Linked' if QRC(
-                    'UserLink.objects.get(UserBeLinked=%s,UserLinking=%s)', 0, TargetUser, request.user) else 'Link'
+                    'UserLink.objects.filter(UserBeLinked=%s,UserLinking=%s)', 0, TargetUser, request.user) else 'Link'
                 Permission_Sizer['VisitorOAuth-Block'] = 'Blocked' if QRC(
-                    'BlackList.objects.get(Enforceder=%s,Handler=%s)', 0, TargetUser, request.user) else 'Block'
+                    'BlackList.objects.filter(Enforceder=%s,Handler=%s)', 0, TargetUser, request.user) else 'Block'
         ReturnList.append((item, Permission_Sizer))
     return ReturnList
 
@@ -438,7 +440,7 @@ def Regist(request):
                 username, Nick=usernickname, password=password, email=email)
 
             newUser.Avatar = mMs.UserAvatarOperation(request.POST.get(
-                'userimagedata'), request.POST.get('userimageformat'),APPConf.DefaultAvatar.url)['Path']
+                'userimagedata'), request.POST.get('userimageformat'),APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL,''))['Path']
             newUser.save()
             return HttpResponse('ok')
 

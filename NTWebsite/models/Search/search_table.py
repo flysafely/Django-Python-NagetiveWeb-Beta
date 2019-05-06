@@ -12,7 +12,7 @@ class SearchIndex(models.Model):
     class Meta:
         verbose_name = '全局索引'
         # 末尾不加s
-        verbose_name_plural = '**5**全局索引**5**'
+        verbose_name_plural = '15.搜索索引'
         app_label = 'NTWebsite'
 
     def __str__(self):

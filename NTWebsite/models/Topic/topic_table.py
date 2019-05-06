@@ -5,17 +5,17 @@ from imagekit.processors import SmartResize
 from ckeditor_uploader.fields import RichTextUploadingField
 from ..User import *
 import uuid
-
+import django.utils.timezone as timezone
 
 class TopicThemeInfo(models.Model):
     """docstring for TopicThemeInfo"""
     Name = models.CharField(
-        max_length=10, primary_key=True, verbose_name='主题名称')
+        max_length=10, primary_key=True, verbose_name='标签名称')
 
     class Meta:
-        verbose_name = '主题标签'
+        verbose_name = '标签'
         # 末尾不加s
-        verbose_name_plural = '**5**文章主题标签**5**'
+        verbose_name_plural = '16.文章标签'
         app_label = 'NTWebsite'
 
     def __str__(self):
@@ -33,7 +33,7 @@ class TopicCategoryInfo(models.Model):
     class Meta:
         verbose_name = '类目'
         # 末尾不加s
-        verbose_name_plural = '**5**文章类目**5**'
+        verbose_name_plural = '17.文章分类'
         app_label = 'NTWebsite'
 
     def __str__(self):
@@ -80,12 +80,13 @@ class TopicInfo(models.Model):
         default=0, blank=False, verbose_name='分享')
     Collect = models.IntegerField(
         default=0, blank=False, verbose_name='关注或收藏量')
-    EditDate = models.DateField(auto_now=True, verbose_name='编辑时间')
+    EditTime = models.DateTimeField(auto_now=True, verbose_name='编辑时间')
+    CreateTime = models.DateTimeField(default=timezone.now, editable=True,verbose_name='添加时间')
 
     class Meta:
-        verbose_name = '文章信息'
+        verbose_name = '文章内容'
         # 末尾不加s
-        verbose_name_plural = '**5**文章基础信息**5**'
+        verbose_name_plural = '18.文章内容'
         app_label = 'NTWebsite'
 
     def __str__(self):

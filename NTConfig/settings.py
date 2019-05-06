@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '$@&+60oqu5u900a+1*qo*!5nn#ljd3lj=3%p@#dmw%=mle$+_x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'www.nagetive.com', 'www.nagetives.com', '192.168.3.69','192.168.3.79']
 
@@ -31,7 +31,7 @@ APP_NAMES = ['NTWebsite', ]
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    #'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'CustomFunctions',
     'imagekit',
+    'xadmin',
+    'crispy_forms',
+    'reversion',
 ]
 
 MIDDLEWARE = [

@@ -70,7 +70,7 @@ def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
             #print('查询语句(带变量名):', FinalQueryString)
             QueryResult = eval(FinalQueryString)
         except Exception as e:
-            print('查询错误信息:', e)
+            print('查询错误信息:', e) # 不直接raise Http404的原因是:部分get查询只是判断某些表中是否存在相应数据，不存在则忽略，不需要直接返回404
             #raise Http404
         else:
             CacheHandler.set(QueryString_MD5, QueryResult, TimeOut)
@@ -143,7 +143,9 @@ def UserAvatarOperation(ImageData, ImageFormat, OldAvatar):
                 compress_avatar = sizeHandle.resize(
                     (APPConf.AvatarResolution, APPConf.AvatarResolution), im.BILINEAR).convert('RGBA' if ImageFormat == 'png' else 'RGB')
                 compress_avatar.save(saveFilePath)
-            if OldAvatar != APPConf.DefaultAvatar.url:
+            print("OldAvatar:",OldAvatar)
+            print("asdadadasd:",APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL,''))
+            if OldAvatar != APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL,''):
                 if os.path.exists(os.path.join(settings.MEDIA_ROOT, OldAvatar)):
                     os.remove(os.path.join(settings.MEDIA_ROOT, OldAvatar))
             return {'Status': 'success', 'Path': os.path.join(APPConf.AvatarSavePath, saveFile)}

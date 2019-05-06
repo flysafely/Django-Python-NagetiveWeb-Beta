@@ -21,9 +21,9 @@ class Attitude(models.Model):
         max_length=30, blank=True, verbose_name='类型')
 
     class Meta:
-        verbose_name = '立场记录'
+        verbose_name = '赞/怼统计'
         # 末尾不加s
-        verbose_name_plural = '**3**文章立场统计**3**'
+        verbose_name_plural = '5.赞/怼统计'
         app_label = 'NTWebsite'
 
     def __str__(self):
@@ -43,9 +43,9 @@ class ReadsIP(models.Model):
         max_length=100, null=True, blank=True, verbose_name='文章ID')
 
     class Meta:
-        verbose_name = '阅读IP记录'
+        verbose_name = '访问统计'
         # 末尾不加s
-        verbose_name_plural = '**3**文章阅读IP统计**3**'
+        verbose_name_plural = '6.访问统计'
         app_label = 'NTWebsite'
 
     def __str__(self):
@@ -63,8 +63,8 @@ class UserLink(models.Model):
     LinkTime = models.DateField(auto_now=True, verbose_name='时间')
 
     class Meta:
-        verbose_name = '关注信息'
-        verbose_name_plural = '**3**用户关系网**3**'
+        verbose_name = '用户链接统计'
+        verbose_name_plural = '7.用户链接统计'
         app_label = 'NTWebsite'
 
     def __str__(self):
@@ -82,8 +82,8 @@ class Collection(models.Model):
     CollectTime = models.DateField(auto_now=True, verbose_name='时间')
 
     class Meta:
-        verbose_name = '文章收藏'
-        verbose_name_plural = '**3**文章用户收藏**3**'
+        verbose_name = '收藏关注统计'
+        verbose_name_plural = '8.收藏关注统计'
         app_label = 'NTWebsite'
 
     def __str__(self):
@@ -99,7 +99,7 @@ class PublisherList(models.Model):
     class Meta:
         verbose_name = '推荐用户'
         # 末尾不加s
-        verbose_name_plural = '**3**推荐用户**3**'
+        verbose_name_plural = '9.推荐用户表'
         app_label = 'NTWebsite'
 
     def __str__(self):
@@ -122,9 +122,9 @@ class Notification(models.Model):
         User, to_field='id', related_name='TargetUser', default=0, on_delete=models.CASCADE, verbose_name='被通知者')
 
     class Meta:
-        verbose_name = '信息'
+        verbose_name = '通知'
         # 末尾不加s
-        verbose_name_plural = '**3**通知信息**3**'
+        verbose_name_plural = '10.通知中心'
         app_label = 'NTWebsite'
 
     def __str__(self):
@@ -142,9 +142,9 @@ class BlackList(models.Model):
         User, to_field='id', related_name='Handler', null=True, on_delete=models.CASCADE, verbose_name='操作用户')
 
     class Meta:
-        verbose_name = '记录'
+        verbose_name = '黑名单记录'
         # 末尾不加s
-        verbose_name_plural = '**3**黑名单**3**'
+        verbose_name_plural = '11.黑名单'
         app_label = 'NTWebsite'
 
     def __str__(self):
@@ -165,9 +165,9 @@ class TipOffBox(models.Model):
     EditDate = models.DateField(auto_now=True, verbose_name='编辑时间')
 
     class Meta:
-        verbose_name = '记录'
+        verbose_name = '举报统计'
         # 末尾不加s
-        verbose_name_plural = '**3**举报中心**3**'
+        verbose_name_plural = '12.举报统计'
         app_label = 'NTWebsite'
 
     def __str__(self):

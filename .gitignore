@@ -1,4 +1,5 @@
 /static/
+/https/
 db.sqlite3
 dump.rdb
 *.ini

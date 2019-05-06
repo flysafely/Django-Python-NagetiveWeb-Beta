@@ -8,9 +8,13 @@
             </svg>
         </span>
         {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
-        <a class="ExponentTagItem TagSVG" style="text-decoration:none;color:#0077E6;" href="/{{Card.0.Type}}/Time/{{Card.0.EditDate | date:'Y-m-d' }}/LE/1">{{Card.0.EditDate}}</a> 
+        <a class="ExponentTagItem TagSVG" style="text-decoration:none;color:#0077E6;" href="/{{Card.0.Type}}/Time/{{ Card.0.EditTime | date:'Y-m-d' }}/LE/1">{{Card.0.EditTime}}</a> 
         {% else %}
-        <a class="ExponentTagItem TagSVG" style="text-decoration:none;color:#0077E6;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Time/{{Card.0.EditDate | date:'Y-m-d' }}/LE/1">{{Card.0.EditDate}}</a> 
+        {% if Layout_Sizer|GetDictValue:'Part' == 'Content' %}
+        <a title='编辑时间' class="ExponentTagItem TagSVG" style="text-decoration:none;color:#0077E6;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Time/{{ Card.0.EditTime | date:'Y-m-d' }}/LE/1">{{Card.0.EditTime}}</a>
+        {% else %}
+        <a title='发布时间' class="ExponentTagItem TagSVG" style="text-decoration:none;color:#0077E6;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Time/{{ Card.0.CreateTime | date:'Y-m-d' }}/LE/1">{{Card.0.CreateTime}}</a>         
+        {% endif %}
         {% endif %}
         <span style="padding: 0px 0px 0px 2px;float:left;"><b>·</b></span>
         <span class="ThemeTagSVG">

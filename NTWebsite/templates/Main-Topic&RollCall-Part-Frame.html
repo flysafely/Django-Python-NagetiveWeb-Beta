@@ -11,6 +11,16 @@
     </div>
     <div class="GlobalSideBar" style="position: fixed;margin:0px 0px 0px 704px;width:260px;">    
         <div class="Sticky">
+            {% if not request.user.is_authenticated %}
+            <div class="Card">
+                <div class="GlobalSideBarLabel">
+                    <div>
+                        <b>用户功能</b> 
+                    </div>
+                </div>
+                {% include "List-UserFuncButton-Block.html" %}
+            </div>
+            {% endif %}            
             <div class="Card">
                 <div class="GlobalSideBarLabel">
                     <div>

@@ -1,10 +1,10 @@
 {% load CustomFuncTags %}
-<ul class="GlobalSideBar-categoryList">
+<ul class="GlobalSideBar-categoryList SideBarScroller">
     {% for category in ExportList_Categorys %}
     <li class="GlobalSideBar-categoryItem">
         <a style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Category/{{category.Name}}/LE/1" type="button" class="Button Button--plain" style="color: rgb(255, 128, 0);">
             <span class="GlobalSideBar-categoryIcon">
-                <svg viewBox="-3 0 40 40" width="32" hight="32" fill="#77839C">
+                <svg viewBox="-2 0 40 40" width="26" hight="26" fill="#77839C">
                     {{category.SVG|safe}}
                 </svg>
             </span>

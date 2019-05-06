@@ -32,7 +32,7 @@ class RollCallInfo(models.Model):
     class Meta:
         verbose_name = '点名信息'
         # 末尾不加s
-        verbose_name_plural = '**4**点名基础信息**4**'
+        verbose_name_plural = '13.点名统计'
         app_label = 'NTWebsite'
 
     def __str__(self):
@@ -54,7 +54,7 @@ class RollCallDialogue(models.Model):
     class Meta:
         verbose_name = '对话记录'
         # 末尾不加s
-        verbose_name_plural = '**4**点名对话明细**4**'
+        verbose_name_plural = '14.点名对话统计'
         app_label = 'NTWebsite'
 
     def __str__(self):

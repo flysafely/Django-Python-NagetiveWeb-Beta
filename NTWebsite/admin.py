@@ -115,8 +115,9 @@ class TopicCategoryInfoAdminView(admin.ModelAdmin):
 @admin.register(TopicInfo)
 class TopicInfoAdminView(admin.ModelAdmin):
     """docstring for TopicInfo"""
-    list_display = ('Title','Publisher','EditDate')
-    search_fields = ['Title','Publisher__Nick','EditDate'] 
+    readonly_fields = ('EditTime',)
+    list_display = ('Title','Publisher','Recommend','EditTime')
+    search_fields = ['Title','Publisher__Nick'] 
 
 
 @admin.register(User)

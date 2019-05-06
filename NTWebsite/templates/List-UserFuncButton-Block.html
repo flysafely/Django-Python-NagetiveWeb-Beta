@@ -1,0 +1,43 @@
+<div class="Card">
+    <div class="GlobalWrite">
+        <div class="GlobalWrite-nav">
+            {% if request.user.is_authenticated %}
+            <button title="注销" id='logoutbutton' class="GlobalWrite-navItem NoDecoration" type="button">
+                <span style="display: inline-flex; align-items: center;padding:0px 0px 8px 0px">
+                    <img title="{{request.user.Nick}}" src="{{ MEDIA_URL }}{{request.user.Avatar}}" height="24" width="24" style="cursor:pointer;-webkit-border-radius: 12px;margin:0px 0px 0px 0px;" onclick="javascript:window.location.href='/UserProfile/Topic/{{request.user.id}}/LE/1/'">                    
+                </span>
+                <div class="GlobalSideBar-categoryLabel">{{request.user.Nick}}</div>
+            </button> 
+            <button title="注销" id='logoutbutton' class="GlobalWrite-navItem NoDecoration" type="button" onclick="javascript:Logout('/logout/');">
+                <span style="display: inline-flex; align-items: center;padding:0px 0px 8px 0px">
+                    <svg fill="#8590A6" viewBox="0 0 35 35" width='24' height='24'>
+                        <path d="M18.5 14c0 0.266-0.109 0.516-0.297 0.703l-8.5 8.5c-0.187 0.187-0.438 0.297-0.703 0.297-0.547 0-1-0.453-1-1v-4.5h-7c-0.547 0-1-0.453-1-1v-6c0-0.547 0.453-1 1-1h7v-4.5c0-0.547 0.453-1 1-1 0.266 0 0.516 0.109 0.703 0.297l8.5 8.5c0.187 0.187 0.297 0.438 0.297 0.703zM24 8.5v11c0 2.484-2.016 4.5-4.5 4.5h-5c-0.266 0-0.5-0.234-0.5-0.5 0-0.438-0.203-1.5 0.5-1.5h5c1.375 0 2.5-1.125 2.5-2.5v-11c0-1.375-1.125-2.5-2.5-2.5h-4.5c-0.391 0-1 0.078-1-0.5 0-0.438-0.203-1.5 0.5-1.5h5c2.484 0 4.5 2.016 4.5 4.5z"></path>
+                    </svg>
+                </span>
+                <div class="GlobalSideBar-categoryLabel">注销</div>
+            </button> 
+            {% else %}
+            <button title="登录" style="" id='loginbutton' class="GlobalWrite-navItem NoDecoration" type="button" data-toggle='modal' data-target="#LoginBoard" onclick="document.getElementById('LoginVfCodeInput').click();">
+                <span style="display: inline-flex; align-items: center;padding:0px 0px 8px 0px">
+                    <svg fill="#8590A6" viewBox="0 0 35 35" width="24" height="24">
+                        <g>
+                            <path d="M23.797 20.922c-0.406-2.922-1.594-5.516-4.25-5.875-1.375 1.5-3.359 2.453-5.547 2.453s-4.172-0.953-5.547-2.453c-2.656 0.359-3.844 2.953-4.25 5.875 2.172 3.063 5.75 5.078 9.797 5.078s7.625-2.016 9.797-5.078zM20 10c0-3.313-2.688-6-6-6s-6 2.688-6 6 2.688 6 6 6 6-2.688 6-6zM28 14c0 7.703-6.25 14-14 14-7.734 0-14-6.281-14-14 0-7.734 6.266-14 14-14s14 6.266 14 14z"></path>
+                        </g>
+                    </svg>
+                </span>
+                <div class="GlobalSideBar-categoryLabel">登录</div>
+            </button>
+            <button title="注册" style="" id='Registbutton' class="GlobalWrite-navItem NoDecoration" type="button" data-toggle='modal' data-target="#RegistBoard" onclick="document.getElementById('RegistVfCodeInput').click();">
+                <span style="display: inline-flex; align-items: center;padding:0px 0px 8px 0px">
+                    <svg fill="#8590A6" viewBox="0 0 35 35" width="24" height="24">
+                        <g>
+                            <path d="M16 17.672c0 1.359-0.891 2.328-2 2.328h-8c-1.109 0-2-0.969-2-2.328 0-2.422 0.594-5.109 3.062-5.109 0.766 0.438 1.797 1.188 2.938 1.188s2.172-0.75 2.938-1.188c2.469 0 3.062 2.688 3.062 5.109zM13.547 9.547c0 1.969-1.594 3.547-3.547 3.547s-3.547-1.578-3.547-3.547c0-1.953 1.594-3.547 3.547-3.547s3.547 1.594 3.547 3.547zM28 16.5v1c0 0.281-0.219 0.5-0.5 0.5h-9c-0.281 0-0.5-0.219-0.5-0.5v-1c0-0.281 0.219-0.5 0.5-0.5h9c0.281 0 0.5 0.219 0.5 0.5zM28 12.563v0.875c0 0.313-0.25 0.562-0.562 0.562h-8.875c-0.313 0-0.562-0.25-0.562-0.562v-0.875c0-0.313 0.25-0.562 0.562-0.562h8.875c0.313 0 0.562 0.25 0.562 0.562zM28 8.5v1c0 0.281-0.219 0.5-0.5 0.5h-9c-0.281 0-0.5-0.219-0.5-0.5v-1c0-0.281 0.219-0.5 0.5-0.5h9c0.281 0 0.5 0.219 0.5 0.5zM30 23.5v-19c0-0.266-0.234-0.5-0.5-0.5h-27c-0.266 0-0.5 0.234-0.5 0.5v19c0 0.266 0.234 0.5 0.5 0.5h5.5v-1.5c0-0.281 0.219-0.5 0.5-0.5h1c0.281 0 0.5 0.219 0.5 0.5v1.5h12v-1.5c0-0.281 0.219-0.5 0.5-0.5h1c0.281 0 0.5 0.219 0.5 0.5v1.5h5.5c0.266 0 0.5-0.234 0.5-0.5zM32 4.5v19c0 1.375-1.125 2.5-2.5 2.5h-27c-1.375 0-2.5-1.125-2.5-2.5v-19c0-1.375 1.125-2.5 2.5-2.5h27c1.375 0 2.5 1.125 2.5 2.5z"></path>
+                        </g>
+                    </svg>
+                </span>
+                <div class="GlobalSideBar-categoryLabel">注册</div>
+            </button>               
+            {% endif %} 
+        </div>                      
+    </div>
+</div>
