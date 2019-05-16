@@ -2,7 +2,7 @@
 
 基于Django2.0.6和Python3.5.3类似于知乎问答社区平台
 >[球莫名堂-演示主站](https://www.nagetive.com)
-![image](https://github.com/flysafely/Django-Pyhton-NagetiveWeb-Beta/blob/master/1556970355(1).jpg)
+![image](https://github.com/flysafely/Django-Pyhton-NagetiveWeb-Beta/blob/master/ep.jpg)
 ## 主要功能：
 - 文章发布、编辑、点赞、点怼、标注标签、分类、评论、收藏、打赏、举报、二维码分享
 - 专题发布、编辑、点赞、点怼、标注标签、分类、评论、收藏、打赏、举报、二维码分享
