@@ -3,7 +3,6 @@ from NTWebsite.MainMethods import QueryRedisCache as QRC
 from collections import Iterable
 #from NTWebsite import MainMethods as mMs
 
-
 def PermissionConfirm(type, Object, request, URLParams):
     ReturnList = []
     items = []

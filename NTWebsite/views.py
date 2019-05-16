@@ -40,13 +40,15 @@ def TopicContentInfoGet(request, DBConf, APPConf, URLParams):
         mMs.CounterOperate(QRC('TopicInfo.objects.get(ObjectID=%s)',
                              0, URLParams['FilterValue']), 'Hot', '+')
     # 获取指定文章对象
+    print('获取指定文章对象',QRC(DBConf.QueryString, None, URLParams['FilterValue']))
     TopicObject = A.PermissionConfirm(URLParams['Part'], QRC(
         DBConf.QueryString, None, URLParams['FilterValue']), request, URLParams)
     # 获取评论对象
+    print('************',TopicObject[0][0])
     CommentObjects = P.CommentPackage(A.PermissionConfirm(URLParams['Part'],
-                                                          QRC("CommentInfo.objects.filter(ObjectID=%s).order_by('-EditDate')",
+                                                          QRC("CommentInfo.objects.filter(TopicID=%s).order_by('-EditDate')",
                                                               None,
-                                                              URLParams['FilterValue']),
+                                                              TopicObject[0][0]),
                                                           request,
                                                           URLParams))
     # 评论分页器
