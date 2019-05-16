@@ -48,11 +48,15 @@ class NotificationAdminView(admin.ModelAdmin):
     list_display = ('TargetUser',)
 
 
-@admin.register(Attitude)
-class AttitudeAdminView(admin.ModelAdmin):
+@admin.register(TopicAttitude)
+class TopicAttitudeAdminView(admin.ModelAdmin):
     """docstring for Attitude"""
     list_display = ('Publisher',)
 
+@admin.register(CommentAttitude)
+class CommentAttitudeAdminView(admin.ModelAdmin):
+    """docstring for Attitude"""
+    list_display = ('Publisher',)
 
 @admin.register(UserLink)
 class UserLinkAdminView(admin.ModelAdmin):
@@ -60,11 +64,20 @@ class UserLinkAdminView(admin.ModelAdmin):
     list_display = ('UserBeLinked', 'UserLinking', 'LinkTime')
 
 
-@admin.register(Collection)
+@admin.register(Collect)
 class CollectionAdminView(admin.ModelAdmin):
     """docstring for Collection"""
-    list_display = ('Publisher', 'Type', 'ObjectID', 'CollectTime')
+    list_display = ('Publisher', 'ObjectID', 'CollectTime')
 
+@admin.register(Concern)
+class ConcernAdminView(admin.ModelAdmin):
+    """docstring for Collection"""
+    list_display = ('Publisher', 'ObjectID', 'CollectTime')
+
+@admin.register(Circusee)
+class CircuseeAdminView(admin.ModelAdmin):
+    """docstring for Collection"""
+    list_display = ('Publisher', 'ObjectID', 'CollectTime')
 
 @admin.register(ReadsIP)
 class ReadsIPAdminView(admin.ModelAdmin):

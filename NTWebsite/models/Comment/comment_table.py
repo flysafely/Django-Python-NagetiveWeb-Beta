@@ -1,5 +1,6 @@
 from django.db import models
 from ..User import *
+from ..Topic import *
 import uuid
 # 文章评论表
 
@@ -7,10 +8,9 @@ import uuid
 class CommentInfo(models.Model):
     """docstring for CommentInfo"""
 
-    CommentID = models.CharField(
-        primary_key=True, max_length=12,default='', editable=True, verbose_name='评论ID')
     ObjectID = models.CharField(
-        max_length=100, editable=True, default='', verbose_name='文章ID')
+        primary_key=True, max_length=12,default='', editable=True, verbose_name='评论ID')
+    TopicID = models.ForeignKey(TopicInfo,to_field='ObjectID', default=0, on_delete=models.CASCADE, verbose_name='文章ID')
     Content = models.TextField(verbose_name="评论内容")
     Parent = models.CharField(
         max_length=100, editable=True, default='', null=True, blank=True, verbose_name='父评论ID')

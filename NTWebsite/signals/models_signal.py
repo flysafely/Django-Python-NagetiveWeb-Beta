@@ -68,16 +68,16 @@ def comment_delete_handler(sender, instance, **kwargs):
             instance.Publisher, 'TRCount' if instance.Type == 'Topic' else 'SRCount', '-')
 
 
-@receiver(post_save, dispatch_uid=Collection)
+@receiver(post_save, dispatch_uid=Collect)
 def collection_create_handler(sender, instance, created, **kwargs):
-    if created and isinstance(instance, Collection):
+    if created and isinstance(instance, Collect):
         mMs.CounterOperate(QRC((instance.Type if instance.Type not in 'SpecialTopic' else 'Topic') +
                                'Info.objects.get(ObjectID=%s)', 0, instance.ObjectID.replace('-', '')), 'Collect', '+')
 
 
-@receiver(post_delete, dispatch_uid=Collection)
+@receiver(post_delete, dispatch_uid=Collect)
 def collection_delete_handler(sender, instance, **kwargs):
-    if isinstance(instance, Collection):
+    if isinstance(instance, Collect):
         mMs.CounterOperate(QRC((instance.Type if instance.Type not in 'SpecialTopic' else 'Topic') +
                                'Info.objects.get(ObjectID=%s)', 0, instance.ObjectID.replace('-', '')), 'Collect', '-')
 
@@ -96,21 +96,34 @@ def userlink_delete_handler(sender, instance, **kwargs):
         mMs.CounterOperate(instance.UserLinking, 'FocusCount', '-')
 
 
-@receiver(post_save, dispatch_uid=Attitude)
-def Attitude_create_handler(sender, instance, created, **kwargs):
-    if created and isinstance(instance, Attitude):
-        mMs.CounterOperate(QRC((instance.Type if instance.Type not in 'SpecialTopic' else 'Topic') +
-                               'Info.objects.get(ObjectID=%s)', 0, instance.ObjectID.replace('-', '')), 'Like' if int(instance.Point) == 1 else 'Dislike', '+')
-    elif not created and isinstance(instance, Attitude):
-        mMs.CounterOperate(QRC((instance.Type if instance.Type not in 'SpecialTopic' else 'Topic') +
-                               'Info.objects.get(ObjectID=%s)', 0, instance.ObjectID.replace('-', '')), 'Like' if int(instance.Point) == 1 else 'Dislike', '+')
-        mMs.CounterOperate(QRC((instance.Type if instance.Type not in 'SpecialTopic' else 'Topic') +
-                               'Info.objects.get(ObjectID=%s)', 0, instance.ObjectID.replace('-', '')),
-                           'Like' if abs(int(instance.Point) - 1) == 1 else 'Dislike', '-')
+@receiver(post_save, dispatch_uid=TopicAttitude)
+def TopicAttitude_create_handler(sender, instance, created, **kwargs):
+    if created and isinstance(instance, TopicAttitude):
+        print('instance.Point:',instance.Point)
+        mMs.CounterOperate(instance.ObjectID, 'Like' if instance.Point == 1 else 'Dislike', '+')
+    elif (not created) and isinstance(instance, TopicAttitude):
+        print('instance.Point:',instance.Point)
+        mMs.CounterOperate(instance.ObjectID, 'Like' if int(instance.Point) == 1 else 'Dislike', '+')
+        mMs.CounterOperate(instance.ObjectID, 'Like' if abs(int(instance.Point) - 1) == 1 else 'Dislike', '-')
 
 
-@receiver(pre_delete, dispatch_uid=Attitude)
-def Attitude_delete_handler(sender, instance, **kwargs):
-    if isinstance(instance, Attitude):
-        mMs.CounterOperate(QRC((instance.Type if instance.Type not in 'SpecialTopic' else 'Topic') +
-                               'Info.objects.get(ObjectID=%s)', 0, instance.ObjectID.replace('-', '')), 'Like' if int(instance.Point) == 1 else 'Dislike', '-')
+@receiver(pre_delete, dispatch_uid=TopicAttitude)
+def TopicAttitude_delete_handler(sender, instance, **kwargs):
+    if isinstance(instance, TopicAttitude):
+        mMs.CounterOperate(instance.ObjectID, 'Like' if int(instance.Point) == 1 else 'Dislike', '-')
+
+@receiver(post_save, dispatch_uid=CommentAttitude)
+def CommentAttitude_create_handler(sender, instance, created, **kwargs):
+    if created and isinstance(instance, CommentAttitude):
+        print('instance.Point:',instance.Point)
+        mMs.CounterOperate(instance.ObjectID, 'Like' if instance.Point == 1 else 'Dislike', '+')
+    elif (not created) and isinstance(instance, CommentAttitude):
+        print('instance.Point:',instance.Point)
+        mMs.CounterOperate(instance.ObjectID, 'Like' if int(instance.Point) == 1 else 'Dislike', '+')
+        mMs.CounterOperate(instance.ObjectID, 'Like' if abs(int(instance.Point) - 1) == 1 else 'Dislike', '-')
+
+
+@receiver(pre_delete, dispatch_uid=CommentAttitude)
+def CommentAttitude_delete_handler(sender, instance, **kwargs):
+    if isinstance(instance, CommentAttitude):
+        mMs.CounterOperate(instance.ObjectID, 'Like' if int(instance.Point) == 1 else 'Dislike', '-')

@@ -13,7 +13,7 @@ def Launcher(request, **URLParams):
 
 def TopicsInfoGet(request, DBConf, APPConf, URLParams):
     # 获取符合条件的文章对象并且获取权限
-    TopicObjects = P.PermissionConfirm(URLParams['Part'], QRC(
+    TopicObjects = A.PermissionConfirm(URLParams['Part'], QRC(
         DBConf.QueryString, None, URLParams['Region'], URLParams['FilterValue']), request, URLParams)
     # 多对多数据反向获取
     #tag = TopicThemeInfo.objects.get(TT_Name = '测试标签1')
@@ -30,20 +30,20 @@ def TopicsInfoGet(request, DBConf, APPConf, URLParams):
 def TopicContentInfoGet(request, DBConf, APPConf, URLParams):
     # 分享链入统计
     if URLParams['ExtraParam'] == 'Share':
-        P.CounterOperate(QRC('TopicInfo.objects.get(ObjectID=%s)',
+        mMs.CounterOperate(QRC('TopicInfo.objects.get(ObjectID=%s)',
                              None, URLParams['FilterValue']), 'Share', '+')
 
     # 阅读量、热度统计
     if not QRC('ReadsIP.objects.filter(IP=%s,ObjectID=%s)', None, mMs.GetUserIP(request), URLParams['FilterValue']):
         P.ReadIPRecord(mMs.GetUserIP(request),
                        URLParams['FilterValue'], URLParams['Region'])
-        P.CounterOperate(QRC('TopicInfo.objects.get(ObjectID=%s)',
+        mMs.CounterOperate(QRC('TopicInfo.objects.get(ObjectID=%s)',
                              0, URLParams['FilterValue']), 'Hot', '+')
     # 获取指定文章对象
-    TopicObject = P.PermissionConfirm(URLParams['Part'], QRC(
+    TopicObject = A.PermissionConfirm(URLParams['Part'], QRC(
         DBConf.QueryString, None, URLParams['FilterValue']), request, URLParams)
     # 获取评论对象
-    CommentObjects = P.CommentPackage(P.PermissionConfirm(URLParams['Part'],
+    CommentObjects = P.CommentPackage(A.PermissionConfirm(URLParams['Part'],
                                                           QRC("CommentInfo.objects.filter(ObjectID=%s).order_by('-EditDate')",
                                                               None,
                                                               URLParams['FilterValue']),
@@ -59,7 +59,7 @@ def TopicContentInfoGet(request, DBConf, APPConf, URLParams):
 
 def SearchInfoGet(request, DBConf, APPConf, URLParams):
     # 获取符合条件的文章对象并且获取权限
-    ResultObjects = P.PermissionConfirm(URLParams['Part'] if URLParams['Part'] != 'User' else 'UserProfileInfo', QRC(
+    ResultObjects = A.PermissionConfirm(URLParams['Part'] if URLParams['Part'] != 'User' else 'UserProfileInfo', QRC(
         DBConf.QueryString, None, URLParams['FilterValue'], URLParams['FilterValue'], URLParams['Part']) if URLParams['Part'] in 'SpecialTopic' else QRC(
         DBConf.QueryString, None, URLParams['FilterValue']), request, URLParams)
     # 文章分页器
@@ -70,7 +70,7 @@ def SearchInfoGet(request, DBConf, APPConf, URLParams):
 
 
 def RollCallsInfoGet(request, DBConf, APPConf, URLParams):
-    RollCallObjects = P.PermissionConfirm(URLParams['Part'], QRC(
+    RollCallObjects = A.PermissionConfirm(URLParams['Part'], QRC(
         DBConf.QueryString, None, URLParams['FilterValue']), request, URLParams)
     PaginatorDict = P.PaginatorInfoGet(
         RollCallObjects, APPConf.TopicsPageLimit, URLParams)
@@ -80,16 +80,16 @@ def RollCallsInfoGet(request, DBConf, APPConf, URLParams):
 def RollCallInfoContentInfoGet(request, DBConf, APPConf, URLParams):
     # 分享链入统计
     if URLParams['ExtraParam'] == 'Share':
-        P.CounterOperate(QRC('RollCallInfo.objects.get(ObjectID=%s)',
+        mMs.CounterOperate(QRC('RollCallInfo.objects.get(ObjectID=%s)',
                              None, URLParams['FilterValue']), 'Share', '+')
     # 阅读量、热度统计
     if not QRC('ReadsIP.objects.filter(IP=%s,ObjectID=%s)', None, mMs.GetUserIP(request), URLParams['FilterValue']):
         P.ReadIPRecord(mMs.GetUserIP(request),
                        URLParams['FilterValue'], URLParams['Region'])
-        P.CounterOperate(QRC('RollCallInfo.objects.get(ObjectID=%s)',
+        mMs.CounterOperate(QRC('RollCallInfo.objects.get(ObjectID=%s)',
                              0, URLParams['FilterValue']), 'Hot', '+')
     # 获取指定文章对象
-    DialogueObject = P.PermissionConfirm(URLParams['Part'], QRC(
+    DialogueObject = A.PermissionConfirm(URLParams['Part'], QRC(
         DBConf.QueryString, None, URLParams['FilterValue']), request, URLParams)
     # 分页器
     # 返回上下文信息
@@ -98,12 +98,12 @@ def RollCallInfoContentInfoGet(request, DBConf, APPConf, URLParams):
 
 def UserProfileInfoGet(request, DBConf, APPConf, URLParams):
     # 获取用户主题信息
-    TargetUser = P.PermissionConfirm('UserProfileInfo', QRC(
+    TargetUser = A.PermissionConfirm('UserProfileInfo', QRC(
         'User.objects.get(id=%s)', None, URLParams['FilterValue']), request, URLParams)
     # 获取用户Selection内容
     # 直接获取文章
     if URLParams['Part'] in 'SpecialTopic':
-        Objects = P.PermissionConfirm(URLParams['Region'], QRC(
+        Objects = A.PermissionConfirm(URLParams['Region'], QRC(
             DBConf.QueryString, None, URLParams['FilterValue']), request, URLParams)
     elif URLParams['Part'] in ['Commit', 'Like', 'Dislike', 'Collect', 'Concern', 'Circusee']:
         Topics = []
@@ -112,7 +112,7 @@ def UserProfileInfoGet(request, DBConf, APPConf, URLParams):
                          'Part'] != 'Circusee' else 'RollCallInfo.objects.get(ObjectID=%s)', 0, item.ObjectID)
             if Object != None:
                 Topics.append(Object)
-        Objects = P.PermissionConfirm(
+        Objects = A.PermissionConfirm(
             URLParams['Region'], set(Topics), request, URLParams)
     elif URLParams['Part'] in ['Focus', 'Fans']:
         Objects = []

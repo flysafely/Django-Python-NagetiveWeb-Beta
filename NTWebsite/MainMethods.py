@@ -67,7 +67,7 @@ def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
     else:
         try:
             print('查询语句(带变量值):', FinalQueryString_For_MD5)
-            #print('查询语句(带变量名):', FinalQueryString)
+            print('查询语句(带变量名):', FinalQueryString)
             QueryResult = eval(FinalQueryString)
         except Exception as e:
             print('查询错误信息:', e) # 不直接raise Http404的原因是:部分get查询只是判断某些表中是否存在相应数据，不存在则忽略，不需要直接返回404

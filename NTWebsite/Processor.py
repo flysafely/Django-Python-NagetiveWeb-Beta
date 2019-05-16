@@ -77,7 +77,8 @@ def PublishTopic(request):
                 else:
                     # 不用QRC的原因是ContentText文章中的引号容易出现问题!
                     Topic = TopicInfo.objects.create(ObjectID=mMs.CreateUUIDstr(),
-                                                     Title=InsertDataDict['Title'],
+                                                     Title=InsertDataDict[
+                                                         'Title'],
                                                      Content=InsertDataDict[
                                                          'Content'],
                                                      Description=InsertDataDict[
@@ -90,7 +91,7 @@ def PublishTopic(request):
                 Topic.save()
                 return HttpResponse('ok')
             except Exception as e:
-                return HttpResponse(str(e)+"验证！")
+                return HttpResponse(str(e) + "验证！")
         else:
             return HttpResponse('login')
 
@@ -125,7 +126,7 @@ def PublishRollCall(request):
     else:
         return HttpResponse('login')
 
-
+'''
 def PermissionConfirm(type, Object, request, URLParams):
     ReturnList = []
     items = []
@@ -220,7 +221,7 @@ def PermissionConfirm(type, Object, request, URLParams):
                     'BlackList.objects.filter(Enforceder=%s,Handler=%s)', 0, TargetUser, request.user) else 'Block'
         ReturnList.append((item, Permission_Sizer))
     return ReturnList
-
+'''
 
 def ContextConfirm(request, **Params):
     NotificationCount = GetNotificationCount(request)
@@ -250,7 +251,7 @@ def CommentPackage(CommentObjects):
         for CommentObject in CommentObjects:
             if CommentObject[0].Parent:
                 ParentCommentObject = QRC(
-                    'CommentInfo.objects.get(CommentID=%s)', 0, CommentObject[0].Parent)
+                    'CommentInfo.objects.get(ObjectID=%s)', 0, CommentObject[0].Parent)
                 CommentCards.append(
                     ('1', ParentCommentObject, CommentObject))
             else:
@@ -265,30 +266,31 @@ def ReadIPRecord(IP, ID, type):
 
 
 def AttitudeOperate(request):
-    if request.method == 'POST':
-        Type = 'Topic' if request.POST.get(
-            'Type') in 'SpecialTopic' else request.POST.get('Type')
-        ObjectID = request.POST.get('ObjectID')
-        Title = QRC(Type + ('Info.objects.get(ObjectID=%s)' if Type != 'Comment' else 'Info.objects.get(CommentID=%s)'),
-                    None, ObjectID).Content[0:10]
-        Point = request.POST.get('Point')
-        if request.user.is_authenticated:
-            attitude = QRC(
-                'Attitude.objects.filter(ObjectID=%s,Type=%s,Publisher=%s)', 0, ObjectID, Type, request.user)
-            if attitude:
-                if attitude[0].Point == int(Point):
-                    attitude.delete()
-                    return HttpResponse('Cancel')
-                else:
-                    Attitude.objects.filter(
-                        ObjectID=ObjectID, Type=Type, Publisher=request.user).update(Point=int(Point))
-                    return HttpResponse('Become')
+    Type = 'Topic' if request.POST.get(
+        'Type') in 'SpecialTopic' else request.POST.get('Type')
+    Object = QRC(Type + 'Info.objects.get('+ ('Comment' if Type == 'Comment' else 'Object') +'ID=%s)', None, request.POST.get('ObjectID'))
+    Point = request.POST.get('Point')
+
+    if request.user.is_authenticated:
+        record = QRC(('Topic' if Type in 'SpecialTopic' else 'Comment') +
+                     'Attitude.objects.filter(ObjectID=%s,Type=%s,Publisher=%s)', 0, Object, Type, request.user)
+        if record and len(record) < 2:
+            if record[0].Point == int(Point):
+                record[0].delete()
+                return HttpResponse('Cancel')
             else:
-                Attitude.objects.create(
-                    ObjectID=ObjectID, Type=Type, Point=int(Point), Publisher=request.user)
-                return HttpResponse('Confirm')
+                record[0].Point=int(Point)
+                record[0].save()
+                return HttpResponse('Become')
+        elif record and len(record) > 2:
+            for item in record:
+                item.delete() 
         else:
-            return HttpResponse('login')
+            QRC(('Topic' if Type in 'SpecialTopic' else 'Comment') +
+                     'Attitude.objects.create(ObjectID=%s,Type=%s,Publisher=%s,Point=%s)', 0, Object, Type, request.user, int(Point))
+            return HttpResponse('Confirm')
+    else:
+        return HttpResponse('login')
 
 
 @csrf_exempt
@@ -326,11 +328,13 @@ def Replay(request):
         ParentID = request.POST.get('ParentID')
         if request.user.is_authenticated:
             if Type in 'SpecialTopic':
-                ReplayObject = QRC('CommentInfo.objects.create(CommentID=%s, ObjectID=%s,Content=%s,Parent=%s,Type=%s,Publisher=%s)',
+                ReplayObject = QRC('CommentInfo.objects.create(ObjectID=%s, ObjectID=%s,Content=%s,Parent=%s,Type=%s,Publisher=%s)',
                                    0, mMs.CreateUUIDstr(), ObjectID, Content, ParentID, Type, request.user)
 
-                #AddNotification(Type, ObjectID, ReplayObject.CommentID, QRC('CommentInfo.objects.get(CommentID=%s)', None,
-                #                                                            ParentID).Publisher if ParentID else QRC(Type + 'Info.objects.get(ObjectID=%s)', None, ObjectID).Publisher, request.user)
+                # AddNotification(Type, ObjectID, ReplayObject.ObjectID, QRC('CommentInfo.objects.get(ObjectID=%s)', None,
+                # ParentID).Publisher if ParentID else QRC(Type +
+                # 'Info.objects.get(ObjectID=%s)', None, ObjectID).Publisher,
+                # request.user)
             else:
                 RollCall = QRC(
                     'RollCallInfo.objects.get(ObjectID=%s)', None, ObjectID)
@@ -521,7 +525,8 @@ def BlackListOperation(request):
         if request.user.is_authenticated and Operation == 'add':
             try:
                 if not QRC('BlackList.objects.filter(Enforceder=%s, Handler=%s)', 0, UserObject, request.user):
-                    BlackList.objects.create(ID=mMs.CreateUUIDstr() ,Enforceder=UserObject, Handler=request.user)
+                    BlackList.objects.create(ID=mMs.CreateUUIDstr(
+                    ), Enforceder=UserObject, Handler=request.user)
                 return HttpResponse('add')
             except Exception as e:
                 return HttpResponse(e)

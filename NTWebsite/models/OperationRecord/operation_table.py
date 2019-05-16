@@ -7,23 +7,36 @@ from ..Comment import *
 
 import uuid
 
-# 文章立场统计
-
-
-class Attitude(models.Model):
+# 立场统计
+class TopicAttitude(models.Model):
     Publisher = models.ForeignKey(
         User, to_field='id', default=0, on_delete=models.CASCADE, verbose_name='用户')
-    Point = models.IntegerField(blank=False, verbose_name='立场代码')
+    Point = models.IntegerField(null=True,blank=False, verbose_name='立场代码')
     EditTime = models.DateTimeField(auto_now=True, verbose_name='时间')
-    ObjectID = models.CharField(
-        max_length=50, blank=True, verbose_name='ID')
-    Type = models.CharField(
-        max_length=30, blank=True, verbose_name='类型')
+    ObjectID = models.ForeignKey(TopicInfo,to_field='ObjectID',default=0, on_delete=models.CASCADE, verbose_name='文章ID')
+    Type = models.CharField(max_length=30, blank=True, verbose_name='类型')
 
     class Meta:
-        verbose_name = '赞/怼统计'
+        verbose_name = '文章赞/怼统计'
         # 末尾不加s
-        verbose_name_plural = '5.赞/怼统计'
+        verbose_name_plural = '5.文章赞/怼统计'
+        app_label = 'NTWebsite'
+
+    def __str__(self):
+        return self.Publisher.Nick
+
+class CommentAttitude(models.Model):
+    Publisher = models.ForeignKey(
+        User, to_field='id', default=0, on_delete=models.CASCADE, verbose_name='用户')
+    Point = models.IntegerField(null=True,blank=False, verbose_name='立场代码')
+    EditTime = models.DateTimeField(auto_now=True, verbose_name='时间')
+    ObjectID = models.ForeignKey(CommentInfo,to_field='ObjectID',default=0, on_delete=models.CASCADE, verbose_name='评论ID')
+    Type = models.CharField(max_length=30, blank=True, verbose_name='类型')
+
+    class Meta:
+        verbose_name = '评论赞/怼统计'
+        # 末尾不加s
+        verbose_name_plural = '5.评论赞/怼统计'
         app_label = 'NTWebsite'
 
     def __str__(self):
@@ -70,25 +83,51 @@ class UserLink(models.Model):
     def __str__(self):
         return self.UserBeLinked.Nick
 
-
-class Collection(models.Model):
-    """docstring for Collection"""
+# 收藏、关注、围观
+class Collect(models.Model):
+    """docstring for Collect"""
     Publisher = models.ForeignKey(
         User, to_field='id', default=0, on_delete=models.CASCADE, verbose_name='用户名')
-    Type = models.CharField(
-        max_length=30, blank=True, default='T', verbose_name='收藏类型')
-    ObjectID = models.CharField(
-        max_length=12, blank=False, verbose_name='文章ID')
+    ObjectID = models.ForeignKey(TopicInfo, to_field='ObjectID', default=0, on_delete=models.CASCADE,verbose_name='文章ID')
     CollectTime = models.DateField(auto_now=True, verbose_name='时间')
 
     class Meta:
-        verbose_name = '收藏关注统计'
-        verbose_name_plural = '8.收藏关注统计'
+        verbose_name = '收藏统计'
+        verbose_name_plural = '8.收藏统计'
         app_label = 'NTWebsite'
 
     def __str__(self):
         return self.Publisher.Nick
 
+class Concern(models.Model):
+    """docstring for Concern"""
+    Publisher = models.ForeignKey(
+        User, to_field='id', default=0, on_delete=models.CASCADE, verbose_name='用户名')
+    ObjectID = models.ForeignKey(TopicInfo, to_field='ObjectID', default=0, on_delete=models.CASCADE,verbose_name='专题ID')
+    CollectTime = models.DateField(auto_now=True, verbose_name='时间')
+
+    class Meta:
+        verbose_name = '关注统计'
+        verbose_name_plural = '8.关注统计'
+        app_label = 'NTWebsite'
+
+    def __str__(self):
+        return self.Publisher.Nick
+
+class Circusee(models.Model):
+    """docstring for Circusee"""
+    Publisher = models.ForeignKey(
+        User, to_field='id', default=0, on_delete=models.CASCADE, verbose_name='用户名')
+    ObjectID = models.ForeignKey(RollCallInfo, to_field='ObjectID', default=0, on_delete=models.CASCADE,verbose_name='点名ID')
+    CollectTime = models.DateField(auto_now=True, verbose_name='时间')
+
+    class Meta:
+        verbose_name = '围观统计'
+        verbose_name_plural = '8.围观统计'
+        app_label = 'NTWebsite'
+
+    def __str__(self):
+        return self.Publisher.Nick
 
 class PublisherList(models.Model):
     Publisher = models.ForeignKey(

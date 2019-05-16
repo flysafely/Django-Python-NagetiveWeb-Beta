@@ -6,7 +6,7 @@ class CommentInfoAdminView(object):
     """docstring for CommentInfo"""
     list_display = ('Content', 'Publisher',
                     'EditDate', 'Type')
-    search_fields = ['Content','Publisher__Nick','CommentID']
+    search_fields = ['Content','Publisher__Nick','ObjectID']
 
 # --------------Configuration-----------------
 class ConfigParamsAdminView(object):
@@ -22,7 +22,11 @@ class FilterQueryStringAdminView(object):
     list_display = ('Name',)
 
 # -------------------Opreation------------
-class AttitudeAdminView(object):
+class TopicAttitudeAdminView(object):
+    """docstring for Attitude"""
+    list_display = ('Publisher',)
+
+class CommentAttitudeAdminView(object):
     """docstring for Attitude"""
     list_display = ('Publisher',)
 
@@ -34,9 +38,17 @@ class UserLinkAdminView(object):
     """docstring for ArticleComment"""
     list_display = ('UserBeLinked', 'UserLinking', 'LinkTime')  
 
-class CollectionAdminView(object):
-    """docstring for Collection"""
-    list_display = ('Publisher', 'Type', 'ObjectID', 'CollectTime')  
+class CollectAdminView(object):
+    """docstring for Collect"""
+    list_display = ('Publisher', 'ObjectID', 'CollectTime')  
+
+class ConcernAdminView(object):
+    """docstring for Concern"""
+    list_display = ('Publisher', 'ObjectID', 'CollectTime')  
+
+class CircuseeAdminView(object):
+    """docstring for Circusee"""
+    list_display = ('Publisher', 'ObjectID', 'CollectTime')  
 
 class PublisherListAdminView(object):
     list_display = ('Order',)      
@@ -101,10 +113,13 @@ xadmin.site.register(CommentInfo,CommentInfoAdminView)
 xadmin.site.register(ConfigParams,ConfigParamsAdminView)
 xadmin.site.register(PreferredConfigName,PreferredConfigNameAdminView)
 xadmin.site.register(FilterQueryString,FilterQueryStringAdminView)
-xadmin.site.register(Attitude,AttitudeAdminView)
+xadmin.site.register(TopicAttitude,TopicAttitudeAdminView)
+xadmin.site.register(CommentAttitude,CommentAttitudeAdminView)
 xadmin.site.register(ReadsIP,ReadsIPAdminView)
 xadmin.site.register(UserLink,UserLinkAdminView)
-xadmin.site.register(Collection,CollectionAdminView)
+xadmin.site.register(Collect,CollectAdminView)
+xadmin.site.register(Concern,ConcernAdminView)
+xadmin.site.register(Circusee,CircuseeAdminView)
 xadmin.site.register(PublisherList,PublisherListAdminView)
 xadmin.site.register(Notification,NotificationAdminView)
 xadmin.site.register(BlackList,BlackListAdminView)

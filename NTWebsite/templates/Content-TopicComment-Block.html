@@ -1,7 +1,7 @@
 {% if not Paginator_num_pages == 0 %}
 <div id="anchorDiv" class="Comments-container">
     {% for Card in ExportList_Cards %}
-    <div id="{{Card.2.0.CommentID}}" class="CommentsV2 CommentsV2--withEditor CommentsV2-footer DivTopicCommit">
+    <div id="{{Card.2.0.ObjectID}}" class="CommentsV2 CommentsV2--withEditor CommentsV2-footer DivTopicCommit">
         <div class="FeedSource">
             {% include 'Comment-PublisherInfo-Block.html' %}
             <div class="FeedSource-tagline">
