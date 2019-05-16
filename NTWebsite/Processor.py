@@ -58,7 +58,6 @@ def PublishTopic(request):
             Themes = request.POST.get('Themes')
             InsertDataDict['Category'] = QRC(
                 'TopicCategoryInfo.objects.get(Name=%s)', None, InsertDataDict['Category'])
-
             # 将主题按&分割后使用get_or_create有就返回，没有就创建了返回
             ThemeObjects = []
             for Theme in Themes.split('&'):
@@ -77,22 +76,21 @@ def PublishTopic(request):
                     Topic = TopicInfo.objects.get(ObjectID=TopicID)
                 else:
                     # 不用QRC的原因是ContentText文章中的引号容易出现问题!
-                    Topic = TopicInfo.objects.create(Title=InsertDataDict['Title'],
+                    Topic = TopicInfo.objects.create(ObjectID=mMs.CreateUUIDstr(),
+                                                     Title=InsertDataDict['Title'],
                                                      Content=InsertDataDict[
                                                          'Content'],
                                                      Description=InsertDataDict[
                                                          'Description'],
                                                      Category=InsertDataDict[
                                                          'Category'],
-                                                     Publisher=request.user)
+                                                     Publisher=request.user,)
                 Topic.Theme.clear()
                 Topic.Theme.add(*ThemeObjects)
                 Topic.save()
-                CounterOperate(QRC('User.objects.get(id=%s)', 0,
-                                   request.user.id), 'TCount', '+')
                 return HttpResponse('ok')
             except Exception as e:
-                return HttpResponse(str(e))
+                return HttpResponse(str(e)+"验证！")
         else:
             return HttpResponse('login')
 
@@ -110,13 +108,10 @@ def PublishRollCall(request):
                 return HttpResponse("用户:'" + TargetUserNick + "'" + '已经屏蔽您!')
             else:
                 try:
-                    NewRollCall = QRC('RollCallInfo.objects.create(Title=%s,Publisher=%s,Target=%s)', 0,
-                                      RollCallTitle, request.user, QRC('User.objects.get(Nick=%s)', None, TargetUserNick))
+                    NewRollCall = QRC('RollCallInfo.objects.create(Title=%s,Publisher=%s,Target=%s,ObjectID=%s)', 0,
+                                      RollCallTitle, request.user, QRC('User.objects.get(Nick=%s)', None, TargetUserNick), mMs.CreateUUIDstr())
                     NewDialogue = QRC(
-                        'RollCallDialogue.objects.create(RollCallID=%s,Publisher=%s,Content=%s)', 0, NewRollCall, request.user, RollCallContent)
-
-                    CounterOperate(QRC('RollCallInfo.objects.get(ObjectID=%s)', 0,
-                                       NewRollCall.ObjectID), 'Comment', '+')
+                        'RollCallDialogue.objects.create(RollCallID=%s,Publisher=%s,Content=%s,ObjectID=%s)', 0, NewRollCall, request.user, RollCallContent, mMs.CreateUUIDstr())
                     AddNotification('RollCall', NewRollCall.ObjectID, NewDialogue.ObjectID, QRC(
                         'User.objects.get(Nick=%s)', None, TargetUserNick), request.user)
                     return HttpResponse('publishok')
@@ -211,7 +206,7 @@ def PermissionConfirm(type, Object, request, URLParams):
                              None, URLParams['FilterValue'])
             if TargetUser == request.user:
                 Permission_Sizer['VisitorIdentity'] = 'Self'
-                Permission_Sizer['VisitorOAuth-Read'] = ''
+                Permission_Sizer['VisitorOAuth-Read'] = '1'
                 Permission_Sizer['VisitorOAuth-Edit'] = ''
                 Permission_Sizer['VisitorOAuth-Link'] = ''
                 Permission_Sizer['VisitorOAuth-Block'] = ''
@@ -235,6 +230,7 @@ def ContextConfirm(request, **Params):
     PublisherList = QRC("PublisherList.objects.all()", None)
     # 生成上下文字典
     ContextDict = {"Layout_Sizer": Params['URLParams'],
+                   "Main_URL_Sizer": {'Topic': ('is-active', '', ''), 'RollCall': ('', 'is-active', ''), 'SpecialTopic': ('', '', 'is-active'), 'UserProfile': ('', '', '')}[Params['URLParams']['Region']],
                    "ExportItem_UserInfo": Params['User'] if 'User' in Params else '',
                    "ExportList_Topic": Params['Object'] if 'Object' in Params else '',
                    "ExportList_Cards": Params['PaginatorDict']['ObjectList'] if 'PaginatorDict' in Params else '',
@@ -268,13 +264,6 @@ def ReadIPRecord(IP, ID, type):
     ReadsIP.objects.get_or_create(IP=IP, ObjectID=ID, Type=type)
 
 
-def CounterOperate(object, field, method):
-    print("***************")
-    exec("object.%s = F('%s')%s1" % (field, field, method))
-    exec('object.save()')
-    return exec('object.refresh_from_db()')
-
-
 def AttitudeOperate(request):
     if request.method == 'POST':
         Type = 'Topic' if request.POST.get(
@@ -289,22 +278,14 @@ def AttitudeOperate(request):
             if attitude:
                 if attitude[0].Point == int(Point):
                     attitude.delete()
-                    CounterOperate(QRC(Type + ('Info.objects.get(ObjectID=%s)' if Type != 'Comment' else 'Info.objects.get(CommentID=%s)'), 0,
-                                       ObjectID), 'Like' if int(Point) == 1 else 'Dislike', '-')
                     return HttpResponse('Cancel')
                 else:
                     Attitude.objects.filter(
                         ObjectID=ObjectID, Type=Type, Publisher=request.user).update(Point=int(Point))
-                    CounterOperate(QRC(Type + ('Info.objects.get(ObjectID=%s)' if Type != 'Comment' else 'Info.objects.get(CommentID=%s)'), 0,
-                                       ObjectID), 'Like' if int(Point) == 1 else 'Dislike', '+')
-                    CounterOperate(QRC(Type + ('Info.objects.get(ObjectID=%s)' if Type != 'Comment' else 'Info.objects.get(CommentID=%s)'), 0, ObjectID),
-                                   'Like' if abs(int(Point) - 1) == 1 else 'Dislike', '-')
                     return HttpResponse('Become')
             else:
                 Attitude.objects.create(
                     ObjectID=ObjectID, Type=Type, Point=int(Point), Publisher=request.user)
-                CounterOperate(QRC(Type + ('Info.objects.get(ObjectID=%s)' if Type != 'Comment' else 'Info.objects.get(CommentID=%s)'), 0,
-                                   ObjectID), 'Like' if int(Point) == 1 else 'Dislike', '+')
                 return HttpResponse('Confirm')
         else:
             return HttpResponse('login')
@@ -345,22 +326,19 @@ def Replay(request):
         ParentID = request.POST.get('ParentID')
         if request.user.is_authenticated:
             if Type in 'SpecialTopic':
-                ReplayObject = QRC('CommentInfo.objects.create(ObjectID=%s,Content=%s,Parent=%s,Type=%s,Publisher=%s)',
-                                   0, ObjectID, Content, ParentID, Type, request.user)
-                AddNotification(Type, ObjectID, ReplayObject.CommentID, QRC('CommentInfo.objects.get(CommentID=%s)', None,
-                                                                            ParentID).Publisher if ParentID else QRC(Type + 'Info.objects.get(ObjectID=%s)', None, ObjectID).Publisher, request.user)
+                ReplayObject = QRC('CommentInfo.objects.create(CommentID=%s, ObjectID=%s,Content=%s,Parent=%s,Type=%s,Publisher=%s)',
+                                   0, mMs.CreateUUIDstr(), ObjectID, Content, ParentID, Type, request.user)
+
+                #AddNotification(Type, ObjectID, ReplayObject.CommentID, QRC('CommentInfo.objects.get(CommentID=%s)', None,
+                #                                                            ParentID).Publisher if ParentID else QRC(Type + 'Info.objects.get(ObjectID=%s)', None, ObjectID).Publisher, request.user)
             else:
                 RollCall = QRC(
                     'RollCallInfo.objects.get(ObjectID=%s)', None, ObjectID)
-                ReplayObject = QRC('RollCallDialogue.objects.create(RollCallID=%s,Content=%s,Display=%s,Publisher=%s)',
-                                   0, RollCall, Content, '' if RollCall.Publisher == request.user else 'right', request.user)
+                ReplayObject = QRC('RollCallDialogue.objects.create(ObjectID=%s,RollCallID=%s,Content=%s,Display=%s,Publisher=%s)',
+                                   0, mMs.CreateUUIDstr(), RollCall, Content, '' if RollCall.Publisher == request.user else 'right', request.user)
                 if not RollCall.Publisher == request.user:
                     AddNotification(Type, ObjectID, ReplayObject.ObjectID, QRC('CommentInfo.objects.get(ObjectID=%s)', None,
                                                                                ParentID).Publisher if ParentID else QRC(Type + 'Info.objects.get(ObjectID=%s)', None, ObjectID).Publisher, request.user)
-            CounterOperate(QRC('User.objects.get(id=%s)', 0,
-                               request.user.id), temp_Map[Type], '+')
-            CounterOperate(
-                QRC(Type + 'Info.objects.get(ObjectID=%s)', 0, ObjectID), 'Comment', '+')
             return HttpResponse('replayok')
         else:
             return HttpResponse('login')
@@ -374,16 +352,11 @@ def Collect(request):
             result = QRC(
                 'Collection.objects.filter(Publisher=%s,Type=%s,ObjectID=%s)', 0, request.user, Type, ObjectID)
             if not result:
-
                 QRC('Collection.objects.create(Publisher=%s,Type=%s,ObjectID=%s)',
                     0, request.user, Type, ObjectID)
-                CounterOperate(
-                    QRC((Type if Type not in 'SpecialTopic' else 'Topic') + 'Info.objects.get(ObjectID=%s)', 0, ObjectID), 'Collect', '+')
                 return HttpResponse('collect')
             else:
                 result[0].delete()
-                CounterOperate(
-                    QRC((Type if Type not in 'SpecialTopic' else 'Topic') + 'Info.objects.get(ObjectID=%s)', 0, ObjectID), 'Collect', '-')
                 return HttpResponse('cancel')
         else:
             return HttpResponse('login')
@@ -394,9 +367,9 @@ def StatisticalDataUpdata(objectStr, methodDsc):
     exec(objectStr + '.save()')
 
 
-def GetParam(request):
-    if request.method == "POST":
-        KeyWord = request.POST.get('KeyWord')
+def Param(request):
+    if request.method == "GET":
+        KeyWord = request.GET.get('KeyWord')
         if KeyWord == 'SecretKey':
             APPConf = AC()
             jsondata = json.dumps(
@@ -440,7 +413,7 @@ def Regist(request):
                 username, Nick=usernickname, password=password, email=email)
 
             newUser.Avatar = mMs.UserAvatarOperation(request.POST.get(
-                'userimagedata'), request.POST.get('userimageformat'),APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL,''))['Path']
+                'userimagedata'), request.POST.get('userimageformat'), APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL, ''))['Path']
             newUser.save()
             return HttpResponse('ok')
 
@@ -461,13 +434,15 @@ def Logout(request):
 
 def AddNotification(Region, ObjectID, AnchorID, TargetUser, SourceUser):
     try:
-        QRC('Notification.objects.create(Region=%s, ObjectID=%s, AnchorID=%s, TargetUser=%s, SourceUser=%s)',
-            0, Region, ObjectID, AnchorID, TargetUser, SourceUser)
+        QRC('Notification.objects.create(ID=%s, Region=%s, ObjectID=%s, AnchorID=%s, TargetUser=%s, SourceUser=%s)',
+            0, mMs.CreateUUIDstr(), Region, ObjectID, AnchorID, TargetUser, SourceUser)
     except Exception as e:
         raise e
 
 
-def GetNotificationInfo(request):
+@csrf_exempt
+def NotificationInfo(request):
+    print(request.method)
     if request.method == 'GET':
         if request.user.is_authenticated:
             try:
@@ -497,13 +472,9 @@ def GetNotificationInfo(request):
                 raise e
         else:
             return HttpResponse('login')
-
-
-@csrf_exempt
-def RemoveNotificationInfo(request):
-    if request.method == 'POST':
-        if request.POST.get('IDs'):
-            IDs = request.POST.get('IDs').split(',')
+    else:
+        if RequestDataUnbox(request).get('IDs'):
+            IDs = RequestDataUnbox(request).get('IDs').split(',')
             if request.user.is_authenticated:
                 if len(IDs) == 1:
                     try:
@@ -518,6 +489,12 @@ def RemoveNotificationInfo(request):
                     return HttpResponse('AllDeleteOk')
         else:
             return HttpResponse('DeleteFail')
+
+
+def RequestDataUnbox(request):
+    qd = QueryDict(request.body)
+    data_dict = {k: v[0] if len(v) == 1 else v for k, v in qd.lists()}
+    return data_dict
 
 
 def GetPageNumber(Region, ObjectID, AnchorID):
@@ -543,8 +520,8 @@ def BlackListOperation(request):
         UserObject = QRC('User.objects.get(id=%s)', None, UserID)
         if request.user.is_authenticated and Operation == 'add':
             try:
-                BlackList.objects.get_or_create(
-                    Enforceder=UserObject, Handler=request.user)
+                if not QRC('BlackList.objects.filter(Enforceder=%s, Handler=%s)', 0, UserObject, request.user):
+                    BlackList.objects.create(ID=mMs.CreateUUIDstr() ,Enforceder=UserObject, Handler=request.user)
                 return HttpResponse('add')
             except Exception as e:
                 return HttpResponse(e)
@@ -571,14 +548,10 @@ def UserLink(request):
                     QRC('UserLink.objects.get_or_create(UserBeLinked=%s,UserLinking=%s)',
                         0, UserObject, request.user)
                     #UserLink.objects.get_or_create(UserBeLinked=UserObject, UserLinking=request.user)
-                    CounterOperate(UserObject, 'FansCount', '+')
-                    CounterOperate(request.user, 'FoucusCount', '+')
                     return HttpResponse('add')
                 elif Operation == 'delete':
                     QRC('UserLink.objects.get(UserBeLinked=%s,UserLinking=%s)',
                         0, UserObject, request.user).delete()
-                    CounterOperate(UserObject, 'FansCount', '-')
-                    CounterOperate(request.user, 'FoucusCount', '-')
                     return HttpResponse('delete')
             except Exception as e:
                 return HttpResponse(e)
@@ -614,3 +587,7 @@ def UserProfileUpdate(request):
             userObject.Constellation = UserConstellation
             userObject.save()
             return HttpResponse(UploadImage_Operated['Status'])
+
+
+if __name__ == "__main__":
+    print('%s' % 'abc')

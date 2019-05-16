@@ -29,32 +29,28 @@ urlpatterns = [
     #path('admin/', admin.site.urls),
     path('admin19901101/', xadmin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),    
-    #path('RollCall', V.RollCallsInfoGet),
-    #path('Topic', V.TopicsInfoGet),
     # Processor中没有返回页面的操作
     path('', P.indexView),
     path('logout/', P.Logout),
-    path('PublishTopic/', P.PublishTopic),
-    path('AttitudeOperate/', P.AttitudeOperate),
-    path('PublishRollCall/', P.PublishRollCall),
-    path('UserProfileUpdate/', P.UserProfileUpdate),
-    path('UserLink/', P.UserLink),
-    path('TipOff/', P.TipOff),
-    path('Collect/', P.Collect),
-    path('Replay/', P.Replay),
-    path('GetNotificationInfo/', P.GetNotificationInfo),
-    path('RemoveNotificationInfo/', P.RemoveNotificationInfo),
+    path('PublishTopic/', P.PublishTopic),# RUST POST
+    path('AttitudeOperate/', P.AttitudeOperate),# RUST POST
+    path('PublishRollCall/', P.PublishRollCall),# RUST POST
+    path('UserProfileUpdate/', P.UserProfileUpdate),# RUST POST
+    path('UserLink/', P.UserLink),# RUST POST
+    path('TipOff/', P.TipOff),# RUST POST
+    path('Collect/', P.Collect),# RUST POST
+    path('Replay/', P.Replay),# RUST POST
+    path('NotificationInfo/', P.NotificationInfo),
     path('BlackListOperation/', P.BlackListOperation),
-    path('regist/', P.Regist),
-    path('GetParam/', P.GetParam),
-    path('FetchTopic/', P.FetchTopic),
-    re_path(r'^%s(?P<path>.*)$' % re.escape(settings.MEDIA_URL.lstrip('/')), serve, kwargs={'document_root':settings.MEDIA_ROOT}),
-    re_path(r'^(?P<Region>.*)/(?P<Part>.*)/(?P<FilterValue>.*)/(?P<Order>.*)/(?P<PageNumber>.*)/(?P<ExtraParam>.*)$', V.Launcher),# main URL
-    re_path(r'^login/.*$', P.Login),
-    re_path(r'^uploadImg/.*', P.UploadImg),
-    re_path(r'^favicon.ico$',RedirectView.as_view(url=r'media/favicon.ico'))
+    path('regist/', P.Regist),# RUST POST
+    path('Param/', P.Param),
+    path('FetchTopic/', P.FetchTopic),# RUST GET
+    re_path(r'^%s(?P<path>.*)$' % re.escape(settings.MEDIA_URL.lstrip('/')), serve, kwargs={'document_root':settings.MEDIA_ROOT}),# RUST GET
+    re_path(r'^(?P<Region>.*)/(?P<Part>.*)/(?P<FilterValue>.*)/(?P<Order>.*)/(?P<PageNumber>.*)/(?P<ExtraParam>.*)$', V.Launcher),# main URL # RUST
+    re_path(r'^login/.*$', P.Login),# RUST GET
+    re_path(r'^uploadImg/.*', P.UploadImg),# RUST POST
+    re_path(r'^favicon.ico$',RedirectView.as_view(url=r'media/favicon.ico'))# RUST GET
 ]
-
 
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # 不在urlpatterns后+ 的原因是，urlpatterns顺序是有影响的，位置在前的path或者re_path先匹配

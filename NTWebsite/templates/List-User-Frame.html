@@ -1,80 +1,80 @@
 {% load CustomFuncTags %}
-<div class="TopstoryMain" style="width:100%;margin:5px 0px 0px 0px;">
+<div class="TopstoryMain DivUserList">
     <div class="CardList">
         {% for Card in ExportList_Cards %}
         {% if Layout_Sizer|GetDictValue:'Part' == 'Focus' %}
-        <div id="{{Card.UserBeLinked.Nick}}" class="Card TopstoryItem" style="width:49.75%;display:inline-block;margin:0px 0px 0px 0px;">
-            <div style="display:inline-block;margin:0px 0px 0px 10px;">
-                <img src="{{MEDIA_URL}}{{Card.UserBeLinked.Avatar}}" style="position:absolute;top:50%;transform: translate(-7%,-35%);margin:-10px 0px 0px 0px;cursor:pointer;-webkit-border-radius: 35px;box-shadow:0 0 2px 0 #000000;" width="70" height="70" onclick="javascript:window.location.href='/UserProfile/Topic/{{Card.UserBeLinked.id}}/LE/1/'">
+        <div id="{{Card.UserBeLinked.Nick}}" class="Card TopstoryItem DivUserListCard">
+            <div class="DivUserListImage">
+                <img class="AvatarUserList" src="{{MEDIA_URL}}{{Card.UserBeLinked.Avatar}}" onclick="javascript:window.location.href='/UserProfile/Topic/{{Card.UserBeLinked.id}}/LE/1/'">
             </div>
-            <div style="display:inline-block;margin:0px 0px 0px 85px;width:260px;">
+            <div class="DivUserListDetail">
                 <div>
-                    <a href="/UserProfile/Topic/{{Card.UserBeLinked.id}}/LE/1" style="font-size:18px;text-decoration:none;"><b>{{Card.UserBeLinked.Nick}}</b></a>
+                    <button onclick="javascript:window.location.href='/UserProfile/Topic/{{Card.UserBeLinked.id}}/LE/1/'" class="BtnUserListNick NoDecoration"><b>{{Card.UserBeLinked.Nick}}</b></button>
                 </div>
-                <div style="display:inline-block;padding:4px 0px 0px 0px;font-size:14px;color:#646464;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:90%;">
+                <div class="DesLabelUserList">
                     {{Card.UserBeLinked.Description}}
                 </div>
                 <div>
-                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                    <div class="LabelUserList">
                         {{Card.UserBeLinked.TCount}}文章 ·
                     </div>
-                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                    <div class="LabelUserList">
                         {{Card.UserBeLinked.TRCount}}回答 ·
                     </div>
-                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                    <div class="LabelUserList">
                         {{Card.UserBeLinked.FansCount}}关注者
                     </div>
                 </div>
             </div>
             <div style="display:inline-block;margin:0px 0px 0px 0px;">
-                <button id='LinkButton' class="Button Button--blue" style="position:absolute;top:50%;transform:translate(-20%,-50%);width:90px;margin:0px 0px 0px 0px;font-size:13px;" onclick="javascript:UserLink('/UserLink/','{{ csrf_token }}','{{Card.UserBeLinked.id}}','delete')">取消关注</button>
+                <button id='LinkButton' class="Button Button--blue BtnCancelFocus" onclick="javascript:UserLink('/UserLink/','{{ csrf_token }}','{{Card.UserBeLinked.id}}','delete')">取消关注</button>
             </div>
         </div>
         {% elif Layout_Sizer|GetDictValue:'Part' == 'Fans' %}
-        <div id="{{Card.UserLinking.Nick}}" class="Card TopstoryItem" style="width:49.75%;display:inline-block;margin:0px 0px 0px 0px;">
-            <div style="display:inline-block;margin:0px 0px 0px 10px;">
-                <img src="{{Card.UserLinking.Avatar}}" style="position:absolute;top:50%;transform: translate(-7%,-35%);margin:-10px 0px 0px 0px;cursor:pointer;-webkit-border-radius: 35px;box-shadow:0 0 2px 0 #000000;" width="70" height="70" onclick="javascript:window.location.href='/UserProfile/Topic/{{Card.UserLinking.id}}/LE/1/'">
+        <div id="{{Card.UserLinking.Nick}}" class="Card TopstoryItem DivUserListCard">
+            <div class="DivUserListImage">
+                <img src="{{Card.UserLinking.Avatar}}" class="AvatarUserList" onclick="javascript:window.location.href='/UserProfile/Topic/{{Card.UserLinking.id}}/LE/1/'">
             </div>
-            <div style="display:inline-block;margin:0px 0px 0px 85px;width:260px;">
+            <div class="DivUserListDetail">
                 <div>
-                    <a href="/UserProfile/Topic/{{Card.UserLinking.id}}/LE/1" style="font-size:18px;text-decoration:none;"><b>{{Card.UserLinking.Nick}}</b></a>
+                    <button onclick="javascript:window.location.href='/UserProfile/Topic/{{Card.UserLinking.id}}/LE/1/'" class="BtnUserListNick NoDecoration"><b>{{Card.UserLinking.Nick}}</b></button>
                 </div>
-                <div style="display:inline-block;padding:4px 0px 0px 0px;font-size:14px;color:#646464;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:90%;">
+                <div class="DesLabelUserList">
                     {{Card.UserLinking.Description}}
                 </div>
                 <div>
-                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                    <div class="LabelUserList">
                         {{Card.UserLinking.TCount}}文章 ·
                     </div>
-                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                    <div class="LabelUserList">
                         {{Card.UserLinking.TRCount}}回答 ·
                     </div>
-                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                    <div class="LabelUserList">
                         {{Card.UserLinking.FansCount}}关注者
                     </div>
                 </div>
             </div>
         </div>
         {% elif Layout_Sizer|GetDictValue:'Part' == 'User' %}
-        <div id="{{Card.0.Nick}}" class="Card TopstoryItem" style="width:49.65%;display:inline-block;margin:0px 0px 0px 0px;">
-            <div style="display:inline-block;margin:0px 0px 0px 10px;">
-                <img src="{{MEDIA_URL}}{{Card.0.Avatar}}" style="position:absolute;top:50%;transform: translate(-7%,-35%);margin:-10px 0px 0px 0px;cursor:pointer;-webkit-border-radius: 35px;box-shadow:0 0 2px 0 #000000;" width="70" height="70" onclick="javascript:window.location.href='/UserProfile/Topic/{{Card.0.id}}/LE/1/'">
+        <div id="{{Card.0.Nick}}" class="Card TopstoryItem DivUserListCard">
+            <div class="DivUserListImage">
+                <img src="{{MEDIA_URL}}{{Card.0.Avatar}}" class="AvatarUserList" onclick="javascript:window.location.href='/UserProfile/Topic/{{Card.0.id}}/LE/1/'">
             </div>
-            <div style="display:inline-block;margin:0px 0px 0px 85px;width:260px;">
+            <div class="DivUserListDetail">
                 <div>
-                    <a href="/UserProfile/Topic/{{Card.0.id}}/LE/1" style="font-size:18px;text-decoration:none;"><b>{{Card.0.Nick}}</b></a>
+                    <button onclick="javascript:window.location.href='/UserProfile/Topic/{{Card.0.id}}/LE/1/'" class="BtnUserListNick NoDecoration"><b>{{Card.0.Nick}}</b></button>
                 </div>
-                <div style="display:inline-block;padding:4px 0px 0px 0px;font-size:14px;color:#646464;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:90%;">
+                <div class="DesLabelUserList">
                     {{Card.0.Description}}
                 </div>
                 <div>
-                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                    <div class="LabelUserList">
                         {{Card.0.TCount}}文章 ·
                     </div>
-                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                    <div class="LabelUserList">
                         {{Card.0.TRCount}}回答 ·
                     </div>
-                    <div style="font-size:14px;color:#8590A6;display:inline-block;">
+                    <div class="LabelUserList">
                         {{Card.0.FansCount}}关注者
                     </div>
                 </div>

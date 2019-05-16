@@ -1,10 +1,8 @@
-<div style="margin:0px 0px 10px 0px;">
-    <div class="FeedSource">
-        <div class="FeedSource-firstline" style="margin:0px 5px 5px 0px;display:block;overflow: hidden;text-overflow:ellipsis; white-space:nowrap;">
-            <img width=24 height=24 style="cursor:pointer;-webkit-border-radius: 12px;" src="{{MEDIA_URL}}{{Card.0.Publisher.Avatar}}">
-            <a title="{{Card.0.Publisher.id}}" style="color:#333333;font-size:16px;text-decoration:none;" href="/UserProfile/Topic/{{Card.0.Publisher.id}}/LE/1"><b>{{Card.0.Publisher}}</b></a>
-            <span style="padding: 0px 2px 0px 2px"><b>·</b></span>
-            <span style="font-size:14px;color:#8590A6;width:60%;">{{Card.0.Publisher.Description}}</span>
-        </div>
+<div class="FeedSource">
+    <div class="FeedSource-firstline">
+        <img class="AvatarBase" src="{{MEDIA_URL}}{{Card.0.Publisher.Avatar}}" onclick="javascript:window.location.href='/UserProfile/Topic/{{Card.0.Publisher.id}}/LE/1/'">        		
+        <button title="{{Card.0.Publisher.id}}" class="Button Button--plain NoDecoration NickComment" onclick="javascript:window.location.href='/UserProfile/Topic/{{Card.0.Publisher.id}}/LE/1/'"><b>{{Card.0.Publisher}}</b></button>
+        <span class="UserDesDot"><b>·</b></span>
+        <span class="UserDesComment">{{Card.0.Publisher.Description}}</span>
     </div>
 </div>

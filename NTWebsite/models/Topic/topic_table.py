@@ -44,8 +44,8 @@ class TopicCategoryInfo(models.Model):
 
 class TopicInfo(models.Model):
     """docstring for TopicInfo"""
-    ObjectID = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, editable=False, verbose_name='文章ID')
+    ObjectID = models.CharField(
+        primary_key=True, max_length=12,default='', editable=True, verbose_name='文章ID')
     # ID = models.CharField(
     #    primary_key=True, auto_created=True, max_length=12, default=str(uuid.uuid4())[-12:], verbose_name='文章ID')
     Title = models.CharField(

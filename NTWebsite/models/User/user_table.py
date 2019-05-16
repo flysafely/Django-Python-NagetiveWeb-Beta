@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.models import AbstractUser
-import uuid
 
 
 class User(AbstractUser):
@@ -20,7 +19,7 @@ class User(AbstractUser):
         max_length=10, blank=True, null=True, default='天蝎座', verbose_name='星座')
 
     FansCount = models.IntegerField(verbose_name='关注者数量', default=0)
-    FoucusCount = models.IntegerField(verbose_name='关注数量', default=0)
+    FocusCount = models.IntegerField(verbose_name='关注数量', default=0)
     TCount = models.IntegerField(verbose_name='文章发布数量', default=0)
     SCount = models.IntegerField(
         verbose_name='专题发布数量', default=0)

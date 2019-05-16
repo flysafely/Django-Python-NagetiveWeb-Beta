@@ -7,8 +7,8 @@ import uuid
 class CommentInfo(models.Model):
     """docstring for CommentInfo"""
 
-    CommentID = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, editable=False, verbose_name='评论ID')
+    CommentID = models.CharField(
+        primary_key=True, max_length=12,default='', editable=True, verbose_name='评论ID')
     ObjectID = models.CharField(
         max_length=100, editable=True, default='', verbose_name='文章ID')
     Content = models.TextField(verbose_name="评论内容")

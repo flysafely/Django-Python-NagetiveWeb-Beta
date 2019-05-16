@@ -7,3 +7,6 @@ dump.rdb
 *.log
 *.png
 *.jpg
+*.bak
+*.bak2
+*.pem.

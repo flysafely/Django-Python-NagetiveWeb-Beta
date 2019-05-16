@@ -73,6 +73,7 @@ class TopicThemeInfoAdminView(object):
 class TopicCategoryInfoAdminView(object):
     """docstring for TopicCategoryInfo"""
     list_display = ('Name',)
+    list_editable =('Name','SVG')
 
 class TopicInfoAdminView(object):
     """docstring for TopicInfo"""

@@ -2,16 +2,14 @@
 <ul class="GlobalSideBar-categoryList SideBarScroller">
     {% for category in ExportList_Categorys %}
     <li class="GlobalSideBar-categoryItem">
-        <a style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Category/{{category.Name}}/LE/1" type="button" class="Button Button--plain" style="color: rgb(255, 128, 0);">
+        <button onclick="javascript:window.location.href='/{{Layout_Sizer|GetDictValue:'Region'}}/Category/{{category.Name}}/LE/1/'" type="button" class="Button Button--plain NoDecoration">
             <span class="GlobalSideBar-categoryIcon">
-                <svg viewBox="-2 0 40 40" width="26" hight="26" fill="#77839C">
-                    {{category.SVG|safe}}
-                </svg>
+                {{category.SVG|safe}}
             </span>
             <span class="GlobalSideBar-categoryLabel" style="font-size:13px;">
                 {{category.Name}}
             </span>
-        </a>
+        </button>
     </li>
     {% endfor %}
 </ul>

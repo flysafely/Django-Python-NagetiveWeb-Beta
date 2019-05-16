@@ -1,18 +1,13 @@
     <!-- 通知栏模态窗口-->
-    <div class="modal fade" style="padding:0px 0px 0px 0px;" id="NotificationBar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" style="text-align:center;width:363px;">
+    <div class="modal fade" id="NotificationBar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button id="PushNotificationsClose" type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
-                    <span title="通知">
-                        <svg width="40" height="40" viewBox="0 0 34 30" style="display:inline-flex;align-items:center;margin:0px 0px 0px 20px">
-                            <g style="display:inline-block;stroke-width:0;stroke:currentColor;fill:#0077E6;">
-                                <path d="M16 7c0.276 0 0.5 0.224 0.5 0.5s-0.225 0.5-0.5 0.5c-5.327 0-10 2.804-10 6 0 0.276-0.224 0.5-0.5 0.5s-0.5-0.224-0.5-0.5c0-3.794 5.037-7 11-7zM16 2c-8.837 0-16 5.373-16 12 0 4.127 2.779 7.766 7.008 9.926 0 0.027-0.008 0.045-0.008 0.074 0 1.793-1.339 3.723-1.928 4.736 0.001 0 0.002 0 0.002 0-0.047 0.11-0.074 0.231-0.074 0.358 0 0.5 0.405 0.906 0.906 0.906 0.094 0 0.259-0.025 0.255-0.014 3.125-0.512 6.069-3.383 6.753-4.215 0.999 0.147 2.029 0.229 3.086 0.229 8.835 0 16-5.373 16-12s-7.164-12-16-12zM16 24c-0.917 0-1.858-0.070-2.796-0.207-0.097-0.016-0.194-0.021-0.29-0.021-0.594 0-1.163 0.264-1.546 0.73-0.428 0.521-1.646 1.684-3.085 2.539 0.39-0.895 0.695-1.898 0.716-2.932 0.006-0.064 0.009-0.129 0.009-0.184 0-0.752-0.421-1.439-1.090-1.781-3.706-1.892-5.918-4.937-5.918-8.144 0-5.514 6.28-10 14-10 7.718 0 14 4.486 14 10s-6.281 10-14 10z">
-                                </path>
-                            </g> 
-                        </svg>
+                    <span title="通知" class="modal-info-span">
+                        <img src="{{MEDIA_URL}}SVG/MMB-Notification.svg">
                     </span>
                 </div>
                 <div class="Menu PushNotifications-menu">
@@ -29,19 +24,14 @@
 
     <!-- 消息栏模态窗口-->
     <div class="modal fade" id="BulletinBoard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" style="text-align:center;width:363px;">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                         &times;
                     </button>
-                    <span title="提醒">
-                        <svg width="40" height="40" viewBox="0 0 34 30" style="display:inline-flex;align-items:center;margin:0px 0px 0px 20px">
-                            <g style="display:inline-block;stroke-width:0;stroke:currentColor;fill:#0077E6;">
-                                <path d="M16 0c-6.076 0-11 4.924-11 11 0 4.031 3.688 8.303 5.031 12.055 2.003 5.595 1.781 8.945 5.969 8.945 4.25 0 3.965-3.334 5.969-8.922 1.347-3.76 5.031-8.078 5.031-12.078 0-6.076-4.926-11-11-11zM18.592 27.176l-4.958 0.619c-0.177-0.512-0.367-1.111-0.598-1.893-0.003-0.010-0.007-0.021-0.009-0.031l6.188-0.773c-0.088 0.295-0.182 0.605-0.264 0.883-0.131 0.449-0.248 0.839-0.359 1.195zM12.736 24.908c-0.182-0.602-0.387-1.236-0.615-1.908h7.766c-0.123 0.359-0.246 0.719-0.352 1.059l-6.799 0.849zM16 30c-1.013 0-1.479-0.117-1.997-1.25l4.238-0.531c-0.614 1.654-1.061 1.781-2.241 1.781zM20.672 21h-9.333c-0.498-1.080-1.096-2.16-1.686-3.217-1.305-2.335-2.653-4.75-2.653-6.783 0-4.963 4.037-9 9-9s9 4.037 9 9c0 2.018-1.35 4.446-2.656 6.795-0.584 1.053-1.178 2.131-1.672 3.205zM16 5c0.275 0 0.5 0.224 0.5 0.5s-0.224 0.5-0.5 0.5c-2.757 0-5 2.243-5 5 0 0.276-0.224 0.5-0.5 0.5s-0.5-0.224-0.5-0.5c0-3.309 2.691-6 6-6z">
-                                </path>
-                            </g> 
-                        </svg>
+                    <span title="提醒" class="modal-info-span">
+                        <img src="{{MEDIA_URL}}SVG/MMB-Message.svg">
                     </span>
                 </div>
                 <div class="Menu PushNotifications-menu">
@@ -62,36 +52,34 @@
 
     <!-- 登录模态窗口-->
     <div class="modal fade" id="LoginBoard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" style="text-align:center;width:232px;">
+        <div class="modal-dialog-232px">
             <div class="modal-content">
-                <div class="form-group" style="text-align:center;padding: 30px 0px 0px 0px;">
-                    <img src="{{ MEDIA_URL }}Logo.png" height="75" width="75" style="cursor:pointer;-webkit-border-radius: 16px;margin:-3px 0px 0px 0px;" onclick="javascript:window.location.href='www.nagetive.com'">              
-                </div>
+                <img src="{{ MEDIA_URL }}Logo.png" class="LogoImgLogin" onclick="javascript:window.location.href='www.nagetive.com'">              
                 <div class="modal-body">
                     <form class="form-horizontal" role="form">
                         {% csrf_token %}
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <input type="text" id='loginusername' placeholder="用户名" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <input type="password" id='loginpassword' placeholder="密码" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
                             <input id="LoginVfCodeInput" class="VerificationCode" onclick="createCode('LoginVfCodeInput')" type="text" readonly="readonly" />
-                            <div style="float:right;padding: 0px 15px 0px 0px;display:inline-block;width:52%;">
+                            <div class="LoginCodeInput">
                                 <input type="text" id="LoginCodeInput" placeholder="验证码" class="form-control" />
                             </div>
                         </div>
                     </form>
-                        <div style="text-align:center;">
+                        <div class="Modal-dialog-BtnDiv">
                             <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:LoginAndRegistWithValidateCode('LoginCodeInput','LoginSubmit','{{ csrf_token }}')">
                                 登  录
                             </button>
-                            <button type="button" class="btn btn-default btn-link" style="padding: 10px 0px 0px 0px;" data-dismiss="modal" data-toggle='modal' data-target="#RegistBoard" onclick="document.getElementById('RegistVfCodeInput').click();">
+                            <button type="button" class="btn btn-default btn-link BtnLogin" data-dismiss="modal" data-toggle='modal' data-target="#RegistBoard" onclick="document.getElementById('RegistVfCodeInput').click();">
                                 注  册
                             </button>
                         </div>
@@ -102,49 +90,45 @@
 
     <!-- 注册模态窗口-->
     <div class="modal fade" id="RegistBoard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" style="text-align:center;width:232px;">
+        <div class="modal-dialog-232px">
             <div class="modal-content">
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <div class="form-group" style="text-align:center;padding: 20px 0px 0px 0px;">
-                            <img id="UserImageShow" target="UserImageInput" title="点击切换头像" src="{{MEDIA_URL}}default.png" height="80" width="80" style="cursor:pointer;-webkit-border-radius: 15px;" onclick="javascript:UploadImg('UserImageInput',this.id)">
-                        </div>
-                        <div class="form-group" style="text-align:center;">
-                            <input id="UserImageInput" data-source="" type="file" style="opacity:0; filter:alpha(opacity=0); height: 0px; width: 0px; position: absolute; top: 0; left: 0; z-index: 9;" name="pclogo" onchange="javascript:UploadUserImg(this)" accept="image/*">
-                        </div> 
+                        <img id="UserImageShow" target="UserImageInput" title="点击切换头像" src="{{MEDIA_URL}}default.png" class="UserImageShow" onclick="javascript:UploadImg('UserImageInput',this.id)">
+                        <input id="UserImageInput" data-source="" type="file" class="UserImageInput" name="pclogo" onchange="javascript:UploadUserImg(this)" accept="image/*">
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <input type="text" id='registusername' placeholder="用户名" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <input type="text" id='registusernickname' placeholder="昵称" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <input type="password" id='registpassword' placeholder="密码" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <input type="email" id='registemail' placeholder="邮箱" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
                             <input id="RegistVfCodeInput" class="VerificationCode" onclick="createCode('RegistVfCodeInput')" type="text" readonly="readonly" />
-                            <div style="float:right;padding: 0px 15px 0px 0px;display:inline-block;width:52%;">
+                            <div class="LoginCodeInput">
                                 <input type="text" id="RegistCodeInput" placeholder="验证码" class="form-control" />
                             </div>
                         </div>
                     </form>
-                        <div style="text-align:center;">
+                        <div class="Modal-dialog-BtnDiv">
                             <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:LoginAndRegistWithValidateCode('RegistCodeInput','RegistSubmit','{{ csrf_token }}')">
                                 注  册
                             </button>
-                            <button type="button" class="btn btn-default btn-link" style="padding: 10px 0px 0px 0px;" data-dismiss="modal" data-toggle='modal' data-target="#LoginBoard">
+                            <button type="button" class="btn btn-default btn-link BtnLogin" data-dismiss="modal" data-toggle='modal' data-target="#LoginBoard">
                                 登  录
                             </button>
                         </div>
@@ -155,31 +139,31 @@
 
     <!-- 短文发布模态窗口-->
     <div class="modal fade" id="EssayPublishBoard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" style="text-align:center;width:400px;">
+        <div class="modal-dialog-594px">
             <div class="modal-content">
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <div class="form-group" style="background:#0077E6;text-align:center;">
-                            <h4 style="font-size:26px;font-family:'Microsoft YaHei';color:#FFFFFF;">指名道姓!</h4>
+                        <div class="form-group Modal-RollCall-TitleBG">
+                            <h4 class="modal-dialog-Title">指名道姓!</h4>
                         </div>
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <input type="text" id='RollCallTitle' placeholder="你觉得什么不行？" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <input type="text" id='TargetUserNick' placeholder="邀请用户名(用户昵称)" class="form-control" />
                             </div>
                         </div>    
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
-                                <textarea id='RollCallContent' style="font-size:13.5px;color:#cccccc" class='commentbox' placeholder="  发表您的观点,字数限制为30字" spellcheck="false"/></textarea> 
+                            <div class="DivUserInput">
+                                <textarea id='RollCallContent' class='commentbox RollCalltextarea' placeholder="  发表您的观点,字数限制为30字" spellcheck="false"/></textarea> 
                             </div>
                         </div>
                     </form>
-                        <div style="text-align:center;">
+                        <div class="Modal-dialog-BtnDiv">
                             <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:PublishRollCall('{{ csrf_token }}')">
                                 发  布
                             </button>
@@ -194,21 +178,21 @@
 
     <!-- 投诉发布模态窗口-->
     <div class="modal fade" id="TipOffBoard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" style="text-align:center;width:400px;">
+        <div class="modal-dialog-594px">
             <div class="modal-content">
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <div class="form-group" style="background:#FF3B30;text-align:center;">
-                            <h4 style="font-size:26px;font-family:'Microsoft YaHei';color:#FFFFFF;">投诉举报</h4>
+                        <div class="form-group Modal-TipOff-TitleBG">
+                            <h4 class="modal-dialog-Title">投诉举报</h4>
                         </div> 
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <textarea id='TipOffContent' style="font-size:13.5px;color:#cccccc" class='commentbox' placeholder="  请输入投诉原因,字数限制为30字" spellcheck="false"/></textarea> 
                             </div>
                         </div>
                     </form>
-                        <div style="text-align:center;">
+                        <div class="Modal-dialog-BtnDiv">
                             <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:TipOff('{{ csrf_token }}')" data-dismiss="modal">
                                 投  诉
                             </button>
@@ -221,16 +205,16 @@
 
     <!-- 长文发布模态窗口-->
     <div class="modal fade" id="LongTextPublishBoard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog-594px">
             <div class="modal-content">
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <div class="form-group" style="background:#77839C;text-align:center;">
-                            <h4 style="font-size:26px;font-family:'Microsoft YaHei';color:#FFFFFF;">欲求不满!</h4>
+                        <div class="form-group Modal-Topic-TitleBG">
+                            <h4 class="modal-dialog-Title">欲求不满!</h4>
                         </div>
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <input type="text" id='TopicPublishTitle' placeholder="标题" class="form-control"/>
                             </div>
                         </div>
@@ -240,18 +224,18 @@
                             {% endfor %}
                         </select>
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <textarea id='TopicPublishTextArea' class="ckeditor" style="font-size:13.5px;color:#cccccc" name="longText"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <input type="text" id='TopicPublishThemes' placeholder="文章主题标签，例如:生活&学习&技术&二次元" class="form-control" />
                             </div>
                         </div>
                     </form>
                     
-                    <div style="text-align:center;">
+                    <div class="Modal-dialog-BtnDiv">
                         <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:PublishTopic(this,'Publish','{{ csrf_token }}')">
                             发  布
                         </button>
@@ -266,16 +250,16 @@
 
     <!-- 编辑文章-->
     <div class="modal fade" id="TopicEditBoard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog-400px">
             <div class="modal-content">
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <div class="form-group" style="background:#A6E22B;text-align:center;">
-                            <h4 style="font-size:26px;font-family:'Microsoft YaHei';color:#FFFFFF;">编辑</h4>
+                        <div class="form-group Modal-Edit-TitleBG">
+                            <h4 class="modal-dialog-Title">编辑</h4>
                         </div>
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <input type="text" id='TopicEditTitle' placeholder="标题" class="form-control"/ value="">
                             </div>
                         </div>
@@ -285,19 +269,19 @@
                             {% endfor %}
                         </select>
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <textarea id='TopicEditTextArea' class="ckeditor" style="font-size:13.5px;color:#cccccc" name="longText"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
+                            <div class="DivUserInput">
                                 <input type="text" id='TopicEditThemes' placeholder="文章主题标签，例如:生活&学习&技术&二次元" class="form-control" />
                                 <input type="hidden" id='TopicEditID' value="" />
                             </div>
                         </div>
                     </form>
                     
-                    <div style="text-align:center;">
+                    <div class="Modal-dialog-BtnDiv">
                         <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:PublishTopic(this,'Edit','{{ csrf_token }}')">
                             发  布
                         </button>
@@ -312,48 +296,20 @@
 
     <!-- 二维码分享模态窗口-->
     <div class="modal fade" id="QRcodeBoard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog" style="text-align:center;width:232px;">
+        <div class="modal-dialog-232px">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div style="text-align:center;margin:-15px 0px 0px 0px;">
+                    <div class="Modal-Share-Div">
                         <div>
-                            <h4 style="font-size:26px;font-family:'Microsoft YaHei'">分享二维码</h4>
+                            <h3>分享二维码</h3>
                         </div>
-                        <div id="qrcode" style="width:200px; height:200px; margin-top:15px;margin: auto;padding:0px 0px 0px 0px;"></div>
-                        <div style="padding:13px 0px 0px 0px;">
-                            <button type="button" class="btn btn-default btn-block Button--primary Button--blue" style="width:200px;padding: 6px 0px 6px 0px;" data-dismiss="modal" onclick="javascript:clearQRcodeDivHtml()">
+                        <div id="qrcode" class="Modal-QRcode-Div"></div>
+                        <div class="Modal-QRcode-BtnDiv">
+                            <button type="button" class="btn btn-default btn-block Button--primary Button--blue" class="Modal-QRcode-Btn" data-dismiss="modal" onclick="javascript:clearQRcodeDivHtml()">
                                 确   定
                             </button>
                         </div>
                     </div>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-    <!-- 回复模态窗口-->
-    <div class="modal fade" id="CommentReplayBoard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <form class="form-horizontal" role="form" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="form-group" style="text-align:center;padding: 0px 0px 0px 0px;">
-                            <h4 style="font-size:26px;font-family:'Microsoft YaHei'">指名道姓!</h4>
-                        </div>
-                        <div class="form-group">
-                            <div style="padding: 0px 15px 0px 15px;">
-                                <textarea id='ReplayTextArea' style="font-size:13.5px;color:#cccccc" class='commentbox' placeholder="回复内容..." spellcheck="false"/></textarea> 
-                            </div>
-                        </div>
-                    </form>
-                        <div style="text-align:center;">
-                            <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:CommentReplay('/replay/')">
-                                回  复
-                            </button>
-                            <button type="button" class="btn btn-default btn-link" style="padding: 10px 0px 0px 0px;" data-dismiss="modal">
-                                取  消
-                            </button>
-                        </div>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->

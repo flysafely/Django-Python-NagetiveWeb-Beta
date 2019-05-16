@@ -108,8 +108,8 @@ class PublisherList(models.Model):
 
 class Notification(models.Model):
 
-    ID = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, editable=False, verbose_name='通知ID')
+    ID = models.CharField(
+        primary_key=True, max_length=12,default='', editable=True, verbose_name='通知ID')
     Region = models.CharField(
         max_length=100, blank=False, default='', verbose_name='目标区域')
     ObjectID = models.CharField(
@@ -134,8 +134,8 @@ class Notification(models.Model):
 class BlackList(models.Model):
     """docstring for blacklist"""
 
-    ID = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, editable=False, verbose_name='黑名单ID')
+    ID = models.CharField(
+        primary_key=True, max_length=12,default='', editable=True, verbose_name='黑名单ID')
     Enforceder = models.ForeignKey(User, to_field='id', related_name='BlackList_User',
                                    on_delete=models.CASCADE, default=0, verbose_name='被添加用户')
     Handler = models.ForeignKey(

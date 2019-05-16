@@ -5,8 +5,8 @@ import uuid
 
 class RollCallInfo(models.Model):
     """docstring for RollCallInfo"""
-    ObjectID = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, editable=False, verbose_name='点名ID')
+    ObjectID = models.CharField(
+        primary_key=True, max_length=12,default='', editable=True, verbose_name='点名ID')
     Title = models.CharField(
         max_length=35, unique=True, verbose_name='点名标题')
     EditDate = models.DateTimeField(auto_now=True, verbose_name='编辑时间')
@@ -19,13 +19,13 @@ class RollCallInfo(models.Model):
     RightLike = models.IntegerField(
         default=0, blank=False, verbose_name='被点名者支持数')
     Hot = models.IntegerField(
-        default=0, blank=False, verbose_name='点名热度')
+        default=0, blank=False, verbose_name='热度')
     Collect = models.IntegerField(
-        default=0, blank=False, verbose_name='关注度')
+        default=0, blank=False, verbose_name='围观度')
     Comment = models.IntegerField(
-        default=0, blank=False, verbose_name='活跃度')
+        default=0, blank=False, verbose_name='互动数')
     Share = models.IntegerField(
-        default=0, blank=False, verbose_name='分享')
+        default=0, blank=False, verbose_name='分享数')
     Recommend = models.DecimalField(
         max_digits=8, decimal_places=2, null=True, default=0, verbose_name='推荐度')
 
@@ -40,8 +40,8 @@ class RollCallInfo(models.Model):
 
 
 class RollCallDialogue(models.Model):
-    ObjectID = models.UUIDField(
-        primary_key=True, default=uuid.uuid4, editable=False, verbose_name='对话ID')
+    ObjectID = models.CharField(
+        primary_key=True, max_length=12,default='', editable=True, verbose_name='对话ID')
     RollCallID = models.ForeignKey(
         RollCallInfo, to_field='ObjectID', default='', on_delete=models.CASCADE, verbose_name='点名ID')
     EditDate = models.DateTimeField(auto_now=True, verbose_name='编辑时间')

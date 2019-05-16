@@ -1,55 +1,57 @@
 {% load CustomFuncTags %}
-<span class="ThemeTagSVG TagSVG" style="margin:2px 2px 0px 0px;">
-    <svg viewBox="0 -4 33 33" width="1.2em" height="1.2em" fill="#0077E6">
-        <path d="M2 26h4.5v-4.5h-4.5v4.5zM7.5 26h5v-4.5h-5v4.5zM2 20.5h4.5v-5h-4.5v5zM7.5 20.5h5v-5h-5v5zM2 14.5h4.5v-4.5h-4.5v4.5zM13.5 26h5v-4.5h-5v4.5zM7.5 14.5h5v-4.5h-5v4.5zM19.5 26h4.5v-4.5h-4.5v4.5zM13.5 20.5h5v-5h-5v5zM8 7v-4.5c0-0.266-0.234-0.5-0.5-0.5h-1c-0.266 0-0.5 0.234-0.5 0.5v4.5c0 0.266 0.234 0.5 0.5 0.5h1c0.266 0 0.5-0.234 0.5-0.5zM19.5 20.5h4.5v-5h-4.5v5zM13.5 14.5h5v-4.5h-5v4.5zM19.5 14.5h4.5v-4.5h-4.5v4.5zM20 7v-4.5c0-0.266-0.234-0.5-0.5-0.5h-1c-0.266 0-0.5 0.234-0.5 0.5v4.5c0 0.266 0.234 0.5 0.5 0.5h1c0.266 0 0.5-0.234 0.5-0.5zM26 6v20c0 1.094-0.906 2-2 2h-22c-1.094 0-2-0.906-2-2v-20c0-1.094 0.906-2 2-2h2v-1.5c0-1.375 1.125-2.5 2.5-2.5h1c1.375 0 2.5 1.125 2.5 2.5v1.5h6v-1.5c0-1.375 1.125-2.5 2.5-2.5h1c1.375 0 2.5 1.125 2.5 2.5v1.5h2c1.094 0 2 0.906 2 2z">
-        </path>
-    </svg>
+<span class="ThemeTagSVG TagSVG">
+    <img src="{{MEDIA_URL}}SVG/CRB-DateTime.svg">
 </span>
-<a class="ExponentTagItem TagSVG" style="text-decoration:none;color:#0077E6;margin:2px 10px 0px 0px;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Time/{{ExportList_Topic.0.0.RollCallID.EditDate | date:'Y-m-d' }}/NA/1">{{ExportList_Topic.0.0.RollCallID.EditDate}}</a> 
+{% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
+<button class="ExponentTagItem TagSVG NoDecoration" href="/RollCall/Time/{{ExportList_Topic.0.0.RollCallID.EditDate | date:'Y-m-d' }}/NA/1/">{{ExportList_Topic.0.0.RollCallID.EditDate}}</button>
+{% else %}
+<button class="ExponentTagItem TagSVG NoDecoration" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Time/{{ExportList_Topic.0.0.RollCallID.EditDate | date:'Y-m-d' }}/NA/1/">{{ExportList_Topic.0.0.RollCallID.EditDate}}</button>
+{% endif %}
 <span {{ExportList_Topic.0.1|GetDictValue:'ShareBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
-    <a class="ActionsFontColor" href="javascript:void(0)" style="display: inline-flex; align-items: center;text-decoration:none;cursor:pointer;" onclick="javascript:QRcodeShare('/{{Layout_Sizer|GetDictValue:'Region'}}/Content/{{ExportList_Topic.0.0.RollCallID.ObjectID}}/LE/1/Share')" data-toggle="modal" data-target="#QRcodeBoard">
-        <span style="display: inline-flex; align-items: center;">
-            <svg viewBox="0 1 23 23" width="1.2em" height="1.2em" fill="#77839C">
-                <path d="M2.931 7.89c-1.067.24-1.275 1.669-.318 2.207l5.277 2.908 8.168-4.776c.25-.127.477.198.273.39L9.05 14.66l.927 5.953c.18 1.084 1.593 1.376 2.182.456l9.644-15.242c.584-.892-.212-2.029-1.234-1.796L2.93 7.89z" fill-rule="enenodd">
-                </path>
-            </svg>
+    {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:QRcodeShare('/RollCall/Content/{{ExportList_Topic.0.0.RollCallID.ObjectID}}/LE/1/Share')" data-toggle="modal" data-target="#QRcodeBoard">
+    {% else %}
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:QRcodeShare('/{{Layout_Sizer|GetDictValue:'Region'}}/Content/{{ExportList_Topic.0.0.RollCallID.ObjectID}}/LE/1/Share')" data-toggle="modal" data-target="#QRcodeBoard">    
+    {% endif %}
+        <span class="RollCallActions">
+            <img src="{{MEDIA_URL}}SVG/CRB-Share.svg">
         </span>
         分享
-    </a>    
+    </button>    
 </span>
 <span {{ExportList_Topic.0.1|GetDictValue:'TipOffBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
-    <a class="ActionsFontColor" href="javascript:void(0)" style="display: inline-flex; align-items: center;text-decoration:none;cursor:pointer;" onclick="javascript:OpenTipOffView('{{ExportList_Topic.0.0.RollCallID.ObjectID}}','{{Layout_Sizer|GetDictValue:'Region'}}')" data-toggle="modal" data-target="#TipOffBoard">
-        <span style="display: inline-flex; align-items: center;">
-            <svg viewBox="0 0 29 29" width="1.2em" height="1.2em" fill="#77839C">
-                <path d="M12 2c6.625 0 12 5.375 12 12s-5.375 12-12 12-12-5.375-12-12 5.375-12 12-12zM14 21.484v-2.969c0-0.281-0.219-0.516-0.484-0.516h-3c-0.281 0-0.516 0.234-0.516 0.516v2.969c0 0.281 0.234 0.516 0.516 0.516h3c0.266 0 0.484-0.234 0.484-0.516zM13.969 16.109l0.281-9.703c0-0.109-0.047-0.219-0.156-0.281-0.094-0.078-0.234-0.125-0.375-0.125h-3.437c-0.141 0-0.281 0.047-0.375 0.125-0.109 0.063-0.156 0.172-0.156 0.281l0.266 9.703c0 0.219 0.234 0.391 0.531 0.391h2.891c0.281 0 0.516-0.172 0.531-0.391z" fill-rule="enenodd">
-                </path>
-            </svg>
+    {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:OpenTipOffView('{{ExportList_Topic.0.0.RollCallID.ObjectID}}','RollCall')" data-toggle="modal" data-target="#TipOffBoard">
+    {% else %}
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:OpenTipOffView('{{ExportList_Topic.0.0.RollCallID.ObjectID}}','{{Layout_Sizer|GetDictValue:'Region'}}')" data-toggle="modal" data-target="#TipOffBoard">    
+    {% endif %}
+        <span class="RollCallActions">
+            <img src="{{MEDIA_URL}}SVG/CRB-Tipoff.svg">
         </span>
         {{ExportList_Topic.0.1|GetDictValue:'TipOffStatus'}}
-    </a> 
+    </button> 
 </span>
 <span {{ExportList_Topic.0.1|GetDictValue:'DonateBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
-    <a class="ActionsFontColor" href="javascript:void(0)" style="display: inline-flex; align-items: center;text-decoration:none;cursor:pointer;" onclick="javascript:alert('功能尚未开放!'))" data-toggle="modal" data-target="#QRcodeBoard">
-        <span style="display: inline-flex; align-items: center;">
-            <svg viewBox="0 0 35 35" width="1.2em" height="1.2em" fill="#77839C">
-                <path d="M15 2c-8.284 0-15 6.716-15 15s6.716 15 15 15c8.284 0 15-6.716 15-15s-6.716-15-15-15zM15 29c-6.627 0-12-5.373-12-12s5.373-12 12-12c6.627 0 12 5.373 12 12s-5.373 12-12 12z"></path>
-                <path d="M19 18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-2.131l2.963-4.445c0.306-0.46 0.182-1.080-0.277-1.387s-1.080-0.182-1.387 0.277l-3.168 4.752-3.168-4.752c-0.306-0.46-0.927-0.584-1.387-0.277s-0.584 0.927-0.277 1.387l2.964 4.445h-2.132c-0.552 0-1 0.448-1 1s0.448 1 1 1h3v2h-3c-0.552 0-1 0.448-1 1s0.448 1 1 1h3v3c0 0.552 0.448 1 1 1s1-0.448 1-1v-3h3c0.552 0 1-0.448 1-1s-0.448-1-1-1h-3v-2h3z"></path>
-            </svg>
+    {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:alert('功能尚未开放!'))" data-toggle="modal" data-target="#QRcodeBoard">
+    {% else %}
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:alert('功能尚未开放!'))" data-toggle="modal" data-target="#QRcodeBoard">
+    {% endif %}
+        <span class="RollCallActions">
+            <img src="{{MEDIA_URL}}SVG/CRB-Donate.svg"> 
         </span>
         打赏
-    </a>    
+    </button>    
 </span>
 <span {{ExportList_Topic.0.1|GetDictValue:'CollectBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
-    <a class="ActionsFontColor" disabled="{{ExportList_Topic.0.1|GetDictValue:'EditBtn'}}" href="javascript:void(0)" style="display: inline-flex; align-items: center;text-decoration:none;cursor:pointer;" onclick="javascript:Collect('{{ExportList_Topic.0.0.RollCallID.ObjectID}}','{{ csrf_token }}','{{Layout_Sizer|GetDictValue:'Region'}}')">
-        <span style="display: inline-flex; align-items: center;">
-            <svg viewBox="0 0 24 24" width="1.2em" height="1.2em" fill="#77839C">
-                <path d="M5.515 19.64l.918-5.355-3.89-3.792c-.926-.902-.639-1.784.64-1.97L8.56 7.74l2.404-4.871c.572-1.16 1.5-1.16 2.072 0L15.44 7.74l5.377.782c1.28.186 1.566 1.068.64 1.97l-3.89 3.793.918 5.354c.219 1.274-.532 1.82-1.676 1.218L12 18.33l-4.808 2.528c-1.145.602-1.896.056-1.677-1.218z" fill-rule="enenodd">
-                </path>
-            </svg>
+    {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:Collect('{{ExportList_Topic.0.0.RollCallID.ObjectID}}','{{ csrf_token }}','RollCall')">
+    {% else %}
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:Collect('{{ExportList_Topic.0.0.RollCallID.ObjectID}}','{{ csrf_token }}','{{Layout_Sizer|GetDictValue:'Region'}}')">
+    {% endif %}
+        <span class="RollCallActions">
+            <img src="{{MEDIA_URL}}SVG/CRB-Collect.svg">
         </span>
         {{ExportList_Topic.0.1|GetDictValue:'CollectStatus'}}
-    </a>    
+    </button>    
 </span>
-<div>
-    <hr style=" width:100%;height:1px;border:none;border-top:1px solid #F3F3F3;margin:15px 0px 6px 0px;">     
-</div>

@@ -1,6 +1,6 @@
 {% load CustomFuncTags %}
 {% if Layout_Sizer|GetDictValue:'Part' == 'Content' %}
-    <div class="Topstory-mainColumn" style="width:100%;">
+    <div class="Topstory-mainColumn ContentColumn">
         <div class="Card AnswerCard" id='ArticleBody' articleid='{{Card.0.ID}}'>
         {% include "Main-Topic&RollCall-Content-Frame.html" %}
         </div>
@@ -9,7 +9,7 @@
     <div class="Topstory-mainColumn">
         {% include "Main-Topic&RollCall-List-Frame.html" %}
     </div>
-    <div class="GlobalSideBar" style="position: fixed;margin:0px 0px 0px 704px;width:260px;">    
+    <div class="GlobalSideBar SideBarMargin SideBarPosition">
         <div class="Sticky">
             {% if not request.user.is_authenticated %}
             <div class="Card">
@@ -48,8 +48,15 @@
                 <div class="GlobalSideBarLabel">
                     <b>推荐</b>
                 </div>
-                {% include "List-Publisher-Block.html" %}                        
+                {% include "List-Publisher-Block.html" %}          
             </div>
+            <footer class="footer">
+                <button onclick="javascript:window.location.href='https://weibo.com/901101819/home?wvr=5'" class="Footer-item">徐子迈</button>
+                <span class="Footer-dot"></span>
+                <button onclick="javascript:window.location.href='http://www.12377.cn'" class="Footer-item">举报专区</button>
+                <span class="Footer-dot"></span>
+                <button onclick="javascript:window.location.href='https://github.com/flysafely/Python-Diary/blob/master/main.md'" class="Footer-item">GitHub主页</button>
+            </footer>
         </div>
     </div>
 {% endif %}

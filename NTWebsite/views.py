@@ -92,8 +92,6 @@ def RollCallInfoContentInfoGet(request, DBConf, APPConf, URLParams):
     DialogueObject = P.PermissionConfirm(URLParams['Part'], QRC(
         DBConf.QueryString, None, URLParams['FilterValue']), request, URLParams)
     # 分页器
-    # PaginatorDict = P.PaginatorInfoGet(
-    #    DialogueObject, APPConf.CommentsPageLimit, URLParams)
     # 返回上下文信息
     return render(request, DBConf.Template, P.ContextConfirm(request, URLParams=URLParams, Object=DialogueObject, APPConf=APPConf))
 
@@ -121,9 +119,6 @@ def UserProfileInfoGet(request, DBConf, APPConf, URLParams):
         for UserObject in QRC(DBConf.QueryString, None, QRC('User.objects.get(id=%s)', 0, URLParams['FilterValue'])):
             if UserObject != None:
                 Objects.append(UserObject)
-        # print('#######',URLParams['Region'])
-        # Objects = P.PermissionConfirm(
-        #    URLParams['Region'], set(UserObjects), request, URLParams)
     # 分页器
     PaginatorDict = P.PaginatorInfoGet(
         Objects, APPConf.CommonPageLimit, URLParams)

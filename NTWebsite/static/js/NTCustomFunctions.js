@@ -65,7 +65,7 @@ function encrypt(data,aeskey,cbciv){
 function DoEncrypt(keyword,csrftoken,data){
   $.ajaxSettings.async = false;
   var jsonData = new Object();
-  $.post('/GetParam/',{csrfmiddlewaretoken: csrftoken,'KeyWord':keyword},function(result){
+  $.get('/Param/',{csrfmiddlewaretoken: csrftoken,'KeyWord':keyword},function(result){
     jsonData = JSON.parse(result);
   });
   return encrypt(data,jsonData[0],jsonData[1]);
@@ -108,7 +108,7 @@ function GetNotificationInfo(){
       PushNotificationslist.removeChild(PushNotificationslist.firstChild);
     }
   }  
-  $.get('/GetNotificationInfo/',{},function(returndata){
+  $.get('/NotificationInfo/',{},function(returndata){
     if (returndata == 'login'){
       document.getElementById('loginbutton').click();  
     }else{
@@ -155,9 +155,7 @@ function RemoveNotificationInfo(method, ID, TargetUrl){
     if (NotificationCountNode){
       NotificationCountNode.parentNode.removeChild(NotificationCountNode);
     }
-    $.post('/RemoveNotificationInfo/',{'IDs':ID});
-    //highlightDiv = document.getElementById(anchorid);
-    //highlightDiv.setAttribute('style', 'padding:18px 20px 18px 20px;margin-bottom:6px;border:2px solid  #FABCBA;');
+    $.ajax({type:'delete',url:'/NotificationInfo/',data:{'IDs':ID}});
   }else{
     var ID_Array = [];
     var PushNotificationslist = document.getElementById('PushNotifications-list');
@@ -170,7 +168,7 @@ function RemoveNotificationInfo(method, ID, TargetUrl){
       }
     }
     IDs = ID_Array.join(',');
-    $.post('/RemoveNotificationInfo/',{'IDs':IDs});
+    $.ajax({type:'delete',url:'/NotificationInfo/',data:{'IDs':IDs}});
     var NotificationCountNode = document.getElementById('NotificationCount');
     if (NotificationCountNode){
       NotificationCountNode.parentNode.removeChild(NotificationCountNode);

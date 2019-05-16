@@ -188,11 +188,17 @@ def MD5(data):
 
 def GetUserIP(request):
     if 'HTTP_X_FORWARDED_FOR' in request.META:
-
         return request.META['HTTP_X_FORWARDED_FOR']
     else:
         return request.META['REMOTE_ADDR']
 
+def CounterOperate(object, field, method):
+    exec("object.%s = F('%s')%s1" % (field, field, method))
+    exec('object.save()')
+    return exec('object.refresh_from_db()')
+
+def CreateUUIDstr():
+    return str(uuid.uuid4())[-12:]
 
 if __name__ == "__main__":
-    print('%s')
+    print('%s' % 'abc')
