@@ -4,6 +4,11 @@ from NTWebsite.improtFiles.models_import_head import *
 from NTWebsite import MainMethods as mMs
 from django.dispatch import receiver
 
+@receiver(post_save, dispatch_uid=User)
+def user_create_handler(sender, instance, created, **kwargs):
+    if created and isinstance(instance, User):
+        print('新建超级账户：',instance.username)
+        mMs.QueryFilterCreate()
 
 @receiver(post_save, dispatch_uid=TopicInfo)
 def topic_create_handler(sender, instance, created, **kwargs):

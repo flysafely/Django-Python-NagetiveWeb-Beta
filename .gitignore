@@ -10,3 +10,4 @@ dump.rdb
 *.bak
 *.bak2
 *.pem.
+*.pem

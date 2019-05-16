@@ -81,7 +81,7 @@ class PreferredConfigName(models.Model):
 
 class FilterQueryString(models.Model):
     Name = models.CharField(
-        max_length=100, verbose_name='过滤器关键')
+        max_length=100, unique=True,verbose_name='过滤器关键')
     MethodString = models.CharField(
         max_length=200, blank=False, default='',verbose_name='匹配方法')
     QueryString = models.CharField(
