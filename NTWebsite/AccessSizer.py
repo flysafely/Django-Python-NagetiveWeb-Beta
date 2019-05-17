@@ -6,6 +6,11 @@ from NTConfig.config import PermissionDict as PD
 import copy
 #from NTWebsite import MainMethods as mMs
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+
+>>>>>>> 38fbe9c423b79aedd315d6b835202025a3d8f25e
 def Assign(Objects, ObjectType, request):
     Objects_Assigned = []
     for Object in Objects:

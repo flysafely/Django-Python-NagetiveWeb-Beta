@@ -41,6 +41,7 @@ def TopicContentInfoGet(request, DBConf, APPConf, URLParams):
         mMs.CounterOperate(QRC('TopicInfo.objects.get(ObjectID=%s)',
                                0, URLParams['FilterValue']), 'Hot', '+')
     # 获取指定文章对象
+<<<<<<< HEAD
 
     #print('获取指定文章对象', QRC(DBConf.QueryString, None, URLParams['FilterValue']))
     TopicObject = A.Empower(URLParams['Region'], QRC(
@@ -51,6 +52,31 @@ def TopicContentInfoGet(request, DBConf, APPConf, URLParams):
                                                     None,
                                                     TopicObject[0][0]),
                                                 request))
+=======
+<<<<<<< HEAD
+    #print('获取指定文章对象', QRC(DBConf.QueryString, None, URLParams['FilterValue']))
+    TopicObject = A.Empower(URLParams['Region'], QRC(
+        DBConf.QueryString, None, URLParams['FilterValue']), request)
+    # 获取评论对象
+    CommentObjects = P.CommentPackage(A.Empower('Comment',
+                                                QRC("CommentInfo.objects.filter(TopicID=%s).order_by('-EditDate')",
+                                                    None,
+                                                    TopicObject[0][0]),
+                                                request))
+=======
+    print('获取指定文章对象',QRC(DBConf.QueryString, None, URLParams['FilterValue']))
+    TopicObject = A.PermissionConfirm(URLParams['Part'], QRC(
+        DBConf.QueryString, None, URLParams['FilterValue']), request, URLParams)
+    # 获取评论对象
+    print('************',TopicObject[0][0])
+    CommentObjects = P.CommentPackage(A.PermissionConfirm(URLParams['Part'],
+                                                          QRC("CommentInfo.objects.filter(TopicID=%s).order_by('-EditDate')",
+                                                              None,
+                                                              TopicObject[0][0]),
+                                                          request,
+                                                          URLParams))
+>>>>>>> bc3830c4652a1739564c28de82ba62c1edebebf8
+>>>>>>> 38fbe9c423b79aedd315d6b835202025a3d8f25e
     # 评论分页器
     PaginatorDict = P.PaginatorInfoGet(
         CommentObjects, APPConf.CommentsPageLimit, URLParams)
@@ -118,10 +144,13 @@ def UserProfileInfoGet(request, DBConf, APPConf, URLParams):
                 Topics.append(Object)
         Objects = A.Empower(
             URLParams['Region'], set(Topics), request)
+<<<<<<< HEAD
     elif URLParams['Part'] in ['Like', 'Dislike']:
         pass
     elif URLParams['Part'] in ['Collect', 'Concern', 'Circusee']:
         pass
+=======
+>>>>>>> 38fbe9c423b79aedd315d6b835202025a3d8f25e
     elif URLParams['Part'] in ['Focus', 'Fans']:
         Objects = []
         for UserObject in QRC(DBConf.QueryString, None, QRC('User.objects.get(id=%s)', 0, URLParams['FilterValue'])):
