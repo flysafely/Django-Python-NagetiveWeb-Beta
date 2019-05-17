@@ -6,6 +6,7 @@ from NTConfig.config import PermissionDict as PD
 import copy
 #from NTWebsite import MainMethods as mMs
 
+<<<<<<< HEAD
 
 def Assign(Objects, ObjectType, request):
     Objects_Assigned = []
@@ -52,6 +53,8 @@ def CheckUserBlockStatus(Object, request):
     return True if QRC('BlackList.objects.filter(Enforceder=%s,Handler=%s)', 0, Object, request.user) else False
 
 '''
+=======
+>>>>>>> bc3830c4652a1739564c28de82ba62c1edebebf8
 def PermissionConfirm(type, Object, request, URLParams):
     ReturnList = []
     items = []
