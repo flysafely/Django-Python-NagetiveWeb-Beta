@@ -6,8 +6,8 @@
     <div class="col-md-6 column">
         <div class="RollCallPublisherImg">
             {% if Layout_Sizer|GetDictValue:'Part' == 'Content' %}
-            <a href="/UserProfile/Topic/{{ExportList_Topic.0.0.RollCallID.Publisher.id}}/LE/1/">
-                <img class="AvatarBase AvatarRollCallLeft" src="{{MEDIA_URL}}{{ExportList_Topic.0.0.RollCallID.Publisher.Avatar}}">
+            <a href="/UserProfile/Topic/{{Export_Object.0.Publisher.id}}/LE/1/">
+                <img class="AvatarBase AvatarRollCallLeft" src="{{MEDIA_URL}}{{Export_Object.0.Publisher.Avatar}}">
             {% else %}
             <a href="/UserProfile/Topic/{{Card.0.Publisher.id}}/LE/1/">
                 <img class="AvatarBase AvatarRollCallLeft" src="{{MEDIA_URL}}{{Card.0.Publisher.Avatar}}">
@@ -16,8 +16,8 @@
         </div>
         <div class="DivRollCallRight">
             {% if Layout_Sizer|GetDictValue:'Part' == 'Content' %}
-            <button class="NickRollCallLeft NoDecoration" onclick="javascript:window.location.href='/UserProfile/Topic/{{ExportList_Topic.0.0.RollCallID.Publisher.id}}/LE/1/'">
-                {{ExportList_Topic.0.0.RollCallID.Publisher.Nick}}
+            <button class="NickRollCallLeft NoDecoration" onclick="javascript:window.location.href='/UserProfile/Topic/{{Export_Object.0.Publisher.id}}/LE/1/'">
+                {{Export_Object.0.Publisher.Nick}}
             {% else %}
             <button class="NickRollCallLeft NoDecoration" onclick="javascript:window.location.href='/UserProfile/Topic/{{Card.0.Publisher.id}}/LE/1/'">
                 {{Card.0.Publisher.Nick}}
@@ -31,8 +31,8 @@
     <div class="col-md-6 column">
         <div>
             {% if Layout_Sizer|GetDictValue:'Part' == 'Content' %}
-            <a href="/UserProfile/Topic/{{ExportList_Topic.0.0.RollCallID.Target.id}}/LE/1/">
-                <img class="AvatarBase AvatarRollCallRight" src="{{MEDIA_URL}}{{ExportList_Topic.0.0.RollCallID.Target.Avatar}}">
+            <a href="/UserProfile/Topic/{{Export_Object.0.Target.id}}/LE/1/">
+                <img class="AvatarBase AvatarRollCallRight" src="{{MEDIA_URL}}{{Export_Object.0.Target.Avatar}}">
             {% else %}
             <a href="/UserProfile/Topic/{{Card.0.Target.id}}/LE/1/">
                 <img class="AvatarBase AvatarRollCallRight" src="{{MEDIA_URL}}{{Card.0.Target.Avatar}}">
@@ -41,8 +41,8 @@
         </div>
         <div class="DivRollCallNickLeft">
             {% if Layout_Sizer|GetDictValue:'Part' == 'Content' %}
-            <button class="NickRollCallRight NoDecoration" onclick="javascript:window.location.href='/UserProfile/Topic/{{ExportList_Topic.0.0.RollCallID.Target.id}}/LE/1/'">
-                {{ExportList_Topic.0.0.RollCallID.Target.Nick}}
+            <button class="NickRollCallRight NoDecoration" onclick="javascript:window.location.href='/UserProfile/Topic/{{Export_Object.0.Target.id}}/LE/1/'">
+                {{Export_Object.0.Target.Nick}}
             {% else %}
             <button class="NickRollCallRight NoDecoration" onclick="javascript:window.location.href='/UserProfile/Topic/{{Card.0.Target.id}}/LE/1/'">
                 {{Card.0.Target.Nick}}

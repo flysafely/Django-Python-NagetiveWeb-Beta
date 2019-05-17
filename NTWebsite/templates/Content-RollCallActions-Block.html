@@ -3,15 +3,15 @@
     <img src="{{MEDIA_URL}}SVG/CRB-DateTime.svg">
 </span>
 {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
-<button class="ExponentTagItem TagSVG NoDecoration" href="/RollCall/Time/{{ExportList_Topic.0.0.RollCallID.EditDate | date:'Y-m-d' }}/NA/1/">{{ExportList_Topic.0.0.RollCallID.EditDate}}</button>
+<button class="ExponentTagItem TagSVG NoDecoration" href="/RollCall/Time/{{Export_Object.0.EditDate | date:'Y-m-d' }}/NA/1/">{{Export_Object.0.EditDate}}</button>
 {% else %}
-<button class="ExponentTagItem TagSVG NoDecoration" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Time/{{ExportList_Topic.0.0.RollCallID.EditDate | date:'Y-m-d' }}/NA/1/">{{ExportList_Topic.0.0.RollCallID.EditDate}}</button>
+<button class="ExponentTagItem TagSVG NoDecoration" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Time/{{Export_Object.0.EditDate | date:'Y-m-d' }}/NA/1/">{{Export_Object.0.EditDate}}</button>
 {% endif %}
-<span {{ExportList_Topic.0.1|GetDictValue:'ShareBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
+<span class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
     {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
-    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:QRcodeShare('/RollCall/Content/{{ExportList_Topic.0.0.RollCallID.ObjectID}}/LE/1/Share')" data-toggle="modal" data-target="#QRcodeBoard">
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:QRcodeShare('/RollCall/Content/{{Export_Object.0.ObjectID}}/LE/1/Share')" data-toggle="modal" data-target="#QRcodeBoard">
     {% else %}
-    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:QRcodeShare('/{{Layout_Sizer|GetDictValue:'Region'}}/Content/{{ExportList_Topic.0.0.RollCallID.ObjectID}}/LE/1/Share')" data-toggle="modal" data-target="#QRcodeBoard">    
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:QRcodeShare('/{{Layout_Sizer|GetDictValue:'Region'}}/Content/{{Export_Object.0.ObjectID}}/LE/1/Share')" data-toggle="modal" data-target="#QRcodeBoard">    
     {% endif %}
         <span class="RollCallActions">
             <img src="{{MEDIA_URL}}SVG/CRB-Share.svg">
@@ -19,23 +19,23 @@
         分享
     </button>    
 </span>
-<span {{ExportList_Topic.0.1|GetDictValue:'TipOffBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
+<span {{Export_Object.1|GetDictValue:'TipOffBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
     {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
-    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:OpenTipOffView('{{ExportList_Topic.0.0.RollCallID.ObjectID}}','RollCall')" data-toggle="modal" data-target="#TipOffBoard">
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:OpenTipOffView('{{Export_Object.0.ObjectID}}','RollCall')" data-toggle="modal" data-target="#TipOffBoard">
     {% else %}
-    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:OpenTipOffView('{{ExportList_Topic.0.0.RollCallID.ObjectID}}','{{Layout_Sizer|GetDictValue:'Region'}}')" data-toggle="modal" data-target="#TipOffBoard">    
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:OpenTipOffView('{{Export_Object.0.ObjectID}}','{{Layout_Sizer|GetDictValue:'Region'}}')" data-toggle="modal" data-target="#TipOffBoard">    
     {% endif %}
         <span class="RollCallActions">
             <img src="{{MEDIA_URL}}SVG/CRB-Tipoff.svg">
         </span>
-        {{ExportList_Topic.0.1|GetDictValue:'TipOffStatus'}}
+        {{Export_Object.1|GetDictValue:'TipOffStatus'}}
     </button> 
 </span>
-<span {{ExportList_Topic.0.1|GetDictValue:'DonateBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
+<span {{Export_Object.1|GetDictValue:'DonateBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
     {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
-    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:alert('功能尚未开放!'))" data-toggle="modal" data-target="#QRcodeBoard">
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:alert('功能尚未开放!'))">
     {% else %}
-    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:alert('功能尚未开放!'))" data-toggle="modal" data-target="#QRcodeBoard">
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:alert('功能尚未开放!'))">
     {% endif %}
         <span class="RollCallActions">
             <img src="{{MEDIA_URL}}SVG/CRB-Donate.svg"> 
@@ -43,15 +43,12 @@
         打赏
     </button>    
 </span>
-<span {{ExportList_Topic.0.1|GetDictValue:'CollectBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
-    {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
-    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:Collect('{{ExportList_Topic.0.0.RollCallID.ObjectID}}','{{ csrf_token }}','RollCall')">
-    {% else %}
-    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:Collect('{{ExportList_Topic.0.0.RollCallID.ObjectID}}','{{ csrf_token }}','{{Layout_Sizer|GetDictValue:'Region'}}')">
+<span {{Export_Object.1|GetDictValue:'CircuseeBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:Collect('{{Export_Object.0.ObjectID}}','{{ csrf_token }}','Circusee')">
     {% endif %}
         <span class="RollCallActions">
             <img src="{{MEDIA_URL}}SVG/CRB-Collect.svg">
         </span>
-        {{ExportList_Topic.0.1|GetDictValue:'CollectStatus'}}
+        {{Export_Object.1|GetDictValue:'CircuseeStatus'}}
     </button>    
 </span>

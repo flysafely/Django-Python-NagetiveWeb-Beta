@@ -1,13 +1,13 @@
 {% load CustomFuncTags %}
 <div>
     <span>
-        <button {{Card.2.1|GetDictValue:'VoteBtn'}} id="Button1#{{Card.2.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.2.1|GetDictValue:'Vote1Status'}}" onclick="AttitudeOperate('Comment','{{Card.2.0.ObjectID}}','1','{{ csrf_token }}')">
+        <button {{Card.2.1|GetDictValue:'CVoteBtn'}} id="Button1#{{Card.2.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.2.1|GetDictValue:'CVote1Status'}}" onclick="AttitudeOperate('Comment','{{Card.2.0.ObjectID}}','1','{{ csrf_token }}')">
             <span class="AttitudeActions">
                 <img src="{{MEDIA_URL}}SVG/TAB-Like.svg">
             </span>
             <span id='Span1#{{Card.2.0.ObjectID}}'>{{Card.2.0.Like}}</span>
         </button>
-        <button {{Card.2.1|GetDictValue:'VoteBtn'}} id="Button0#{{Card.2.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.2.1|GetDictValue:'Vote0Status'}}" onclick="AttitudeOperate('Comment','{{Card.2.0.ObjectID}}','0','{{ csrf_token }}')">
+        <button {{Card.2.1|GetDictValue:'CVoteBtn'}} id="Button0#{{Card.2.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.2.1|GetDictValue:'CVote0Status'}}" onclick="AttitudeOperate('Comment','{{Card.2.0.ObjectID}}','0','{{ csrf_token }}')">
             <span class="AttitudeActions">
                 <img src="{{MEDIA_URL}}SVG/TAB-Dislike.svg">
             </span>

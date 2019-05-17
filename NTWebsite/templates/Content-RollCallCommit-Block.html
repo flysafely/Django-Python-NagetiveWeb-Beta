@@ -1,6 +1,6 @@
 {% load CustomFuncTags %}
-<div {{ExportList_Topic.0.1|GetDictValue:'ReplayBlock'}} class="Comments-container">
-    <div class="CommentsV2 CommentsV2--withEditor CommentsV2-footer DivRollCallCommit" style="width:50%;float:{{ExportList_Topic.0.1|GetDictValue:'ReplayBlockSite'}};">
+<div {{Export_Object.1|GetDictValue:'ReplayBlock'}} class="Comments-container">
+    <div class="CommentsV2 CommentsV2--withEditor CommentsV2-footer DivRollCallCommit" style="width:50%;float:{{Export_Object.1|GetDictValue:'ReplayBlockSite'}};">
         {% csrf_token %}
         <textarea id='CommentTextArea' name='CommentTextArea' class='commentbox' placeholder="你不准备留下点什么吗？" spellcheck="false" onkeydown=""></textarea>
         <div align="left" class="DivCommitBtn">

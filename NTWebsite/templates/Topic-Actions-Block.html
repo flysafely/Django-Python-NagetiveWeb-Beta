@@ -3,9 +3,9 @@
     <div class="ContentItem-actions">
         <span>
             {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
-            <button {{Card.1|GetDictValue:'VoteBtn'}} id="Button1#{{Card.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.1|GetDictValue:'Vote1Status'}}" onclick="AttitudeOperate('{{Card.0.Type}}','{{Card.0.ObjectID}}','1','{{ csrf_token }}')">
+            <button {{Card.1|GetDictValue:'TVoteBtn'}} id="Button1#{{Card.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.1|GetDictValue:'TVote1Status'}}" onclick="AttitudeOperate('{{Card.0.Type}}','{{Card.0.ObjectID}}','1','{{ csrf_token }}')">
             {% else %}
-            <button {{Card.1|GetDictValue:'VoteBtn'}} id="Button1#{{Card.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.1|GetDictValue:'Vote1Status'}}" onclick="AttitudeOperate('{{Layout_Sizer|GetDictValue:'Region'}}','{{Card.0.ObjectID}}','1','{{ csrf_token }}')">
+            <button {{Card.1|GetDictValue:'TVoteBtn'}} id="Button1#{{Card.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.1|GetDictValue:'TVote1Status'}}" onclick="AttitudeOperate('{{Layout_Sizer|GetDictValue:'Region'}}','{{Card.0.ObjectID}}','1','{{ csrf_token }}')">
             {% endif %}
                 <span class="AttitudeActions">          
                     <img src="{{MEDIA_URL}}SVG/TAB-Like.svg">
@@ -13,9 +13,9 @@
                 <span id='Span1#{{Card.0.ObjectID}}'>{{Card.0.Like}}</span>
             </button>
             {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
-            <button {{Card.1|GetDictValue:'VoteBtn'}} id="Button0#{{Card.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.1|GetDictValue:'Vote0Status'}}" onclick="AttitudeOperate('{{Card.0.Type}}','{{Card.0.ObjectID}}','0','{{ csrf_token }}')">
+            <button {{Card.1|GetDictValue:'TVoteBtn'}} id="Button0#{{Card.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.1|GetDictValue:'TVote0Status'}}" onclick="AttitudeOperate('{{Card.0.Type}}','{{Card.0.ObjectID}}','0','{{ csrf_token }}')">
             {% else %}
-            <button {{Card.1|GetDictValue:'VoteBtn'}} id="Button0#{{Card.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.1|GetDictValue:'Vote0Status'}}" onclick="AttitudeOperate('{{Layout_Sizer|GetDictValue:'Region'}}','{{Card.0.ObjectID}}','0','{{ csrf_token }}')">
+            <button {{Card.1|GetDictValue:'TVoteBtn'}} id="Button0#{{Card.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.1|GetDictValue:'TVote0Status'}}" onclick="AttitudeOperate('{{Layout_Sizer|GetDictValue:'Region'}}','{{Card.0.ObjectID}}','0','{{ csrf_token }}')">
             {% endif %} 
                 <span class="AttitudeActions">
                     <img src="{{MEDIA_URL}}SVG/TAB-Dislike.svg">
@@ -23,7 +23,7 @@
                 <span id='Span0#{{Card.0.ObjectID}}'>{{Card.0.Dislike}}</span>
             </button>
         </span>
-        <span {{Card.1|GetDictValue:'VoteBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
+        <span {{Card.1|GetDictValue:'TVoteBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
             {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
             <button class="ActionsFontColor NoDecoration TopicActions" type="button" onclick="javascript:window.location.href='/{{Card.0.Type}}/Content/{{Card.0.ObjectID}}/LE/1#anchorDiv/'">
             {% elif Layout_Sizer|GetDictValue:'Region' == 'Search' %}
@@ -37,7 +37,7 @@
                 {{Card.0.Comment}} 条评论
             </button>    
         </span>
-        <span {{Card.1|GetDictValue:'ShareBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
+        <span class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
             {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
             <button class="ActionsFontColor NoDecoration TopicActions" onclick="javascript:QRcodeShare('/{{Card.0.Type}}/Content/{{Card.0.ObjectID}}/LE/1/Share')" data-toggle="modal" data-target="#QRcodeBoard">
             {% elif Layout_Sizer|GetDictValue:'Region' == 'Search' %}
@@ -75,19 +75,28 @@
                 打赏
             </button>    
         </span>
-        {% if not Card.1|GetDictValue:'CollectBtn' == 'hidden' %}
-        <span class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
-            {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
-            <button class="ActionsFontColor NoDecoration TopicActions" onclick="javascript:Collect('{{Card.0.ObjectID}}','{{ csrf_token }}','{{Card.0.Type}}')">
-            {% else %}
-            <button class="ActionsFontColor NoDecoration TopicActions" onclick="javascript:Collect('{{Card.0.ObjectID}}','{{ csrf_token }}','{{Layout_Sizer|GetDictValue:'Region'}}')">
+        {% if Card.0.Type == 'Topic' %}
+            {% if not Card.1|GetDictValue:'CollectBtn' == 'hidden' %}
+            <span class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
+                <button class="ActionsFontColor NoDecoration TopicActions" onclick="javascript:Collect('{{Card.0.ObjectID}}','{{ csrf_token }}','Collect')">
+                    <span class="TopicActions">
+                        <img src="{{MEDIA_URL}}SVG/TAB-Collect.svg">
+                    </span>
+                    {{Card.1|GetDictValue:'CollectStatus'}}
+                </button>
+            </span>
             {% endif %}
-                <span class="TopicActions">
-                    <img src="{{MEDIA_URL}}SVG/TAB-Collect.svg">
-                </span>
-                {{Card.1|GetDictValue:'CollectStatus'}}
-            </button>
-        </span>
+        {% elif Card.0.Type == 'SpecialTopic' %}
+            {% if not Card.1|GetDictValue:'ConcernBtn' == 'hidden' %}
+            <span class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
+                <button class="ActionsFontColor NoDecoration TopicActions" onclick="javascript:Collect('{{Card.0.ObjectID}}','{{ csrf_token }}','Concern')">
+                    <span class="TopicActions">
+                        <img src="{{MEDIA_URL}}SVG/TAB-Collect.svg">
+                    </span>
+                    {{Card.1|GetDictValue:'ConcernStatus'}}
+                </button>
+            </span>
+            {% endif %}
         {% endif %}
         {% if not Card.1|GetDictValue:'EditBtn' == 'hidden' %}
         <span {{Card.1|GetDictValue:'EditBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
