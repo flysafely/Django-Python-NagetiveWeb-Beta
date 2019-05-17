@@ -126,102 +126,6 @@ def PublishRollCall(request):
     else:
         return HttpResponse('login')
 
-'''
-def PermissionConfirm(type, Object, request, URLParams):
-    ReturnList = []
-    items = []
-
-    if isinstance(Object, Iterable):
-        items = Object
-    else:
-        if Object:
-            items.append(Object)
-        else:
-            return 0
-    for item in items:
-        Permission_Sizer = {}
-        if type != 'UserProfileInfo':
-            if request.user.is_authenticated:
-                if request.user == item.Publisher:
-                    Permission_Sizer['VoteBtn'] = 'disabled'
-                    Permission_Sizer['Vote1Status'] = ''
-                    Permission_Sizer['Vote0Status'] = ''
-                    Permission_Sizer['DonateBtn'] = 'hidden'
-                    Permission_Sizer['TipOffBtn'], Permission_Sizer[
-                        'TipOffStatus'] = ('hidden', '投诉')
-                    Permission_Sizer['CloseBtn'] = 'Close' if URLParams[
-                        'Region'] in 'SpecialTopic' else 'Delete'
-                    Permission_Sizer['ShareBtn'] = ''
-                    Permission_Sizer['CollectBtn'], Permission_Sizer[
-                        'CollectStatus'] = ('hidden', '收藏')
-                    Permission_Sizer['EditBtn'] = ''
-                    # Comment特有
-                    Permission_Sizer['ChatBtn'] = ''
-                    Permission_Sizer['ReplayBtn'] = 'hidden'
-                    # RollCall特有
-                    Permission_Sizer['ReplayBlock'] = ''
-                    Permission_Sizer['ReplayBlockSite'] = ''
-                else:
-                    Permission_Sizer['VoteBtn'] = ''
-                    Permission_Sizer['Vote1Status'] = 'is-active' if QRC(
-                        'Attitude.objects.filter(ObjectID=%s,Point=1,Publisher=%s)', 0, item.ObjectID, request.user) else ''
-                    Permission_Sizer['Vote0Status'] = 'is-active' if QRC(
-                        'Attitude.objects.filter(ObjectID=%s,Point=0,Publisher=%s)', 0, item.ObjectID, request.user) else ''
-                    Permission_Sizer['DonateBtn'] = ''
-                    Permission_Sizer['TipOffBtn'], Permission_Sizer['TipOffStatus'] = ('', '已投诉') if QRC(
-                        'TipOffBox.objects.filter(ObjectID=%s,Publisher=%s)', 0, item.ObjectID, request.user) else ('', '投诉')
-                    Permission_Sizer['CloseBtn'] = 'Close'
-                    Permission_Sizer['ShareBtn'] = ''
-                    Permission_Sizer['CollectBtn'], Permission_Sizer['CollectStatus'] = ('', '取消收藏') if QRC(
-                        'Collection.objects.filter(ObjectID=%s,Publisher=%s)', 0, item.RollCallID.ObjectID if hasattr(item, 'RollCallID') else item.ObjectID, request.user) else ('', '收藏')
-                    Permission_Sizer['EditBtn'] = 'hidden'
-                    # Comment特有
-                    Permission_Sizer['ChatBtn'] = ''
-                    Permission_Sizer['ReplayBtn'] = ''
-                    # RollCall特有
-                    Permission_Sizer['ReplayBlock'] = '' if request.user == (
-                        item.RollCallID.Target if hasattr(item, 'RollCallID') else '') else 'hidden'
-                    Permission_Sizer['ReplayBlockSite'] = 'right' if request.user == (
-                        item.RollCallID.Target if hasattr(item, 'RollCallID') else '') else ''
-            else:
-                Permission_Sizer['VoteBtn'] = ''
-                Permission_Sizer['Vote1Status'] = ''
-                Permission_Sizer['Vote0Status'] = ''
-                Permission_Sizer['DonateBtn'] = ''
-                Permission_Sizer['TipOffBtn'], Permission_Sizer[
-                    'TipOffStatus'] = ('', '投诉')
-                Permission_Sizer['CloseBtn'] = 'Close'
-                Permission_Sizer['ShareBtn'] = ''
-                Permission_Sizer['CollectBtn'], Permission_Sizer[
-                    'CollectStatus'] = ('', '收藏')
-                Permission_Sizer['EditBtn'] = 'hidden'
-                # Comment特有
-                Permission_Sizer['ChatBtn'] = ''
-                Permission_Sizer['ReplayBtn'] = ''
-                # RollCall特有
-                Permission_Sizer['ReplayBlock'] = 'hidden'
-                Permission_Sizer['ReplayBlockSite'] = ''
-        else:
-            print(URLParams['FilterValue'])
-            TargetUser = QRC('User.objects.get(id=%s)',
-                             None, URLParams['FilterValue'])
-            if TargetUser == request.user:
-                Permission_Sizer['VisitorIdentity'] = 'Self'
-                Permission_Sizer['VisitorOAuth-Read'] = '1'
-                Permission_Sizer['VisitorOAuth-Edit'] = ''
-                Permission_Sizer['VisitorOAuth-Link'] = ''
-                Permission_Sizer['VisitorOAuth-Block'] = ''
-            else:
-                Permission_Sizer['VisitorIdentity'] = 'Others'
-                Permission_Sizer['VisitorOAuth-Read'] = 'readonly'
-                Permission_Sizer['VisitorOAuth-Edit'] = 'hidden'
-                Permission_Sizer['VisitorOAuth-Link'] = 'Linked' if QRC(
-                    'UserLink.objects.filter(UserBeLinked=%s,UserLinking=%s)', 0, TargetUser, request.user) else 'Link'
-                Permission_Sizer['VisitorOAuth-Block'] = 'Blocked' if QRC(
-                    'BlackList.objects.filter(Enforceder=%s,Handler=%s)', 0, TargetUser, request.user) else 'Block'
-        ReturnList.append((item, Permission_Sizer))
-    return ReturnList
-'''
 
 def ContextConfirm(request, **Params):
     NotificationCount = GetNotificationCount(request)
@@ -233,6 +137,7 @@ def ContextConfirm(request, **Params):
     ContextDict = {"Layout_Sizer": Params['URLParams'],
                    "Main_URL_Sizer": {'Topic': ('is-active', '', ''), 'RollCall': ('', 'is-active', ''), 'SpecialTopic': ('', '', 'is-active'), 'UserProfile': ('', '', '')}[Params['URLParams']['Region']],
                    "ExportItem_UserInfo": Params['User'] if 'User' in Params else '',
+                   "Export_Object": Params['MainObject'] if 'MainObject' in Params else '',
                    "ExportList_Topic": Params['Object'] if 'Object' in Params else '',
                    "ExportList_Cards": Params['PaginatorDict']['ObjectList'] if 'PaginatorDict' in Params else '',
                    "ExportList_Categorys": CategoryList,
@@ -268,7 +173,8 @@ def ReadIPRecord(IP, ID, type):
 def AttitudeOperate(request):
     Type = 'Topic' if request.POST.get(
         'Type') in 'SpecialTopic' else request.POST.get('Type')
-    Object = QRC(Type + 'Info.objects.get('+ ('Comment' if Type == 'Comment' else 'Object') +'ID=%s)', None, request.POST.get('ObjectID'))
+    Object = QRC(Type + 'Info.objects.get(ObjectID=%s)',
+                 None, request.POST.get('ObjectID'))
     Point = request.POST.get('Point')
 
     if request.user.is_authenticated:
@@ -279,15 +185,15 @@ def AttitudeOperate(request):
                 record[0].delete()
                 return HttpResponse('Cancel')
             else:
-                record[0].Point=int(Point)
+                record[0].Point = int(Point)
                 record[0].save()
                 return HttpResponse('Become')
         elif record and len(record) > 2:
             for item in record:
-                item.delete() 
+                item.delete()
         else:
             QRC(('Topic' if Type in 'SpecialTopic' else 'Comment') +
-                     'Attitude.objects.create(ObjectID=%s,Type=%s,Publisher=%s,Point=%s)', 0, Object, Type, request.user, int(Point))
+                'Attitude.objects.create(ObjectID=%s,Type=%s,Publisher=%s,Point=%s)', 0, Object, Type, request.user, int(Point))
             return HttpResponse('Confirm')
     else:
         return HttpResponse('login')
@@ -349,21 +255,21 @@ def Replay(request):
 
 
 def Collect(request):
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            ObjectID = request.POST.get('ObjectID')
-            Type = request.POST.get('Type')
-            result = QRC(
-                'Collection.objects.filter(Publisher=%s,Type=%s,ObjectID=%s)', 0, request.user, Type, ObjectID)
-            if not result:
-                QRC('Collection.objects.create(Publisher=%s,Type=%s,ObjectID=%s)',
-                    0, request.user, Type, ObjectID)
-                return HttpResponse('collect')
-            else:
-                result[0].delete()
-                return HttpResponse('cancel')
+    if request.user.is_authenticated:
+        Type = request.POST.get('Type')
+        Object = QRC(('Topic' if Type in 'CollectConcern' else 'RollCall') +
+                     'Info.objects.get(ObjectID=%s)', 0, request.POST.get('ObjectID'))
+
+        result = QRC(Type + '.objects.filter(Publisher=%s,ObjectID=%s)', 0, request.user, Object)
+        if not result:
+            QRC(Type + '.objects.create(Publisher=%s,ObjectID=%s)',
+                0, request.user, Object)
+            return HttpResponse(Type)
         else:
-            return HttpResponse('login')
+            result[0].delete()
+            return HttpResponse(Type +'Cancel')
+    else:
+        return HttpResponse('login')
 
 
 def StatisticalDataUpdata(objectStr, methodDsc):

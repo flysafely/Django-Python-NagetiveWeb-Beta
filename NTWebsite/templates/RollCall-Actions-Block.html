@@ -7,7 +7,7 @@
 {% else %}
 <button class="ExponentTagItem TagSVG NoDecoration" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Time/{{Card.0.EditDate | date:'Y-m-d' }}/NA/1/">{{Card.0.EditDate}}</button>
 {% endif %}
-<span {{Card.1|GetDictValue:'VoteBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
+<span class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
     {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
     <button class="ActionsFontColor NoDecoration RollCallActions" type="button" onclick="javascript:window.location.href='/RollCall/Content/{{Card.0.ObjectID}}/LE/1#anchorDiv/'">
     {% else %}
@@ -19,7 +19,7 @@
         {{Card.0.Comment}} 条互动
     </button>    
 </span>
-<span {{Card.1|GetDictValue:'ShareBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
+<span class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
     {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
     <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:QRcodeShare('/RollCall/Content/{{Card.0.ObjectID}}/LE/1/Share')" data-toggle="modal" data-target="#QRcodeBoard">
     {% else %}
@@ -55,15 +55,11 @@
         打赏
     </button>    
 </span>
-<span {{Card.1|GetDictValue:'CollectBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
-    {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
-    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:Collect('{{Card.0.ObjectID}}','{{ csrf_token }}','RollCall')">
-    {% else %}
-    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:Collect('{{Card.0.ObjectID}}','{{ csrf_token }}','{{Layout_Sizer|GetDictValue:'Region'}}')">
-    {% endif %}
+<span {{Card.1|GetDictValue:'CircuseeBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
+    <button class="ActionsFontColor NoDecoration RollCallActions" onclick="javascript:Collect('{{Card.0.ObjectID}}','{{ csrf_token }}','Circusee')">
         <span class="RollCallActions">
             <img src="{{MEDIA_URL}}SVG/CRB-Collect.svg">
         </span>
-        {{Card.1|GetDictValue:'CollectStatus'}}
+        {{Card.1|GetDictValue:'CircuseeStatus'}}
     </button>    
 </span>

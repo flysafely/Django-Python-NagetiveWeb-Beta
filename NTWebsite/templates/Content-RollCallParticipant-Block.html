@@ -1,14 +1,15 @@
 {% load CustomFuncTags %}
+{{Export_Object}}
 <div class="row clearfix">
     <div class="col-md-6 column" style="padding:0px 30px 0px 0px;">
         <div style="float:right;">
-            <a href="/UserProfile/Topic/{{ExportList_Topic.0.0.RollCallID.Publisher.id}}/LE/1">
-                <img style="cursor:pointer;-webkit-border-radius: 12.5px;margin:5px 0px 0px 10px;display:inline-block;float:left;width:50px;width:25px;height:25px;" src="{{MEDIA_URL}}{{ExportList_Topic.0.0.RollCallID.Publisher.Avatar}}" alt="">
+            <a href="/UserProfile/Topic/{{Export_Object.0.Publisher.id}}/LE/1">
+                <img style="cursor:pointer;-webkit-border-radius: 12.5px;margin:5px 0px 0px 10px;display:inline-block;float:left;width:50px;width:25px;height:25px;" src="{{MEDIA_URL}}{{Export_Object.0.Publisher.Avatar}}" alt="">
             </a>
         </div>
         <div style="float:right;display:inline-block;width:200px;padding:7px 0px 0px 0px;">
-            <a href="/UserProfile/Topic/{{ExportList_Topic.0.0.RollCallID.Publisher.id}}/LE/1" style="font-size:14px;float:right;color:#8590A6;text-decoration:none;background:#A5CFF6;border-radius:5px;padding:0px 6px 0px 6px;color:#FFFFFF;text-shadow:1px 1px 2px #2894FF;">
-                {{ExportList_Topic.0.0.RollCallID.Publisher.Nick}}
+            <a href="/UserProfile/Topic/{{Export_Object.0.Publisher.id}}/LE/1" style="font-size:14px;float:right;color:#8590A6;text-decoration:none;background:#A5CFF6;border-radius:5px;padding:0px 6px 0px 6px;color:#FFFFFF;text-shadow:1px 1px 2px #2894FF;">
+                {{Export_Object.0.Publisher.Nick}}
             </a>
         </div>
     </div>
@@ -22,12 +23,12 @@
     </div>
     <div class="col-md-6 column" style="padding:0px 0px 0px 30px;">
         <div>
-            <a href="/UserProfile/Topic/{{ExportList_Topic.0.0.RollCallID.Target.id}}/LE/1">
-                <img style="cursor:pointer;-webkit-border-radius: 12.5px;margin:5px 10px 0px 0px;display:inline-block;float:left;width:50px;width:25px;height:25px;" src="{{MEDIA_URL}}{{ExportList_Topic.0.0.RollCallID.Target.Avatar}}" alt="">
+            <a href="/UserProfile/Topic/{{Export_Object.0.Target.id}}/LE/1">
+                <img style="cursor:pointer;-webkit-border-radius: 12.5px;margin:5px 10px 0px 0px;display:inline-block;float:left;width:50px;width:25px;height:25px;" src="{{MEDIA_URL}}{{Export_Object.0.Target.Avatar}}" alt="">
             </a>
         </div>
         <div style="display:inline-block;float:left;width:200px;padding:7px 0px 0px 0px;">
-            <a href="/UserProfile/Topic/{{ExportList_Topic.0.0.RollCallID.Target.id}}/LE/1"  style="font-size:14px;color:#8590A6;text-decoration:none;background:#FABCBA;border-radius:5px;padding:2px 6px 2px 6px;color:#FFFFFF;text-shadow:1px 1px 2px #F1303C;">{{ExportList_Topic.0.0.RollCallID.Target.Nick}}</a>
+            <a href="/UserProfile/Topic/{{Export_Object.0.Target.id}}/LE/1"  style="font-size:14px;color:#8590A6;text-decoration:none;background:#FABCBA;border-radius:5px;padding:2px 6px 2px 6px;color:#FFFFFF;text-shadow:1px 1px 2px #F1303C;">{{Export_Object.0.Target.Nick}}</a>
         </div>      
     </div>
 </div>

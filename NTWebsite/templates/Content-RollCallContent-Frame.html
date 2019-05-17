@@ -1,11 +1,11 @@
 {% load CustomFuncTags %}
-<div id='ObjectContent' ObjectID='{{ExportList_Topic.0.0.RollCallID.ObjectID}}' class="DivRollCallContent">
+<div id='ObjectContent' ObjectID='{{Export_Object.0.ObjectID}}' class="DivRollCallContent">
     <div class="RollCallDiv">
         <div class="DivInline">
             <img src="{{MEDIA_URL}}SVG/RDB-QmarkL.svg">
         </div>
         <div class="DivInline">
-            <h2 class="ContentItem-title DivInline"><b>{{ExportList_Topic.0.0.RollCallID.Title}}</b></h2>
+            <h2 class="ContentItem-title DivInline"><b>{{Export_Object.0.Title}}</b></h2>
         </div>
         <div class="DivInline">
             <img src="{{MEDIA_URL}}SVG/RDB-QmarkR.svg">
@@ -17,15 +17,15 @@
         {% for Card in ExportList_Topic %}
         <div class="timeline-item">
             <div class="timeline-icon">
-                <img src="{{MEDIA_URL}}{{Card.0.Publisher.Avatar}}" class="timeline-icon-image">
+                <img src="{{MEDIA_URL}}{{Card.Publisher.Avatar}}" class="timeline-icon-image">
             </div>
-            <div class="timeline-content {{Card.0.Display}}">
+            <div class="timeline-content {{Card.Display}}">
                 <span class="SpanRollDiol">
                     <img src="{{MEDIA_URL}}SVG/CRF-DateTime.svg">
                 </span>
-                <h2 class="time-line-date">{{Card.0.EditDate}}</h2>
+                <h2 class="time-line-date">{{Card.EditDate}}</h2>
                 <p class="time-line-content">
-                    {{Card.0.Content}} 
+                    {{Card.Content}} 
                 </p>
             </div>
         </div>

@@ -359,11 +359,23 @@ function TipOff(csrftoken){
 
 function Collect(ObjectID, csrftoken, Type){
   $.post('/Collect/',{csrfmiddlewaretoken: csrftoken,'ObjectID':ObjectID,'Type':Type},function(status){
-                if(status=='collect'){
+                if(status=='Collect'){
                   alert('已收藏');
                   location.reload();
-                }else if(status=='cancel'){
+                }else if(status=='CollectCancel'){
                   alert('已取消收藏');
+                  location.reload();
+                }else if(status=='Concern'){
+                  alert('已关注');
+                  location.reload();
+                }else if(status=='ConcernCancel'){
+                  alert('已取消关注');
+                  location.reload();
+                }else if(status=='Circusee'){
+                  alert('已围观');
+                  location.reload();
+                }else if(status=='CircuseeCancel'){
+                  alert('已取消围观');
                   location.reload();
                 }else{
                   document.getElementById('loginbutton').click();
