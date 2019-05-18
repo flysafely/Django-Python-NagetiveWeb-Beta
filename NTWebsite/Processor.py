@@ -1,7 +1,7 @@
 from NTWebsite.improtFiles.processor_import_head import *
 from NTWebsite.improtFiles.models_import_head import *
-from NTWebsite.Config import AppConfig as AC
-from NTWebsite.Config import DBConfig as DC
+from NTWebsite.AppConfig import AppConfig as AC
+from NTWebsite.AppConfig import DBConfig as DC
 
 
 def indexView(request):

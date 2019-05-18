@@ -1,8 +1,8 @@
 from .improtFiles.models_import_head import *
 from NTWebsite.MainMethods import QueryRedisCache as QRC
 from collections import Iterable
-from NTConfig.config import PermissionOption as POD
-from NTConfig.config import PermissionDict as PD
+from NTWebsite.AppConfig import PermissionOption as POD
+from NTWebsite.AppConfig import PermissionDict as PD
 import copy
 #from NTWebsite import MainMethods as mMs
 
