@@ -1,10 +1,8 @@
 from django.db import models
 from ..User import *
 from ..Topic import *
-#from ..SpecialTopic import *
 from ..RollCall import *
 from ..Comment import *
-
 import uuid
 
 # 立场统计
@@ -12,8 +10,8 @@ class TopicAttitude(models.Model):
     Publisher = models.ForeignKey(
         User, to_field='id', default=0, on_delete=models.CASCADE, verbose_name='用户')
     Point = models.IntegerField(null=True,blank=False, verbose_name='立场代码')
-    EditTime = models.DateTimeField(auto_now=True, verbose_name='时间')
-    ObjectID = models.ForeignKey(TopicInfo,to_field='ObjectID',default=0, on_delete=models.CASCADE, verbose_name='文章ID')
+    EditTime = models.DateTimeField(auto_now_add=True, verbose_name='时间')
+    ObjectID = models.ForeignKey(TopicInfo,to_field='ObjectID',default=0, on_delete=models.CASCADE, verbose_name='文章')
     Type = models.CharField(max_length=30, blank=True, verbose_name='类型')
 
     class Meta:
@@ -29,8 +27,8 @@ class CommentAttitude(models.Model):
     Publisher = models.ForeignKey(
         User, to_field='id', default=0, on_delete=models.CASCADE, verbose_name='用户')
     Point = models.IntegerField(null=True,blank=False, verbose_name='立场代码')
-    EditTime = models.DateTimeField(auto_now=True, verbose_name='时间')
-    ObjectID = models.ForeignKey(CommentInfo,to_field='ObjectID',default=0, on_delete=models.CASCADE, verbose_name='评论ID')
+    EditTime = models.DateTimeField(auto_now_add=True, verbose_name='时间')
+    ObjectID = models.ForeignKey(CommentInfo, to_field='ObjectID',default=0, on_delete=models.CASCADE, verbose_name='评论')
     Type = models.CharField(max_length=30, blank=True, verbose_name='类型')
 
     class Meta:
@@ -49,7 +47,7 @@ class ReadsIP(models.Model):
     """docstring for ArticleLikseIP"""
     IP = models.CharField(max_length=100, null=True,
                           blank=True, verbose_name='IP')
-    EditDate = models.DateField(auto_now=True, verbose_name='时间')
+    EditDate = models.DateTimeField(auto_now_add=True, verbose_name='时间')
     Type = models.CharField(
         max_length=30, default='T', blank=True, verbose_name='IP归入')
     ObjectID = models.CharField(
@@ -73,7 +71,7 @@ class UserLink(models.Model):
         User, to_field='id', default='', blank=False, on_delete=models.CASCADE, verbose_name='被关注用户')
     UserLinking = models.ForeignKey(
         User, to_field='id', related_name='NickLinking', default='', blank=False, on_delete=models.CASCADE, verbose_name='关注用户')
-    LinkTime = models.DateField(auto_now=True, verbose_name='时间')
+    LinkTime = models.DateTimeField(auto_now_add=True, verbose_name='时间')
 
     class Meta:
         verbose_name = '用户链接统计'
@@ -89,7 +87,7 @@ class Collect(models.Model):
     Publisher = models.ForeignKey(
         User, to_field='id', default=0, on_delete=models.CASCADE, verbose_name='用户名')
     ObjectID = models.ForeignKey(TopicInfo, to_field='ObjectID', default=0, on_delete=models.CASCADE,verbose_name='文章ID')
-    CollectTime = models.DateField(auto_now=True, verbose_name='时间')
+    CollectTime = models.DateTimeField(auto_now_add=True, verbose_name='时间')
 
     class Meta:
         verbose_name = '收藏统计'
@@ -104,7 +102,7 @@ class Concern(models.Model):
     Publisher = models.ForeignKey(
         User, to_field='id', default=0, on_delete=models.CASCADE, verbose_name='用户名')
     ObjectID = models.ForeignKey(TopicInfo, to_field='ObjectID', default=0, on_delete=models.CASCADE,verbose_name='专题ID')
-    CollectTime = models.DateField(auto_now=True, verbose_name='时间')
+    CollectTime = models.DateTimeField(auto_now_add=True, verbose_name='时间')
 
     class Meta:
         verbose_name = '关注统计'
@@ -119,7 +117,7 @@ class Circusee(models.Model):
     Publisher = models.ForeignKey(
         User, to_field='id', default=0, on_delete=models.CASCADE, verbose_name='用户名')
     ObjectID = models.ForeignKey(RollCallInfo, to_field='ObjectID', default=0, on_delete=models.CASCADE,verbose_name='点名ID')
-    CollectTime = models.DateField(auto_now=True, verbose_name='时间')
+    CollectTime = models.DateTimeField(auto_now_add=True, verbose_name='时间')
 
     class Meta:
         verbose_name = '围观统计'
@@ -201,7 +199,7 @@ class TipOffBox(models.Model):
         max_length=100, blank=False, default='', verbose_name='举报内容')
     Publisher = models.ForeignKey(
         User, to_field='id', related_name='TipOffUser', null=True, on_delete=models.CASCADE, verbose_name='举报用户')
-    EditDate = models.DateField(auto_now=True, verbose_name='编辑时间')
+    EditDate = models.DateTimeField(auto_now_add=True, verbose_name='编辑时间')
 
     class Meta:
         verbose_name = '举报统计'

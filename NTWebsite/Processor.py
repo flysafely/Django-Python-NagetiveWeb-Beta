@@ -230,13 +230,13 @@ def Replay(request):
                     'SpecialTopic': 'SRCount', 'RollCall': 'RCount'}
         Type = request.POST.get('Type')
         ObjectID = request.POST.get('ObjectID')
+        TopicObject = QRC('TopicInfo.objects.get(ObjectID=%s)', None, request.POST.get('ObjectID'))
         Content = request.POST.get('Content')
         ParentID = request.POST.get('ParentID')
         if request.user.is_authenticated:
             if Type in 'SpecialTopic':
-                ReplayObject = QRC('CommentInfo.objects.create(ObjectID=%s, ObjectID=%s,Content=%s,Parent=%s,Type=%s,Publisher=%s)',
-                                   0, mMs.CreateUUIDstr(), ObjectID, Content, ParentID, Type, request.user)
-
+                ReplayObject = QRC('CommentInfo.objects.create(ObjectID=%s, TopicID=%s,Content=%s,Parent=%s,Type=%s,Publisher=%s)',
+                                   0, mMs.CreateUUIDstr(), TopicObject, Content, ParentID, Type, request.user)
                 # AddNotification(Type, ObjectID, ReplayObject.ObjectID, QRC('CommentInfo.objects.get(ObjectID=%s)', None,
                 # ParentID).Publisher if ParentID else QRC(Type +
                 # 'Info.objects.get(ObjectID=%s)', None, ObjectID).Publisher,

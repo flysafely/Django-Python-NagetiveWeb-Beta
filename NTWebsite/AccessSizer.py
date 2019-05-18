@@ -6,11 +6,6 @@ from NTConfig.config import PermissionDict as PD
 import copy
 #from NTWebsite import MainMethods as mMs
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-
->>>>>>> 38fbe9c423b79aedd315d6b835202025a3d8f25e
 def Assign(Objects, ObjectType, request):
     Objects_Assigned = []
     for Object in Objects:
@@ -18,7 +13,6 @@ def Assign(Objects, ObjectType, request):
         for k, v in PGDict.items():
             PGDict[k] = POD[k]['True'] if eval(
                 POD[k]['Condition']) else POD[k]['False']
-            #print('%sPGDict[%s]:%s,%s' % (Object.Title,k,PGDict[k],eval(POD[k]['Condition'])))
         Objects_Assigned.append((Object, PGDict))
     return Objects_Assigned
 
@@ -28,7 +22,7 @@ def Empower(ObjectType, Objects, request):
     PGList = []
     if Objects and isinstance(Objects, Model):
         PGList.append(Objects)
-    elif Objects and isinstance(Objects, QuerySet):
+    elif Objects and isinstance(Objects, (QuerySet,Iterable)):
         PGList += list(Objects)
     else:
         return 0

@@ -108,18 +108,19 @@ def UserProfileInfoGet(request, DBConf, APPConf, URLParams):
     if URLParams['Part'] in 'SpecialTopic':
         Objects = A.Empower(URLParams['Part'], QRC(
             DBConf.QueryString, None, URLParams['FilterValue']), request)
-    elif URLParams['Part'] in ['Commit', 'Like', 'Dislike', 'Collect', 'Concern', 'Circusee']:
+    elif URLParams['Part'] in ['Comment']:
+        Topics = []
+        for item in QRC(DBConf.QueryString, None, URLParams['FilterValue']):
+            if item != None:
+                Topics.append(item.TopicID)
+        Objects = A.Empower('Topic', list(set(Topics)), request)
+    elif URLParams['Part'] in ['TopicLike','TopicDislike','CommentLike','CommentDislike']:
         Topics = []
         print("QRC(DBConf.QueryString, None, URLParams['FilterValue']):",QRC(DBConf.QueryString, None, URLParams['FilterValue']))
         for item in QRC(DBConf.QueryString, None, URLParams['FilterValue']):
-            Object = QRC('TopicInfo.objects.get(ObjectID=%s)' if URLParams[
-                         'Part'] != 'Circusee' else 'RollCallInfo.objects.get(ObjectID=%s)', 0, item.ObjectID)
-            if Object != None:
-                Topics.append(Object)
-        Objects = A.Empower(
-            URLParams['Region'], set(Topics), request)
-    elif URLParams['Part'] in ['Like', 'Dislike']:
-        pass
+            if item != None:
+                Topics.append(item.ObjectID if URLParams['Part'] in ['TopicLike','TopicDislike'] else item.ObjectID.TopicID)
+        Objects = A.Empower('Topic', list(set(Topics)), request)
     elif URLParams['Part'] in ['Collect', 'Concern', 'Circusee']:
         pass
     elif URLParams['Part'] in ['Focus', 'Fans']:

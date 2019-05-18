@@ -54,7 +54,7 @@ def rollcalldialogue_delete_handler(sender, instance, **kwargs):
 def comment_create_handler(sender, instance, created, **kwargs):
     if created and isinstance(instance, CommentInfo):
         mMs.CounterOperate(QRC('TopicInfo.objects.get(ObjectID=%s)',
-                               0, instance.ObjectID.replace('-', '')), 'Comment', '+')
+                               0, instance.TopicID.ObjectID), 'Comment', '+')
         mMs.CounterOperate(
             instance.Publisher, 'TRCount' if instance.Type == 'Topic' else 'SRCount', '+')
 
@@ -63,24 +63,24 @@ def comment_create_handler(sender, instance, created, **kwargs):
 def comment_delete_handler(sender, instance, **kwargs):
     if isinstance(instance, CommentInfo):
         mMs.CounterOperate(QRC('TopicInfo.objects.get(ObjectID=%s)',
-                               0, instance.ObjectID.replace('-', '')), 'Comment', '-')
+                               0, instance.TopicID.ObjectID), 'Comment', '-')
         mMs.CounterOperate(
             instance.Publisher, 'TRCount' if instance.Type == 'Topic' else 'SRCount', '-')
 
-
+'''
 @receiver(post_save, dispatch_uid=Collect)
 def collection_create_handler(sender, instance, created, **kwargs):
     if created and isinstance(instance, Collect):
         mMs.CounterOperate(QRC((instance.Type if instance.Type not in 'SpecialTopic' else 'Topic') +
-                               'Info.objects.get(ObjectID=%s)', 0, instance.ObjectID.replace('-', '')), 'Collect', '+')
+                               'Info.objects.get(ObjectID=%s)', 0, instance.ObjectID.), 'Collect', '+')
 
 
 @receiver(post_delete, dispatch_uid=Collect)
 def collection_delete_handler(sender, instance, **kwargs):
     if isinstance(instance, Collect):
         mMs.CounterOperate(QRC((instance.Type if instance.Type not in 'SpecialTopic' else 'Topic') +
-                               'Info.objects.get(ObjectID=%s)', 0, instance.ObjectID.replace('-', '')), 'Collect', '-')
-
+                               'Info.objects.get(ObjectID=%s)', 0, instance.ObjectID.), 'Collect', '-')
+'''
 
 @receiver(post_save, dispatch_uid=UserLink)
 def userlink_create_handler(sender, instance, created, **kwargs):
