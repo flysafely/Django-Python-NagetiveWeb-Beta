@@ -111,8 +111,8 @@ PermissionOption = {
     'VisitorIdentity': {'Condition': 'Object==request.user', 'True': 'Self', 'False': 'Others'},
     'VisitorOAuth-Read': {'Condition': 'Object==request.user', 'True': '1', 'False': 'readonly'},
     'VisitorOAuth-Edit': {'Condition': 'Object==request.user', 'True': '', 'False': 'hidden'},
-    'VisitorOAuth-Link': {'Condition': 'CheckUserLinkStatus(Object,request)', 'True': 'Linked', 'False': ''},
-    'VisitorOAuth-Block': {'Condition': 'CheckUserBlockStatus(Object,request)', 'True': 'Blocked', 'False': ''},
+    'VisitorOAuth-Link': {'Condition': 'CheckUserLinkStatus(Object,request)', 'True': 'Linked', 'False': 'Link'},
+    'VisitorOAuth-Block': {'Condition': 'CheckUserBlockStatus(Object,request)', 'True': 'Blocked', 'False': 'Block'},
 }
 
 PermissionDict = {

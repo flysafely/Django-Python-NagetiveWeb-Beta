@@ -116,13 +116,17 @@ def UserProfileInfoGet(request, DBConf, APPConf, URLParams):
         Objects = A.Empower('Topic', list(set(Topics)), request)
     elif URLParams['Part'] in ['TopicLike','TopicDislike','CommentLike','CommentDislike']:
         Topics = []
-        print("QRC(DBConf.QueryString, None, URLParams['FilterValue']):",QRC(DBConf.QueryString, None, URLParams['FilterValue']))
         for item in QRC(DBConf.QueryString, None, URLParams['FilterValue']):
             if item != None:
                 Topics.append(item.ObjectID if URLParams['Part'] in ['TopicLike','TopicDislike'] else item.ObjectID.TopicID)
         Objects = A.Empower('Topic', list(set(Topics)), request)
     elif URLParams['Part'] in ['Collect', 'Concern', 'Circusee']:
-        pass
+        ObjectType = {'Collect':'Topic', 'Concern':'SpecialTopic', 'Circusee':'RollCall'}
+        Topics = []
+        for item in QRC(DBConf.QueryString, None, URLParams['FilterValue']):
+            if item != None:
+                Topics.append(item.ObjectID)
+        Objects = A.Empower(ObjectType[URLParams['Part']], list(set(Topics)), request)
     elif URLParams['Part'] in ['Focus', 'Fans']:
         Objects = []
         for UserObject in QRC(DBConf.QueryString, None, QRC('User.objects.get(id=%s)', 0, URLParams['FilterValue'])):
