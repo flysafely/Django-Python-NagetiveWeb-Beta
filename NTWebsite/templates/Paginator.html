@@ -1,45 +1,41 @@
 {% load CustomFuncTags %}
 {% if not Paginator_num_pages == 1 and not Paginator_num_pages == 0 %}
-<div class="Card TopstoryItem" style="margin:0px 0px 0px 0px;">
-    <div style="text-align:center;margin:-10px 0px 0px 0px;">
-        <div class="col-md-12 column" style="height:60px;">
-            <ul class="pagination pagination-sm">
-                {% if ExportList_Cards.has_previous %}
-                <li>
-                     <a href="{{Paginator_Href}}{{ExportList_Cards.previous_page_number}}#anchorDiv"><b>&lt;</b></a>
-                </li>
-                {% endif %}
+<div class="Card TopstoryItem col-md-12 column PaginationDiv">
+    <ul class="pagination pagination-sm">
+        {% if ExportList_Cards.has_previous %}
+        <li>
+             <a href="{{Paginator_Href}}{{ExportList_Cards.previous_page_number}}#anchorDiv"><b>&lt;</b></a>
+        </li>
+        {% endif %}
 
-                {% if Paginator_num_pages|NumberCompare:'5' == 'greater' %}
-                {% for num in 5|list:"1" %}
-                <li>
-                     <a href="{{Paginator_Href}}{{num}}#anchorDiv">{{num}}</a>
-                </li>
-                {% endfor %}
-                <li>
-                    <a>···</a>
-                </li>
-                <li class="active">
-                    <a href="{{Paginator_Href}}{{ ExportList_Cards.paginator.num_pages }}#anchorDiv">{{ ExportList_Cards.paginator.num_pages }}</a>
-                </li>
-                {% else %}
-                {% for num in Paginator_num_pages|list:"1" %}
-                <li>
-                     <a href="{{Paginator_Href}}{{num}}#anchorDiv">{{num}}</a>
-                </li>
-                {% endfor %}                            
-                {% endif %}
+        {% if Paginator_num_pages|NumberCompare:'5' == 'greater' %}
+        {% for num in 5|list:"1" %}
+        <li>
+             <a href="{{Paginator_Href}}{{num}}#anchorDiv">{{num}}</a>
+        </li>
+        {% endfor %}
+        <li>
+            <a>···</a>
+        </li>
+        <li class="active">
+            <a href="{{Paginator_Href}}{{ ExportList_Cards.paginator.num_pages }}#anchorDiv">{{ ExportList_Cards.paginator.num_pages }}</a>
+        </li>
+        {% else %}
+        {% for num in Paginator_num_pages|list:"1" %}
+        <li>
+             <a href="{{Paginator_Href}}{{num}}#anchorDiv">{{num}}</a>
+        </li>
+        {% endfor %}                            
+        {% endif %}
 
-                {% if ExportList_Cards.has_next %}
-                <li>
-                     <a href="{{Paginator_Href}}{{ExportList_Cards.next_page_number}}#anchorDiv"><b>&gt;</b></a>
-                </li>
-                {% endif %}
-                <li>
-                     <a class="entry" id="entry">当前{{Current_Pagenumber}}页</a>
-                </li>                          
-            </ul>
-        </div>
-    </div>
+        {% if ExportList_Cards.has_next %}
+        <li>
+             <a href="{{Paginator_Href}}{{ExportList_Cards.next_page_number}}#anchorDiv"><b>&gt;</b></a>
+        </li>
+        {% endif %}
+        <li>
+             <a class="entry" id="entry">当前{{Current_Pagenumber}}页</a>
+        </li>                          
+    </ul>
 </div>
 {% endif %}
