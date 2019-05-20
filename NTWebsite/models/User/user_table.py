@@ -17,7 +17,8 @@ class User(AbstractUser):
                               default='DefaultLogo.jpg', blank=True, null=False)
     Constellation = models.CharField(
         max_length=10, blank=True, null=True, default='天蝎座', verbose_name='星座')
-
+    NotificationCount = models.IntegerField(verbose_name='未读通知数量', default=0)
+    MessageCount = models.IntegerField(verbose_name='未读消息数量', default=0)
     FansCount = models.IntegerField(verbose_name='关注者数量', default=0)
     FocusCount = models.IntegerField(verbose_name='关注数量', default=0)
     TCount = models.IntegerField(verbose_name='文章发布数量', default=0)

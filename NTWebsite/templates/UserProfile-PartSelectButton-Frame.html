@@ -3,74 +3,94 @@
     <ul role="tablist" class="Tabs">
         <li role="tab" class="Tabs-item" style="text-decoration:none;">
         {% if Layout_Sizer|GetDictValue:'Part' == 'Topic' %}
-            <a class="Tabs-link is-active" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Topic/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">文章</a>
+            <a class="Tabs-link is-active" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Topic/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">文章</a>
         {% else %}
-            <a class="Tabs-link" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Topic/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">文章</a>
+            <a class="Tabs-link" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Topic/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">文章</a>
         {% endif %}
         </li>
         <li role="tab" class="Tabs-item">
         {% if Layout_Sizer|GetDictValue:'Part' == 'SpecialTopic' %}
-            <a class="Tabs-link is-active" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/SpecialTopic/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">专题</a>
+            <a class="Tabs-link is-active" href="/{{Layout_Sizer|GetDictValue:'Region'}}/SpecialTopic/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">专题</a>
         {% else %}
-            <a class="Tabs-link" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/SpecialTopic/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">专题</a>
-        {% endif %}
-        </li>
-        <li role="tab" class="Tabs-item">
-        {% if Layout_Sizer|GetDictValue:'Part' == 'Commit' %}
-            <a class="Tabs-link is-active" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Commit/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">评论</a>
-        {% else %}
-            <a class="Tabs-link" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Commit/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">评论</a>
+            <a class="Tabs-link" href="/{{Layout_Sizer|GetDictValue:'Region'}}/SpecialTopic/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">专题</a>
         {% endif %}
         </li>
         <li role="tab" class="Tabs-item">
         {% if Layout_Sizer|GetDictValue:'Part' == 'Like' %}
-            <a class="Tabs-link is-active" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Like/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">赞过</a>
+            <a class="Tabs-link is-active" href="/{{Layout_Sizer|GetDictValue:'Region'}}/TopicLike/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">赞</a>
         {% else %}
-            <a class="Tabs-link" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Like/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">赞过</a>
+            <a class="Tabs-link" href="/{{Layout_Sizer|GetDictValue:'Region'}}/TopicLike/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">赞</a>
         {% endif %}
         </li>
         <li role="tab" class="Tabs-item">
         {% if Layout_Sizer|GetDictValue:'Part' == 'Dislike' %}
-            <a class="Tabs-link is-active" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Dislike/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">怼过</a>
+            <a class="Tabs-link is-active" href="/{{Layout_Sizer|GetDictValue:'Region'}}/TopicDislike/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">怼</a>
         {% else %}
-            <a class="Tabs-link" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Dislike/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">怼过</a>
+            <a class="Tabs-link" href="/{{Layout_Sizer|GetDictValue:'Region'}}/TopicDislike/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">怼</a>
+        {% endif %}
+        </li>
+        <li role="tab" class="Tabs-item-line">
+            <a class="Tabs-label-a"></a>
+        </li>
+        <li role="tab" class="Tabs-item">
+        {% if Layout_Sizer|GetDictValue:'Part' == 'Comment' %}
+            <a class="Tabs-link is-active" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Comment/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">评论</a>
+        {% else %}
+            <a class="Tabs-link" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Comment/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">评论</a>
         {% endif %}
         </li>
         <li role="tab" class="Tabs-item">
-        {% if Layout_Sizer|GetDictValue:'Part' == 'Collect' %}
-            <a class="Tabs-link is-active" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Collect/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">收藏</a>
+        {% if Layout_Sizer|GetDictValue:'Part' == 'Like' %}
+            <a class="Tabs-link is-active" href="/{{Layout_Sizer|GetDictValue:'Region'}}/CommentLike/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">赞</a>
         {% else %}
-            <a class="Tabs-link" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Collect/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">收藏</a>
+            <a class="Tabs-link" href="/{{Layout_Sizer|GetDictValue:'Region'}}/CommentLike/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">赞</a>
+        {% endif %}
+        </li>
+        <li role="tab" class="Tabs-item">
+        {% if Layout_Sizer|GetDictValue:'Part' == 'Dislike' %}
+            <a class="Tabs-link is-active" href="/{{Layout_Sizer|GetDictValue:'Region'}}/CommentDislike/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">怼</a>
+        {% else %}
+            <a class="Tabs-link" href="/{{Layout_Sizer|GetDictValue:'Region'}}/CommentDislike/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">怼</a>
+        {% endif %}
+        </li>
+        <li role="tab" class="Tabs-item-line">
+            <a class="Tabs-label-a"></a>
+        </li>
+        <li role="tab" class="Tabs-item">
+        {% if Layout_Sizer|GetDictValue:'Part' == 'Collect' %}
+            <a class="Tabs-link is-active" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Collect/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">收藏</a>
+        {% else %}
+            <a class="Tabs-link" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Collect/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">收藏</a>
         {% endif %}
         </li>
         <li role="tab" class="Tabs-item">
         {% if Layout_Sizer|GetDictValue:'Part' == 'Concern' %}
-            <a class="Tabs-link is-active" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Concern/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">关注</a>
+            <a class="Tabs-link is-active" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Concern/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">关注</a>
         {% else %}
-            <a class="Tabs-link" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Concern/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">关注</a>
+            <a class="Tabs-link" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Concern/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">关注</a>
         {% endif %}
         </li>
         <li role="tab" class="Tabs-item">
         {% if Layout_Sizer|GetDictValue:'Part' == 'Circusee' %}
-            <a class="Tabs-link is-active" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Circusee/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">围观</a>
+            <a class="Tabs-link is-active" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Circusee/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">围观</a>
         {% else %}
-            <a class="Tabs-link" style="text-decoration:none;" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Circusee/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">围观</a>
+            <a class="Tabs-link" href="/{{Layout_Sizer|GetDictValue:'Region'}}/Circusee/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1">围观</a>
         {% endif %}
         </li>
-        <li role="tab" class="Tabs-item">
-            <a style="height:80px; width:1px; border-left:1px #F3F3F3 solid"></a>
+        <li role="tab" class="Tabs-item-line">
+            <a class="Tabs-label-a"></a>
         </li>
         <li role="tab" class="Tabs-item">
-            <a href="/{{Layout_Sizer|GetDictValue:'Region'}}/Focus/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1" style="text-decoration:none;" class="TopstoryHeader-rightItem">关注  :   <b>{{ExportItem_UserInfo.0.0.FocusCount}}</b></a>
+            <a href="/{{Layout_Sizer|GetDictValue:'Region'}}/Focus/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1" class="TopstoryHeader-rightItem">关注  :   <b>{{ExportItem_UserInfo.0.0.FocusCount}}</b></a>
+        </li>
+        <li role="tab" class="Tabs-item-line">
+            <a class="Tabs-label-a"></a>
         </li>
         <li role="tab" class="Tabs-item">
-            <a style="height:80px; width:1px; border-left:1px #F3F3F3 solid"></a>
+            <a href="/{{Layout_Sizer|GetDictValue:'Region'}}/Fans/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1" class="TopstoryHeader-rightItem">粉丝  :   <b>{{ExportItem_UserInfo.0.0.FansCount}}</b></a>
         </li>
-        <li role="tab" class="Tabs-item">
-            <a href="/{{Layout_Sizer|GetDictValue:'Region'}}/Fans/{{Layout_Sizer|GetDictValue:'FilterValue'}}/LE/1" style="text-decoration:none;" class="TopstoryHeader-rightItem">粉丝  :   <b>{{ExportItem_UserInfo.0.0.FansCount}}</b></a>
-        </li>
-        <li role="tab" class="Tabs-item">
-            <a style="height:80px; width:1px; border-left:1px #F3F3F3 solid"></a>
+        <li role="tab" class="Tabs-item-line">
+            <a class="Tabs-label-a"></a>
         </li>       
     </ul>
 </div>

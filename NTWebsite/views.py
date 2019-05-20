@@ -41,7 +41,7 @@ def TopicContentInfoGet(request, DBConf, APPConf, URLParams):
         mMs.CounterOperate(QRC('TopicInfo.objects.get(ObjectID=%s)',
                                0, URLParams['FilterValue']), 'Hot', '+')
     # 获取指定文章对象
-<<<<<<< HEAD
+
     #print('获取指定文章对象', QRC(DBConf.QueryString, None, URLParams['FilterValue']))
     TopicObject = A.Empower(URLParams['Region'], QRC(
         DBConf.QueryString, None, URLParams['FilterValue']), request)
@@ -51,19 +51,6 @@ def TopicContentInfoGet(request, DBConf, APPConf, URLParams):
                                                     None,
                                                     TopicObject[0][0]),
                                                 request))
-=======
-    print('获取指定文章对象',QRC(DBConf.QueryString, None, URLParams['FilterValue']))
-    TopicObject = A.PermissionConfirm(URLParams['Part'], QRC(
-        DBConf.QueryString, None, URLParams['FilterValue']), request, URLParams)
-    # 获取评论对象
-    print('************',TopicObject[0][0])
-    CommentObjects = P.CommentPackage(A.PermissionConfirm(URLParams['Part'],
-                                                          QRC("CommentInfo.objects.filter(TopicID=%s).order_by('-EditDate')",
-                                                              None,
-                                                              TopicObject[0][0]),
-                                                          request,
-                                                          URLParams))
->>>>>>> bc3830c4652a1739564c28de82ba62c1edebebf8
     # 评论分页器
     PaginatorDict = P.PaginatorInfoGet(
         CommentObjects, APPConf.CommentsPageLimit, URLParams)
@@ -74,7 +61,7 @@ def TopicContentInfoGet(request, DBConf, APPConf, URLParams):
 
 def SearchInfoGet(request, DBConf, APPConf, URLParams):
     # 获取符合条件的文章对象并且获取权限
-    ResultObjects = A.Empower(URLParams['Part'] if URLParams['Part'] != 'User' else 'UserProfileInfo', QRC(
+    ResultObjects = A.Empower(URLParams['Part'] if URLParams['Part'] != 'User' else 'UserProfile', QRC(
         DBConf.QueryString, None, URLParams['FilterValue'], URLParams['FilterValue'], URLParams['Part']) if URLParams['Part'] in 'SpecialTopic' else QRC(
         DBConf.QueryString, None, URLParams['FilterValue']), request)
     # 文章分页器
@@ -121,20 +108,31 @@ def UserProfileInfoGet(request, DBConf, APPConf, URLParams):
     if URLParams['Part'] in 'SpecialTopic':
         Objects = A.Empower(URLParams['Part'], QRC(
             DBConf.QueryString, None, URLParams['FilterValue']), request)
-    elif URLParams['Part'] in ['Commit', 'Like', 'Dislike', 'Collect', 'Concern', 'Circusee']:
+    elif URLParams['Part'] in ['Comment']:
         Topics = []
         for item in QRC(DBConf.QueryString, None, URLParams['FilterValue']):
-            Object = QRC('TopicInfo.objects.get(ObjectID=%s)' if URLParams[
-                         'Part'] != 'Circusee' else 'RollCallInfo.objects.get(ObjectID=%s)', 0, item.ObjectID)
-            if Object != None:
-                Topics.append(Object)
-        Objects = A.Empower(
-            URLParams['Region'], set(Topics), request)
+            if item != None:
+                Topics.append(item.TopicID)
+        Objects = A.Empower('Topic', list(set(Topics)), request)
+    elif URLParams['Part'] in ['TopicLike','TopicDislike','CommentLike','CommentDislike']:
+        Topics = []
+        for item in QRC(DBConf.QueryString, None, URLParams['FilterValue']):
+            if item != None:
+                Topics.append(item.ObjectID if URLParams['Part'] in ['TopicLike','TopicDislike'] else item.ObjectID.TopicID)
+        Objects = A.Empower('Topic', list(set(Topics)), request)
+    elif URLParams['Part'] in ['Collect', 'Concern', 'Circusee']:
+        ObjectType = {'Collect':'Topic', 'Concern':'SpecialTopic', 'Circusee':'RollCall'}
+        Topics = []
+        for item in QRC(DBConf.QueryString, None, URLParams['FilterValue']):
+            if item != None:
+                Topics.append(item.ObjectID)
+        Objects = A.Empower(ObjectType[URLParams['Part']], list(set(Topics)), request)
     elif URLParams['Part'] in ['Focus', 'Fans']:
-        Objects = []
+        UserObjects = []
         for UserObject in QRC(DBConf.QueryString, None, QRC('User.objects.get(id=%s)', 0, URLParams['FilterValue'])):
             if UserObject != None:
-                Objects.append(UserObject)
+                UserObjects.append(UserObject.UserLinking if URLParams['Part'] == 'Fans' else UserObject.UserBeLinked)
+        Objects = A.Empower('User', list(set(UserObjects)), request)
     # 分页器
     PaginatorDict = P.PaginatorInfoGet(
         Objects, APPConf.CommonPageLimit, URLParams)

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # 使用了staticfiles 就必须定义STATIC_URL   URL路由指向STATIC_ROOT路径
     'django.contrib.staticfiles',
     'NTWebsite',
+    'NTNotification',
     'ckeditor',
     'ckeditor_uploader',
     'CustomFunctions',

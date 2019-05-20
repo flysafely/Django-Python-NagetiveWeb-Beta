@@ -90,4 +90,4 @@ class TopicInfo(models.Model):
         app_label = 'NTWebsite'
 
     def __str__(self):
-        return self.Title
+        return self.ObjectID

@@ -1,7 +1,7 @@
 from NTWebsite.improtFiles.processor_import_head import *
 from NTWebsite.improtFiles.models_import_head import *
-from NTWebsite.Config import AppConfig as AC
-from NTWebsite.Config import DBConfig as DC
+from NTWebsite.AppConfig import AppConfig as AC
+from NTWebsite.AppConfig import DBConfig as DC
 
 
 def indexView(request):
@@ -113,8 +113,8 @@ def PublishRollCall(request):
                                       RollCallTitle, request.user, QRC('User.objects.get(Nick=%s)', None, TargetUserNick), mMs.CreateUUIDstr())
                     NewDialogue = QRC(
                         'RollCallDialogue.objects.create(RollCallID=%s,Publisher=%s,Content=%s,ObjectID=%s)', 0, NewRollCall, request.user, RollCallContent, mMs.CreateUUIDstr())
-                    AddNotification('RollCall', NewRollCall.ObjectID, NewDialogue.ObjectID, QRC(
-                        'User.objects.get(Nick=%s)', None, TargetUserNick), request.user)
+                    #AddNotification('RollCall', NewRollCall.ObjectID, NewDialogue.ObjectID, QRC(
+                    #    'User.objects.get(Nick=%s)', None, TargetUserNick), request.user)
                     return HttpResponse('publishok')
                 except Exception as e:
                     if 'UNIQUE' in str(e):
@@ -135,7 +135,7 @@ def ContextConfirm(request, **Params):
     PublisherList = QRC("PublisherList.objects.all()", None)
     # 生成上下文字典
     ContextDict = {"Layout_Sizer": Params['URLParams'],
-                   "Main_URL_Sizer": {'Topic': ('is-active', '', ''), 'RollCall': ('', 'is-active', ''), 'SpecialTopic': ('', '', 'is-active'), 'UserProfile': ('', '', '')}[Params['URLParams']['Region']],
+                   "Main_URL_Sizer": {'Topic': ('is-active', '', ''), 'RollCall': ('', 'is-active', ''), 'SpecialTopic': ('', '', 'is-active'), 'UserProfile': ('', '', ''),'Search': ('', '', '')}[Params['URLParams']['Region']],
                    "ExportItem_UserInfo": Params['User'] if 'User' in Params else '',
                    "Export_Object": Params['MainObject'] if 'MainObject' in Params else '',
                    "ExportList_Topic": Params['Object'] if 'Object' in Params else '',
@@ -230,13 +230,13 @@ def Replay(request):
                     'SpecialTopic': 'SRCount', 'RollCall': 'RCount'}
         Type = request.POST.get('Type')
         ObjectID = request.POST.get('ObjectID')
+        TopicObject = QRC('TopicInfo.objects.get(ObjectID=%s)', None, request.POST.get('ObjectID'))
         Content = request.POST.get('Content')
         ParentID = request.POST.get('ParentID')
         if request.user.is_authenticated:
             if Type in 'SpecialTopic':
-                ReplayObject = QRC('CommentInfo.objects.create(ObjectID=%s, ObjectID=%s,Content=%s,Parent=%s,Type=%s,Publisher=%s)',
-                                   0, mMs.CreateUUIDstr(), ObjectID, Content, ParentID, Type, request.user)
-
+                ReplayObject = QRC('CommentInfo.objects.create(ObjectID=%s, TopicID=%s,Content=%s,Parent=%s,Type=%s,Publisher=%s)',
+                                   0, mMs.CreateUUIDstr(), TopicObject, Content, ParentID, Type, request.user)
                 # AddNotification(Type, ObjectID, ReplayObject.ObjectID, QRC('CommentInfo.objects.get(ObjectID=%s)', None,
                 # ParentID).Publisher if ParentID else QRC(Type +
                 # 'Info.objects.get(ObjectID=%s)', None, ObjectID).Publisher,
@@ -247,8 +247,9 @@ def Replay(request):
                 ReplayObject = QRC('RollCallDialogue.objects.create(ObjectID=%s,RollCallID=%s,Content=%s,Display=%s,Publisher=%s)',
                                    0, mMs.CreateUUIDstr(), RollCall, Content, '' if RollCall.Publisher == request.user else 'right', request.user)
                 if not RollCall.Publisher == request.user:
-                    AddNotification(Type, ObjectID, ReplayObject.ObjectID, QRC('CommentInfo.objects.get(ObjectID=%s)', None,
-                                                                               ParentID).Publisher if ParentID else QRC(Type + 'Info.objects.get(ObjectID=%s)', None, ObjectID).Publisher, request.user)
+                    pass
+                    #AddNotification(Type, ObjectID, ReplayObject.ObjectID, QRC('CommentInfo.objects.get(ObjectID=%s)', None,
+                    #                                                           ParentID).Publisher if ParentID else QRC(Type + 'Info.objects.get(ObjectID=%s)', None, ObjectID).Publisher, request.user)
             return HttpResponse('replayok')
         else:
             return HttpResponse('login')

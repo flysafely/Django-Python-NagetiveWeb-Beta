@@ -1,6 +1,6 @@
 from NTWebsite import AppConfig
 from .improtFiles.models_import_head import *
-from .Config import AppConfig as AC
+from .AppConfig import AppConfig as AC
 
 #import AppConfig
 #from models.Configuration import *
@@ -15,7 +15,7 @@ from django.core.cache import caches
 #from oscrypto._win import symmetric
 from oscrypto import symmetric
 from PIL import Image as im
-from NTConfig import settings,config
+from NTConfig import settings
 #from Crypto.Cipher import AES
 
 import datetime
@@ -202,7 +202,7 @@ def CreateUUIDstr():
 
 # 初始化网站配置信息 创建超级用户的时候在数据库中按照默认配置信息写入
 def QueryFilterCreate():
-    for name,detail in config.DefualtFilterDict.items():
+    for name,detail in AppConfig.DefualtFilterDict.items():
         if not FilterQueryString.objects.filter(Name=name):
             FilterQueryString.objects.create(Name=name,MethodString=detail['MethodString'],QueryString=detail['QueryString'],Template=detail['Template'])
             print("成功创建:'%s'" % name)
