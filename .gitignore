@@ -11,3 +11,4 @@ dump.rdb
 *.bak2
 *.pem.
 *.pem
+*.pyc
