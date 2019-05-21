@@ -209,5 +209,18 @@ def QueryFilterCreate():
         else:
             print("跳过:'%s'" % name)
 
+def AddNotification(Signal, Type, Object):
+    if Signal == 'comment_create_handler':
+        CommentNotification.objects.create(ID=CreateUUIDstr(), Type=Type, Object=Object, SourceUser=Object.Publisher, TargetUser=Object.TopicID.Publisher)
+    elif Signal == 'rollcall_create_handler':
+        RollCallNotification.objects.create(ID=CreateUUIDstr(), Type=Type, Object=Object, SourceUser=Object.Publisher, TargetUser=Object.Target)
+    elif Signal == 'userlink_create_handler':
+        LinkNotification.objects.create(ID=CreateUUIDstr(), Type=Type, Object=Object, SourceUser=Object.UserLinking, TargetUser=Object.UserBeLinked)
+    elif Signal == 'TopicAttitude_create_handler':
+        TopicAttitudeNotification.objects.create(ID=CreateUUIDstr(), Type=Type, Object=Object.ObjectID, SourceUser=Object.Publisher, TargetUser=Object.ObjectID.Publisher)
+    elif Signal == 'CommentAttitude_create_handler':
+        CommentAttitudeNotification.objects.create(ID=CreateUUIDstr(), Type=Type, Object=Object.ObjectID, SourceUser=Object.Publisher, TargetUser=Object.ObjectID.Publisher)
+
+
 if __name__ == "__main__":
     print('%s' % 'abc')

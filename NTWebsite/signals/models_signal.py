@@ -28,6 +28,7 @@ def topic_delete_handler(sender, instance, **kwargs):
 def rollcall_create_handler(sender, instance, created, **kwargs):
     if created and isinstance(instance, RollCallInfo):
         mMs.CounterOperate(instance.Publisher, 'RCount', '+')
+        mMs.AddNotification('rollcall_create_handler','R',instance)
 
 @receiver(post_delete, dispatch_uid=RollCallInfo)
 def rollcall_delete_handler(sender, instance, **kwargs):
@@ -54,6 +55,7 @@ def comment_create_handler(sender, instance, created, **kwargs):
         mMs.CounterOperate(instance.TopicID, 'Comment', '+')
         mMs.CounterOperate(
             instance.Publisher, 'TRCount' if instance.Type == 'Topic' else 'SRCount', '+')
+        mMs.AddNotification('comment_create_handler', 'Replay' if instance.Parent else 'Comment', instance)
 
 @receiver(post_delete, dispatch_uid=CommentInfo)
 def comment_delete_handler(sender, instance, **kwargs):
@@ -101,6 +103,7 @@ def userlink_create_handler(sender, instance, created, **kwargs):
     if created and isinstance(instance, UserLink):
         mMs.CounterOperate(instance.UserBeLinked, 'FansCount', '+')
         mMs.CounterOperate(instance.UserLinking, 'FocusCount', '+')
+        mMs.AddNotification('userlink_create_handler', 'L', instance)
 
 @receiver(post_delete, dispatch_uid=UserLink)
 def userlink_delete_handler(sender, instance, **kwargs):
@@ -112,12 +115,14 @@ def userlink_delete_handler(sender, instance, **kwargs):
 @receiver(post_save, dispatch_uid=TopicAttitude)
 def TopicAttitude_create_handler(sender, instance, created, **kwargs):
     if created and isinstance(instance, TopicAttitude):
-        print('instance.Point:',instance.Point)
+        print("Topic Create Point")
         mMs.CounterOperate(instance.ObjectID, 'Like' if instance.Point == 1 else 'Dislike', '+')
+        mMs.AddNotification('TopicAttitude_create_handler', 'L' if instance.Point == 1 else 'D', instance)
     elif (not created) and isinstance(instance, TopicAttitude):
-        print('instance.Point:',instance.Point)
         mMs.CounterOperate(instance.ObjectID, 'Like' if int(instance.Point) == 1 else 'Dislike', '+')
         mMs.CounterOperate(instance.ObjectID, 'Like' if abs(int(instance.Point) - 1) == 1 else 'Dislike', '-')
+        mMs.AddNotification('TopicAttitude_create_handler', 'L' if instance.Point == 1 else 'D', instance)
+
 
 @receiver(pre_delete, dispatch_uid=TopicAttitude)
 def TopicAttitude_delete_handler(sender, instance, **kwargs):
@@ -128,12 +133,13 @@ def TopicAttitude_delete_handler(sender, instance, **kwargs):
 @receiver(post_save, dispatch_uid=CommentAttitude)
 def CommentAttitude_create_handler(sender, instance, created, **kwargs):
     if created and isinstance(instance, CommentAttitude):
-        print('instance.Point:',instance.Point)
+        print("Comment Create Point")
         mMs.CounterOperate(instance.ObjectID, 'Like' if instance.Point == 1 else 'Dislike', '+')
+        mMs.AddNotification('CommentAttitude_create_handler', 'L' if instance.Point == 1 else 'D', instance)
     elif (not created) and isinstance(instance, CommentAttitude):
-        print('instance.Point:',instance.Point)
         mMs.CounterOperate(instance.ObjectID, 'Like' if int(instance.Point) == 1 else 'Dislike', '+')
         mMs.CounterOperate(instance.ObjectID, 'Like' if abs(int(instance.Point) - 1) == 1 else 'Dislike', '-')
+        mMs.AddNotification('CommentAttitude_create_handler', 'L' if instance.Point == 1 else 'D', instance)
 
 @receiver(pre_delete, dispatch_uid=CommentAttitude)
 def CommentAttitude_delete_handler(sender, instance, **kwargs):

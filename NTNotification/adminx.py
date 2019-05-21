@@ -8,6 +8,14 @@ class CommentNotificationAdminView(object):
     """docstring for CommentNotification"""
     list_display = ('ID',)
 
+class TopicAttitudeNotificationAdminView(object):
+    """docstring for AttitudeNotification"""
+    list_display = ('ID',)
+
+class CommentAttitudeNotificationAdminView(object):
+    """docstring for AttitudeNotification"""
+    list_display = ('ID',)
+
 class RollCallNotificationAdminView(object):
     """docstring for RollCallNotification"""
     list_display = ('ID',)
@@ -21,6 +29,8 @@ class PublishNotificationAdminView(object):
     list_display = ('ID',)
 
 xadmin.site.register(CommentNotification,CommentNotificationAdminView)
+xadmin.site.register(TopicAttitudeNotification,TopicAttitudeNotificationAdminView)
+xadmin.site.register(CommentAttitudeNotification,CommentAttitudeNotificationAdminView)
 xadmin.site.register(RollCallNotification,RollCallNotificationAdminView)
 xadmin.site.register(LinkNotification,LinkNotificationAdminView)
 xadmin.site.register(PublishNotification,PublishNotificationAdminView)
