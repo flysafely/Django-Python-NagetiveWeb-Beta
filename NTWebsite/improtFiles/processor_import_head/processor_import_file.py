@@ -19,7 +19,7 @@ from django_redis import get_redis_connection
 
 from NTWebsite.MainMethods import QueryRedisCache as QRC
 from NTWebsite.improtFiles.models_import_head import *
-from NTWebsite import AppConfig as aConf
+from NTWebsite import Config as aConf
 from NTWebsite import MainMethods as mMs
 from NTWebsite.models import *
 

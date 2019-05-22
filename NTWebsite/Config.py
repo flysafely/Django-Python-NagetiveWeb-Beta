@@ -2,9 +2,6 @@ import os
 from .improtFiles.models_import_head import *
 from django.shortcuts import get_object_or_404
 
-from .improtFiles.models_import_head import *
-from django.shortcuts import get_object_or_404
-
 class AppConfig(object):
     """docstring for DBConfig"""
     _instance = None

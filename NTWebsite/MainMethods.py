@@ -1,22 +1,17 @@
-from NTWebsite import AppConfig
-from .improtFiles.models_import_head import *
-from .AppConfig import AppConfig as AC
-
-#import AppConfig
-#from models.Configuration import *
-
+from NTWebsite import Config
 from NTWebsite.models.Configuration import *
+from NTConfig import settings
+from .improtFiles.models_import_head import *
+from .Config import AppConfig as AC
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django_redis import get_redis_connection
-from redis import StrictRedis
 from django.http import Http404
 from django.views.decorators.cache import cache_page
 from django.core.cache import caches
-#from oscrypto._win import symmetric
+from redis import StrictRedis
 from oscrypto import symmetric
 from PIL import Image as im
-from NTConfig import settings
-#from Crypto.Cipher import AES
 
 import datetime
 import hashlib
@@ -209,18 +204,29 @@ def QueryFilterCreate():
         else:
             print("跳过:'%s'" % name)
 
-def AddNotification(Signal, Type, Object):
-    if Signal == 'comment_create_handler':
-        CommentNotification.objects.create(ID=CreateUUIDstr(), Type=Type, Object=Object, SourceUser=Object.Publisher, TargetUser=Object.TopicID.Publisher)
-    elif Signal == 'rollcall_create_handler':
-        RollCallNotification.objects.create(ID=CreateUUIDstr(), Type=Type, Object=Object, SourceUser=Object.Publisher, TargetUser=Object.Target)
-    elif Signal == 'userlink_create_handler':
-        LinkNotification.objects.create(ID=CreateUUIDstr(), Type=Type, Object=Object, SourceUser=Object.UserLinking, TargetUser=Object.UserBeLinked)
-    elif Signal == 'TopicAttitude_create_handler':
-        TopicAttitudeNotification.objects.create(ID=CreateUUIDstr(), Type=Type, Object=Object.ObjectID, SourceUser=Object.Publisher, TargetUser=Object.ObjectID.Publisher)
-    elif Signal == 'CommentAttitude_create_handler':
-        CommentAttitudeNotification.objects.create(ID=CreateUUIDstr(), Type=Type, Object=Object.ObjectID, SourceUser=Object.Publisher, TargetUser=Object.ObjectID.Publisher)
-
+def AddNotification(Type, Object):
+    if Type == 'R':
+        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, RollCallInfo=Object, SourceUser=Object.Publisher, TargetUser=Object.Target)
+    elif Type == 'C':
+        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, CommentInfo=Object, SourceUser=Object.Publisher, TargetUser=Object.TopicID.Publisher)
+    elif Type == 'CR':
+        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, CommentInfo=Object, SourceUser=Object.Publisher, TargetUser=Object.Parent.Publisher)
+    elif Type == 'L':
+        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, UserLink=Object, SourceUser=Object.UserLinking, TargetUser=Object.UserBeLinked)
+    elif Type == 'TAL':
+        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, TopicInfo=Object.ObjectID, SourceUser=Object.Publisher, TargetUser=Object.ObjectID.Publisher)
+    elif Type == 'TAD':
+        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, TopicInfo=Object.ObjectID, SourceUser=Object.Publisher, TargetUser=Object.ObjectID.Publisher)
+    elif Type == 'CAL':
+        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, CommentInfo=Object.ObjectID, SourceUser=Object.Publisher, TargetUser=Object.ObjectID.Publisher)
+    elif Type == 'CAD':
+        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, CommentInfo=Object.ObjectID, SourceUser=Object.Publisher, TargetUser=Object.ObjectID.Publisher)
+    elif Type == 'RD':
+        pass
+    elif Type == 'TP':
+        pass
+    elif Type == 'RP':
+        pass
 
 if __name__ == "__main__":
     print('%s' % 'abc')

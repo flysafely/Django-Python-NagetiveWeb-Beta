@@ -1,7 +1,7 @@
 from NTWebsite.improtFiles.processor_import_head import *
 from NTWebsite.improtFiles.models_import_head import *
-from NTWebsite.AppConfig import AppConfig as AC
-from NTWebsite.AppConfig import DBConfig as DC
+from NTWebsite.Config import AppConfig as AC
+from NTWebsite.Config import DBConfig as DC
 
 
 def indexView(request):
@@ -155,10 +155,8 @@ def CommentPackage(CommentObjects):
         CommentCards = []
         for CommentObject in CommentObjects:
             if CommentObject[0].Parent:
-                ParentCommentObject = QRC(
-                    'CommentInfo.objects.get(ObjectID=%s)', 0, CommentObject[0].Parent)
                 CommentCards.append(
-                    ('1', ParentCommentObject, CommentObject))
+                    ('1', CommentObject[0].Parent, CommentObject))
             else:
                 CommentCards.append(('0', '', CommentObject))
         return CommentCards
@@ -236,11 +234,7 @@ def Replay(request):
         if request.user.is_authenticated:
             if Type in 'SpecialTopic':
                 ReplayObject = QRC('CommentInfo.objects.create(ObjectID=%s, TopicID=%s,Content=%s,Parent=%s,Type=%s,Publisher=%s)',
-                                   0, mMs.CreateUUIDstr(), TopicObject, Content, ParentID, Type, request.user)
-                # AddNotification(Type, ObjectID, ReplayObject.ObjectID, QRC('CommentInfo.objects.get(ObjectID=%s)', None,
-                # ParentID).Publisher if ParentID else QRC(Type +
-                # 'Info.objects.get(ObjectID=%s)', None, ObjectID).Publisher,
-                # request.user)
+                                   0, mMs.CreateUUIDstr(), TopicObject, Content, QRC('CommentInfo.objects.get(ObjectID=%s)', None, ParentID), Type, request.user)
             else:
                 RollCall = QRC(
                     'RollCallInfo.objects.get(ObjectID=%s)', None, ObjectID)
@@ -248,8 +242,6 @@ def Replay(request):
                                    0, mMs.CreateUUIDstr(), RollCall, Content, '' if RollCall.Publisher == request.user else 'right', request.user)
                 if not RollCall.Publisher == request.user:
                     pass
-                    #AddNotification(Type, ObjectID, ReplayObject.ObjectID, QRC('CommentInfo.objects.get(ObjectID=%s)', None,
-                    #                                                           ParentID).Publisher if ParentID else QRC(Type + 'Info.objects.get(ObjectID=%s)', None, ObjectID).Publisher, request.user)
             return HttpResponse('replayok')
         else:
             return HttpResponse('login')

@@ -4,6 +4,13 @@ from NTNotification.models import *
 from xadmin import views
 import xadmin
 
+class NoticeAdminView(object):
+    """docstring for PublishNotification"""
+    list_display = ('ID',)
+
+xadmin.site.register(Notice,NoticeAdminView)
+
+'''
 class CommentNotificationAdminView(object):
     """docstring for CommentNotification"""
     list_display = ('ID',)
@@ -34,3 +41,4 @@ xadmin.site.register(CommentAttitudeNotification,CommentAttitudeNotificationAdmi
 xadmin.site.register(RollCallNotification,RollCallNotificationAdminView)
 xadmin.site.register(LinkNotification,LinkNotificationAdminView)
 xadmin.site.register(PublishNotification,PublishNotificationAdminView)
+'''

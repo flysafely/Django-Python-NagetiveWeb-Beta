@@ -12,8 +12,7 @@ class CommentInfo(models.Model):
         primary_key=True, max_length=12,default='', editable=True, verbose_name='ID')
     TopicID = models.ForeignKey(TopicInfo, to_field='ObjectID', default=0, on_delete=models.CASCADE, verbose_name='文章')
     Content = models.TextField(verbose_name="评论内容")
-    Parent = models.CharField(
-        max_length=100, editable=True, default='', null=True, blank=True, verbose_name='父评论ID')
+    Parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
     Like = models.IntegerField(verbose_name='赞', default="0")
     Type = models.CharField(
         max_length=30, editable=True, default='T', verbose_name='评论归属')

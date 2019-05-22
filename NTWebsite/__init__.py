@@ -1,1 +1,1 @@
-default_app_config = 'NTWebsite.signals_registry.NTWebsiteConfig'
+default_app_config = 'NTWebsite.apps.NTWebsiteConfig'
