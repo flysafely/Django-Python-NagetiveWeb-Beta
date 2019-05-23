@@ -2,6 +2,7 @@ import os
 from .improtFiles.models_import_head import *
 from django.shortcuts import get_object_or_404
 
+
 class AppConfig(object):
     """docstring for DBConfig"""
     _instance = None
@@ -38,7 +39,7 @@ class DBConfig(object):
         self.QueryString = QueryObject.QueryString
         self.Template = QueryObject.Template
 
-
+# 初始化URL路由表
 DefualtFilterDict = {"Search-User-LE": {"MethodString": "lambdaR,D,A,U:SearchInfoGet(R,D,A,U)", "QueryString": "User.objects.filter(Nick__contains=%s).order_by('-FansCount')", "Template": "Main-Frame.html"},
                      "Search-RollCall-LE": {"MethodString": "lambdaR,D,A,U:SearchInfoGet(R,D,A,U)", "QueryString": "RollCallInfo.objects.filter(Title__contains=%s).order_by('-EditDate')", "Template": "Main-Frame.html"},
                      "UserProfile-Fans-LE": {"MethodString": "lambdaR,D,A,U:UserProfileInfoGet(R,D,A,U)", "QueryString": "UserLink.objects.filter(UserBeLinked=%s).order_by('-LinkTime')", "Template": "Main-Frame.html"},
@@ -81,7 +82,7 @@ DefualtFilterDict = {"Search-User-LE": {"MethodString": "lambdaR,D,A,U:SearchInf
                      "Topic-Category-LE": {"MethodString": "lambdaR,D,A,U:TopicsInfoGet(R,D,A,U)", "QueryString": "TopicInfo.objects.filter(Type=%s,Category=%s).order_by('-EditTime')", "Template": "Main-Frame.html"},
                      "Topic-List-LE": {"MethodString": "lambdaR,D,A,U:TopicsInfoGet(R,D,A,U)", "QueryString": "TopicInfo.objects.filter(Type=%s,Hot__gte=%s).order_by('-EditTime')", "Template": "Main-Frame.html"}, }
 
-
+# 前端权限字段
 PermissionOption = {
     'TVoteBtn': {'Condition': 'Object.Publisher==request.user', 'True': 'disabled', 'False': ''},
     'TVote1Status': {'Condition': "CheckVoteStatus('Topic',Object,1,request)", 'True': 'is-active', 'False': ''},
@@ -166,4 +167,22 @@ PermissionDict = {
         'VisitorOAuth-Link': '',
         'VisitorOAuth-Block': '',
     }
+}
+
+# 通知类型筛选
+NotificationDict = {
+    'R': {'Table':'RollCallInfo','Region':'RollCall'},
+    'RD': {'Table':'RollCallInfo','Region':'RollCall'},    
+    'RP': {'Table':'RollCallInfo','Region':'RollCall'},    
+    'TC': {'Table':'CommentInfo','Region':'Topic'},
+    'TCR': {'Table':'CommentInfo','Region':'Topic'},
+    'SC': {'Table':'CommentInfo','Region':'SpecialTopic'},
+    'SCR': {'Table':'CommentInfo','Region':'SpecialTopic'},    
+    'L': {'Table':'UserLink','Region':'UserProfile'},
+    'TAL': {'Table':'TopicInfo','Region':'Topic'},
+    'TAD': {'Table':'TopicInfo','Region':'Topic'},
+    'CAL': {'Table':'CommentInfo','Region':'Topic'},
+    'CAD': {'Table':'CommentInfo','Region':'Topic'},
+    'TP': {'Table':'TopicInfo','Region':'Topic'},
+    'SP': {'Table':'TopicInfo','Region':'SpecialTopic'},
 }

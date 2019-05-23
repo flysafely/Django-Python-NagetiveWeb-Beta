@@ -3,12 +3,14 @@ from NTWebsite.models.Configuration import *
 from NTConfig import settings
 from .improtFiles.models_import_head import *
 from .Config import AppConfig as AC
+from .Config import NotificationDict as ND
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django_redis import get_redis_connection
 from django.http import Http404
 from django.views.decorators.cache import cache_page
 from django.core.cache import caches
+from django.db import transaction
 from redis import StrictRedis
 from oscrypto import symmetric
 from PIL import Image as im
@@ -60,6 +62,7 @@ def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
     if CacheHandler.get(QueryString_MD5) and TimeOut != 0:
         return CacheHandler.get(QueryString_MD5)
     else:
+        '''
         try:
             #print('查询语句(带变量值):', FinalQueryString_For_MD5)
             #print('查询语句(带变量名):', FinalQueryString)
@@ -70,7 +73,11 @@ def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
         else:
             CacheHandler.set(QueryString_MD5, QueryResult, TimeOut)
             return QueryResult
-
+        '''
+        with transaction.atomic():
+            QueryResult = eval(FinalQueryString)
+            CacheHandler.set(QueryString_MD5, QueryResult, TimeOut)
+            return QueryResult
 
 def PicUploadOperate(UploadedFile):
     APPConf = AC()
@@ -188,9 +195,10 @@ def GetUserIP(request):
         return request.META['REMOTE_ADDR']
 
 def CounterOperate(object, field, method):
-    exec("object.%s = F('%s')%s1" % (field, field, method))
-    exec('object.save()')
-    return exec('object.refresh_from_db()')
+    with transaction.atomic():
+        exec("object.%s = F('%s')%s1" % (field, field, method))
+        exec('object.save()')
+        return exec('object.refresh_from_db()')
 
 def CreateUUIDstr():
     return str(uuid.uuid4())[-12:]
@@ -204,29 +212,9 @@ def QueryFilterCreate():
         else:
             print("跳过:'%s'" % name)
 
-def AddNotification(Type, Object):
-    if Type == 'R':
-        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, RollCallInfo=Object, SourceUser=Object.Publisher, TargetUser=Object.Target)
-    elif Type == 'C':
-        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, CommentInfo=Object, SourceUser=Object.Publisher, TargetUser=Object.TopicID.Publisher)
-    elif Type == 'CR':
-        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, CommentInfo=Object, SourceUser=Object.Publisher, TargetUser=Object.Parent.Publisher)
-    elif Type == 'L':
-        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, UserLink=Object, SourceUser=Object.UserLinking, TargetUser=Object.UserBeLinked)
-    elif Type == 'TAL':
-        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, TopicInfo=Object.ObjectID, SourceUser=Object.Publisher, TargetUser=Object.ObjectID.Publisher)
-    elif Type == 'TAD':
-        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, TopicInfo=Object.ObjectID, SourceUser=Object.Publisher, TargetUser=Object.ObjectID.Publisher)
-    elif Type == 'CAL':
-        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, CommentInfo=Object.ObjectID, SourceUser=Object.Publisher, TargetUser=Object.ObjectID.Publisher)
-    elif Type == 'CAD':
-        Notice.objects.create(ID=CreateUUIDstr(), Type=Type, CommentInfo=Object.ObjectID, SourceUser=Object.Publisher, TargetUser=Object.ObjectID.Publisher)
-    elif Type == 'RD':
-        pass
-    elif Type == 'TP':
-        pass
-    elif Type == 'RP':
-        pass
+def AddNotification(Type, Object, Source, Target):
+    with transaction.atomic():
+        eval("Notice.objects.create(ID=CreateUUIDstr(), Type=Type, %s=Object, SourceUser=Source, TargetUser=Target)" % ND[Type])
 
 if __name__ == "__main__":
-    print('%s' % 'abc')
+    pass

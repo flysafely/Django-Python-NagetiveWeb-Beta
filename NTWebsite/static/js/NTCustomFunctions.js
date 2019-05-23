@@ -108,7 +108,7 @@ function GetNotificationInfo(){
       PushNotificationslist.removeChild(PushNotificationslist.firstChild);
     }
   }  
-  $.get('/NotificationInfo/',{},function(returndata){
+  $.get('/Notice/',{},function(returndata){
     if (returndata == 'login'){
       document.getElementById('loginbutton').click();  
     }else{
@@ -155,7 +155,7 @@ function RemoveNotificationInfo(method, ID, TargetUrl){
     if (NotificationCountNode){
       NotificationCountNode.parentNode.removeChild(NotificationCountNode);
     }
-    $.ajax({type:'delete',url:'/NotificationInfo/',data:{'IDs':ID}});
+    $.ajax({type:'delete',url:'/Notice/',data:{'IDs':ID}});
   }else{
     var ID_Array = [];
     var PushNotificationslist = document.getElementById('PushNotifications-list');

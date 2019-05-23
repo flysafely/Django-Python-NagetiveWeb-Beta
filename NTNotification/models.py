@@ -4,8 +4,6 @@ from NTWebsite.models.Topic import *
 from NTWebsite.models.OperationRecord import *
 
 # Create your models here.
-
-
 class Notice(models.Model):
     ID = models.CharField(
         primary_key=True, max_length=12, default='', editable=True, verbose_name='通知ID')

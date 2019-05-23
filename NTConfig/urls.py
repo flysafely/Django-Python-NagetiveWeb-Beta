@@ -40,7 +40,7 @@ urlpatterns = [
     path('TipOff/', P.TipOff),# RUST POST
     path('Collect/', P.Collect),# RUST POST
     path('Replay/', P.Replay),# RUST POST
-    path('NotificationInfo/', P.NotificationInfo),
+    path('Notice/', P.NoticeOpreate),
     path('BlackListOperation/', P.BlackListOperation),
     path('regist/', P.Regist),# RUST POST
     path('Param/', P.Param),
