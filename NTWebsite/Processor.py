@@ -1,7 +1,7 @@
 from NTWebsite.improtFiles.processor_import_head import *
 from NTWebsite.improtFiles.models_import_head import *
-from NTWebsite.AppConfig import AppConfig as AC
-from NTWebsite.AppConfig import DBConfig as DC
+from NTWebsite.Config import AppConfig as AC
+from NTWebsite.Config import DBConfig as DC
 
 
 def indexView(request):
@@ -22,11 +22,9 @@ def PaginatorInfoGet(objects, number, URLParams):
         return {'ObjectList': [], 'ObjectsPaginator': '', 'Paginator_num_pages': 0, 'Paginator_Href': ''}
 
 
-def GetNotificationCount(requestObject):
-    if requestObject.user.is_authenticated:
-        return str(QRC('Notification.objects.filter(TargetUser=%s).count()', None, requestObject.user))
-    else:
-        return '0'
+def NoticeCount(request):
+    return str(QRC('Notice.objects.filter(TargetUser=%s).count()', None, request.user)) if request.user.is_authenticated else '0'
+
 
 
 def FetchTopic(request):
@@ -113,8 +111,6 @@ def PublishRollCall(request):
                                       RollCallTitle, request.user, QRC('User.objects.get(Nick=%s)', None, TargetUserNick), mMs.CreateUUIDstr())
                     NewDialogue = QRC(
                         'RollCallDialogue.objects.create(RollCallID=%s,Publisher=%s,Content=%s,ObjectID=%s)', 0, NewRollCall, request.user, RollCallContent, mMs.CreateUUIDstr())
-                    #AddNotification('RollCall', NewRollCall.ObjectID, NewDialogue.ObjectID, QRC(
-                    #    'User.objects.get(Nick=%s)', None, TargetUserNick), request.user)
                     return HttpResponse('publishok')
                 except Exception as e:
                     if 'UNIQUE' in str(e):
@@ -128,7 +124,7 @@ def PublishRollCall(request):
 
 
 def ContextConfirm(request, **Params):
-    NotificationCount = GetNotificationCount(request)
+    NotificationCount = NoticeCount(request)
     # 文章分类信息获取
     CategoryList = QRC('TopicCategoryInfo.objects.all()', None)
     # 推荐发布者信息获取
@@ -155,10 +151,8 @@ def CommentPackage(CommentObjects):
         CommentCards = []
         for CommentObject in CommentObjects:
             if CommentObject[0].Parent:
-                ParentCommentObject = QRC(
-                    'CommentInfo.objects.get(ObjectID=%s)', 0, CommentObject[0].Parent)
                 CommentCards.append(
-                    ('1', ParentCommentObject, CommentObject))
+                    ('1', CommentObject[0].Parent, CommentObject))
             else:
                 CommentCards.append(('0', '', CommentObject))
         return CommentCards
@@ -236,11 +230,7 @@ def Replay(request):
         if request.user.is_authenticated:
             if Type in 'SpecialTopic':
                 ReplayObject = QRC('CommentInfo.objects.create(ObjectID=%s, TopicID=%s,Content=%s,Parent=%s,Type=%s,Publisher=%s)',
-                                   0, mMs.CreateUUIDstr(), TopicObject, Content, ParentID, Type, request.user)
-                # AddNotification(Type, ObjectID, ReplayObject.ObjectID, QRC('CommentInfo.objects.get(ObjectID=%s)', None,
-                # ParentID).Publisher if ParentID else QRC(Type +
-                # 'Info.objects.get(ObjectID=%s)', None, ObjectID).Publisher,
-                # request.user)
+                                   0, mMs.CreateUUIDstr(), TopicObject, Content, QRC('CommentInfo.objects.get(ObjectID=%s)', None, ParentID), Type, request.user)
             else:
                 RollCall = QRC(
                     'RollCallInfo.objects.get(ObjectID=%s)', None, ObjectID)
@@ -248,8 +238,6 @@ def Replay(request):
                                    0, mMs.CreateUUIDstr(), RollCall, Content, '' if RollCall.Publisher == request.user else 'right', request.user)
                 if not RollCall.Publisher == request.user:
                     pass
-                    #AddNotification(Type, ObjectID, ReplayObject.ObjectID, QRC('CommentInfo.objects.get(ObjectID=%s)', None,
-                    #                                                           ParentID).Publisher if ParentID else QRC(Type + 'Info.objects.get(ObjectID=%s)', None, ObjectID).Publisher, request.user)
             return HttpResponse('replayok')
         else:
             return HttpResponse('login')
@@ -350,78 +338,12 @@ def AddNotification(Region, ObjectID, AnchorID, TargetUser, SourceUser):
     except Exception as e:
         raise e
 
-
 @csrf_exempt
-def NotificationInfo(request):
-    print(request.method)
+def NoticeOpreate(request):
     if request.method == 'GET':
-        if request.user.is_authenticated:
-            try:
-                NotificationObjects = QRC(
-                    'Notification.objects.filter(TargetUser=%s)', 0, request.user)
-                if NotificationObjects:
-                    dataList = []
-                    for Object in NotificationObjects:
-                        dataDict = {}
-                        dataDict['ID'] = str(Object.ID)
-                        dataDict['Region'] = Object.Region
-                        dataDict['ObjectID'] = Object.ObjectID
-                        dataDict['AnchorID'] = Object.AnchorID
-                        dataDict['Title'] = QRC(dataDict['Region'].replace('Special', '') + 'Info.objects.get(ObjectID=%s)', None, dataDict[
-                                                'ObjectID']).Title[0:10] + '...'
-                        dataDict['PageNumber'] = GetPageNumber(dataDict['Region'], dataDict[
-                                                               'ObjectID'], dataDict['AnchorID'])
-                        dataDict['TargetURL'] = '/' + dataDict['Region'] + '/Content/' + dataDict[
-                            'ObjectID'] + '/LE/' + dataDict['PageNumber'] + '/' + dataDict['AnchorID']
-                        dataDict['SourceUser'] = Object.SourceUser.Nick
-                        dataList.append(dataDict)
-                    jsondata = json.dumps(dataList, ensure_ascii=False)
-                    return HttpResponse(jsondata)
-                else:
-                    return HttpResponse('None')
-            except Exception as e:
-                raise e
-        else:
-            return HttpResponse('login')
-    else:
-        if RequestDataUnbox(request).get('IDs'):
-            IDs = RequestDataUnbox(request).get('IDs').split(',')
-            if request.user.is_authenticated:
-                if len(IDs) == 1:
-                    try:
-                        QRC('Notification.objects.get(ID=%s)',
-                            0, IDs[0]).delete()
-                        return HttpResponse('OneDeleteOk')
-                    except Exception as e:
-                        raise e
-                else:
-                    for ID in IDs:
-                        QRC('Notification.objects.get(ID=%s)', 0, ID).delete()
-                    return HttpResponse('AllDeleteOk')
-        else:
-            return HttpResponse('DeleteFail')
-
-
-def RequestDataUnbox(request):
-    qd = QueryDict(request.body)
-    data_dict = {k: v[0] if len(v) == 1 else v for k, v in qd.lists()}
-    return data_dict
-
-
-def GetPageNumber(Region, ObjectID, AnchorID):
-    APPConf = AC()
-    if Region in 'SpecialTopic':
-        CommentObjects = QRC(
-            "CommentInfo.objects.filter(ObjectID=%s).order_by('-EditDate')", 0, ObjectID)
-        Number = 0
-        for CommentObject in CommentObjects:
-            Number += 1
-            if str(CommentObject.ObjectID) == AnchorID:
-                break
-        PageNumber = Number // APPConf.CommentsPageLimit if Number % APPConf.CommentsPageLimit == 0 else Number // APPConf.CommentsPageLimit + 1
-        return str(PageNumber)
-    else:
-        return '1'
+        return NoticeGet(request)
+    elif request.method == 'DELETE':
+        return NoticeDelete(request)
 
 
 def BlackListOperation(request):
@@ -483,7 +405,6 @@ def UserProfileUpdate(request):
         UserEmail = request.POST.get('UserEmail')
         UserRegion = request.POST.get('UserRegion')
         userObject = QRC('User.objects.get(Nick=%s)', 0, request.user.Nick)
-        print('UserImageFormat', UserImageFormat)
         if QRC('User.objects.get(Nick=%s)', 0, UserNickName) and QRC('User.objects.get(Nick=%s)', 0, UserNickName) != request.user:
             return HttpResponse('Nick')
         else:

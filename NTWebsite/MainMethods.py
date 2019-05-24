@@ -1,22 +1,19 @@
-from NTWebsite import AppConfig
-from .improtFiles.models_import_head import *
-from .AppConfig import AppConfig as AC
-
-#import AppConfig
-#from models.Configuration import *
-
+from NTWebsite import Config
 from NTWebsite.models.Configuration import *
+from NTConfig import settings
+from .improtFiles.models_import_head import *
+from .Config import AppConfig as AC
+from .Config import NotificationDict as ND
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django_redis import get_redis_connection
-from redis import StrictRedis
 from django.http import Http404
 from django.views.decorators.cache import cache_page
 from django.core.cache import caches
-#from oscrypto._win import symmetric
+from django.db import transaction
+from redis import StrictRedis
 from oscrypto import symmetric
 from PIL import Image as im
-from NTConfig import settings
-#from Crypto.Cipher import AES
 
 import datetime
 import hashlib
@@ -75,7 +72,12 @@ def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
         else:
             CacheHandler.set(QueryString_MD5, QueryResult, TimeOut)
             return QueryResult
-
+        '''
+        with transaction.atomic():
+            QueryResult = eval(FinalQueryString)
+            CacheHandler.set(QueryString_MD5, QueryResult, TimeOut)
+            return QueryResult
+        '''
 
 def PicUploadOperate(UploadedFile):
     APPConf = AC()
@@ -193,9 +195,10 @@ def GetUserIP(request):
         return request.META['REMOTE_ADDR']
 
 def CounterOperate(object, field, method):
-    exec("object.%s = F('%s')%s1" % (field, field, method))
-    exec('object.save()')
-    return exec('object.refresh_from_db()')
+    with transaction.atomic():
+        exec("object.%s = F('%s')%s1" % (field, field, method))
+        exec('object.save()')
+        return exec('object.refresh_from_db()')
 
 def CreateUUIDstr():
     return str(uuid.uuid4())[-12:]
@@ -209,5 +212,10 @@ def QueryFilterCreate():
         else:
             print("跳过:'%s'" % name)
 
+def AddNotification(Type, Object, Source, Target):
+    print(Type, Object, Source, Target)
+    with transaction.atomic():
+        eval("Notice.objects.create(ID=CreateUUIDstr(), Type=Type, %s=Object, SourceUser=Source, TargetUser=Target)" % ND[Type]['Table'])
+
 if __name__ == "__main__":
-    print('%s' % 'abc')
+    pass
