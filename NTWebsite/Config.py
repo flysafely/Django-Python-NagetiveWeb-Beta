@@ -171,6 +171,7 @@ PermissionDict = {
 
 # 通知类型筛选
 NotificationDict = {
+<<<<<<< HEAD:NTWebsite/Config.py
     'R': {'Table':'RollCallInfo','Region':'RollCall','Connector':'点了您'},
     'RD': {'Table':'RollCallInfo','Region':'RollCall','Connector':'回点了您'},    
     'RP': {'Table':'RollCallInfo','Region':'RollCall','Connector':'发布点名'},    
@@ -185,4 +186,20 @@ NotificationDict = {
     'CAD': {'Table':'CommentInfo','Region':'Topic','Connector':'怼了'},
     'TP': {'Table':'TopicInfo','Region':'Topic','Connector':'发布文章'},
     'SP': {'Table':'TopicInfo','Region':'SpecialTopic','Connector':'发布专题'},
+=======
+    'R': {'Table':'RollCallInfo','Region':'RollCall'},
+    'RD': {'Table':'RollCallInfo','Region':'RollCall'},    
+    'RP': {'Table':'RollCallInfo','Region':'RollCall'},    
+    'TC': {'Table':'CommentInfo','Region':'Topic'},
+    'TCR': {'Table':'CommentInfo','Region':'Topic'},
+    'SC': {'Table':'CommentInfo','Region':'SpecialTopic'},
+    'SCR': {'Table':'CommentInfo','Region':'SpecialTopic'},    
+    'L': {'Table':'UserLink','Region':'UserProfile'},
+    'TAL': {'Table':'TopicInfo','Region':'Topic'},
+    'TAD': {'Table':'TopicInfo','Region':'Topic'},
+    'CAL': {'Table':'CommentInfo','Region':'Topic'},
+    'CAD': {'Table':'CommentInfo','Region':'Topic'},
+    'TP': {'Table':'TopicInfo','Region':'Topic'},
+    'SP': {'Table':'TopicInfo','Region':'SpecialTopic'},
+>>>>>>> 979e4b29514682a759ee2bd63e3592b4d088fc0e:NTWebsite/Config.py
 }

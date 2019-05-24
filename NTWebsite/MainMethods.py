@@ -62,6 +62,7 @@ def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
     if CacheHandler.get(QueryString_MD5) and TimeOut != 0:
         return CacheHandler.get(QueryString_MD5)
     else:
+        '''
         try:
             #print('查询语句(带变量值):', FinalQueryString_For_MD5)
             #print('查询语句(带变量名):', FinalQueryString)
@@ -77,7 +78,10 @@ def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
             QueryResult = eval(FinalQueryString)
             CacheHandler.set(QueryString_MD5, QueryResult, TimeOut)
             return QueryResult
+<<<<<<< HEAD
         '''
+=======
+>>>>>>> 979e4b29514682a759ee2bd63e3592b4d088fc0e
 
 def PicUploadOperate(UploadedFile):
     APPConf = AC()
@@ -213,9 +217,14 @@ def QueryFilterCreate():
             print("跳过:'%s'" % name)
 
 def AddNotification(Type, Object, Source, Target):
+<<<<<<< HEAD
     print(Type, Object, Source, Target)
     with transaction.atomic():
         eval("Notice.objects.create(ID=CreateUUIDstr(), Type=Type, %s=Object, SourceUser=Source, TargetUser=Target)" % ND[Type]['Table'])
+=======
+    with transaction.atomic():
+        eval("Notice.objects.create(ID=CreateUUIDstr(), Type=Type, %s=Object, SourceUser=Source, TargetUser=Target)" % ND[Type])
+>>>>>>> 979e4b29514682a759ee2bd63e3592b4d088fc0e
 
 if __name__ == "__main__":
     pass
