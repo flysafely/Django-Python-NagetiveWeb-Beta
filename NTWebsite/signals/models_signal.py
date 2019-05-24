@@ -59,19 +59,12 @@ def comment_create(sender, instance, created, **kwargs):
     if created and isinstance(instance, CommentInfo):
         mMs.CounterOperate(instance.TopicID, 'Comment', '+')
         mMs.CounterOperate(
-<<<<<<< HEAD
             instance.Publisher, 'TRCount' if instance.TopicID.Type == 'Topic' else 'SRCount', '+')
         if instance.TopicID.Type == 'Topic':
             mMs.AddNotification('TCR' if instance.Parent else 'TC', instance, instance.Publisher, instance.Parent.Publisher if instance.Parent else instance.TopicID.Publisher)
         else:
             mMs.AddNotification('SCR' if instance.Parent else 'SC', instance, instance.Publisher, instance.Parent.Publisher if instance.Parent else instance.TopicID.Publisher)
-=======
-            instance.Publisher, 'TRCount' if instance.Type == 'Topic' else 'SRCount', '+')
-        if instance.TopicID.Type == 'Topic':
-            mMs.AddNotification('TCR' if instance.Parent else 'TC', instance, instance.Publisher, instance.Parent.Publisher)
-        else:
-            mMs.AddNotification('SCR' if instance.Parent else 'SC', instance, instance.Publisher, instance.Parent.Publisher)
->>>>>>> 979e4b29514682a759ee2bd63e3592b4d088fc0e
+
 
 @receiver(post_delete, dispatch_uid=CommentInfo)
 def comment_delete(sender, instance, **kwargs):
@@ -133,11 +126,7 @@ def TopicAttitude_create(sender, instance, created, **kwargs):
     if created and isinstance(instance, TopicAttitude):
         print("Topic Create Point")
         mMs.CounterOperate(instance.ObjectID, 'Like' if instance.Point == 1 else 'Dislike', '+')
-<<<<<<< HEAD
         mMs.AddNotification('TAL' if instance.Point == 1 else 'TAD', instance.ObjectID, instance.Publisher, instance.ObjectID.Publisher)
-=======
-        mMs.AddNotification('TAL' if instance.Point == 1 else 'TAD', instance, instance.Publisher, instance.ObjectID.Publisher)
->>>>>>> 979e4b29514682a759ee2bd63e3592b4d088fc0e
     elif (not created) and isinstance(instance, TopicAttitude):
         mMs.CounterOperate(instance.ObjectID, 'Like' if int(instance.Point) == 1 else 'Dislike', '+')
         mMs.CounterOperate(instance.ObjectID, 'Like' if abs(int(instance.Point) - 1) == 1 else 'Dislike', '-')
