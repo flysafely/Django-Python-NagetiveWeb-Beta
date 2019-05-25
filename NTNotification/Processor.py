@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict
 from NTWebsite.MainMethods import QueryRedisCache as QRC
 from NTWebsite.Config import NotificationDict as ND
 from NTWebsite.Config import AppConfig as AC
@@ -14,9 +14,9 @@ def NoticeGet(request):
                 dataDict = {}
                 dataDict['ID'] = Notice.ID
                 dataDict['Region'] = ND[Notice.Type]['Region']
-                dataDict['ObjectID'] = eval('Notice.%s.%sObjectID' % (ND[Notice.Type]['Table'], 'TopicID.' if 'C' in Notice.Type else ''))
+                dataDict['ObjectID'] = eval('Notice.%s.%sObjectID' % (ND[Notice.Type]['Table'], 'TopicID.' if 'C' in Notice.Type else '')) if Notice.Type != 'L' else ''
                 dataDict['AnchorID'] = Notice.CommentInfo.ObjectID if 'C' in Notice.Type and Notice.CommentInfo else ''
-                dataDict['Title'] = eval('Notice.%s.%sTitle' % (ND[Notice.Type]['Table'], 'TopicID.' if 'C' in Notice.Type else ''))[0:10]
+                dataDict['Title'] = eval('Notice.%s.%sTitle' % (ND[Notice.Type]['Table'], 'TopicID.' if 'C' in Notice.Type else ''))[0:10] if Notice.Type != 'L' else ''
                 print(dataDict['Region'])
                 dataDict['PageNumber'] = GetPageNumber(ND[Notice.Type]['Table'], dataDict['ObjectID'], Notice.CommentInfo if 'C' in Notice.Type and Notice.CommentInfo else '')
                 dataDict['TargetURL'] = '/' + dataDict['Region'] + '/Content/' + dataDict[
@@ -33,7 +33,9 @@ def NoticeGet(request):
         return HttpResponse('login')
 
 def NoticeDelete(request):
+    #print(request.DELETE.get('IDs'))
     if RequestDataUnbox(request).get('IDs'):
+        print(RequestDataUnbox(request).get('IDs'))
         IDs = RequestDataUnbox(request).get('IDs').split(',')
         if request.user.is_authenticated:
             if len(IDs) == 1:
@@ -59,3 +61,7 @@ def GetPageNumber(Tabel, TopicID, Object):
         return str(PageNumber)
     else:
         return '1'
+
+def RequestDataUnbox(request):
+    qd = QueryDict(request.body)
+    return {k: v[0] if len(v)==1 else v for k, v in qd.lists()}

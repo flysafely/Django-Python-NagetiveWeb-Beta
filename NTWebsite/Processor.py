@@ -342,9 +342,9 @@ def AddNotification(Region, ObjectID, AnchorID, TargetUser, SourceUser):
 @csrf_exempt
 def NoticeOpreate(request):
     if request.method == 'GET':
-        NoticeGet(request)
+        return NoticeGet(request)
     elif request.method == 'DELETE':
-        NoticeDelete(request)
+        return NoticeDelete(request)
 
 
 def BlackListOperation(request):

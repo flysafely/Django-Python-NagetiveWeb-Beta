@@ -164,7 +164,7 @@ function RemoveNotificationInfo(method, ID, TargetUrl){
       }
     }
     IDs = ID_Array.join(',');
-    $.ajax({type:'delete',url:'/NotificationInfo/',data:{'IDs':IDs}});
+    $.ajax({type:'delete',url:'/Notice/',data:{'IDs':IDs}});
     var NotificationCountNode = document.getElementById('NotificationCount');
     if (NotificationCountNode){
       NotificationCountNode.parentNode.removeChild(NotificationCountNode);
