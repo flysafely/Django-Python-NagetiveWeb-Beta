@@ -31,20 +31,31 @@ def Empower(ObjectType, Objects, request):
 
 
 def CheckVoteStatus(type, Object, point, request):
-    return True if QRC(type + 'Attitude.objects.filter(ObjectID=%s,Point=%s,Publisher=%s)', 0, Object.ObjectID, point, request.user) else False
-
+    if request.user.is_authenticated:
+        return True if QRC(type + 'Attitude.objects.filter(ObjectID=%s,Point=%s,Publisher=%s)', 0, Object.ObjectID, point, request.user) else False
+    else:
+        return False
 
 def CheckTipOffStatus(Object, request):
-    return True if QRC('TipOffBox.objects.filter(ObjectID=%s,Publisher=%s)', 0, Object.ObjectID, request.user) else False
-
+    if request.user.is_authenticated:
+        return True if QRC('TipOffBox.objects.filter(ObjectID=%s,Publisher=%s)', 0, Object.ObjectID, request.user) else False
+    else:
+        return False
 
 def CheckCollectStatus(type, Object, request):
-    return True if QRC(type + '.objects.filter(ObjectID=%s,Publisher=%s)', 0, Object, request.user) else False
-
+    if request.user.is_authenticated:
+        return True if QRC(type + '.objects.filter(ObjectID=%s,Publisher=%s)', 0, Object, request.user) else False
+    else:
+        return False
 
 def CheckUserLinkStatus(Object, request):
-    return True if QRC('UserLink.objects.filter(UserBeLinked=%s,UserLinking=%s)', 0, Object, request.user) else False
-
+    if request.user.is_authenticated:
+        return True if QRC('UserLink.objects.filter(UserBeLinked=%s,UserLinking=%s)', 0, Object, request.user) else False
+    else:
+        return False
 
 def CheckUserBlockStatus(Object, request):
-    return True if QRC('BlackList.objects.filter(Enforceder=%s,Handler=%s)', 0, Object, request.user) else False
+    if request.user.is_authenticated:
+        return True if QRC('BlackList.objects.filter(Enforceder=%s,Handler=%s)', 0, Object, request.user) else False
+    else:
+        return False

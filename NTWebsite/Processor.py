@@ -25,8 +25,6 @@ def PaginatorInfoGet(objects, number, URLParams):
 def NoticeCount(request):
     return str(QRC('Notice.objects.filter(TargetUser=%s).count()', None, request.user)) if request.user.is_authenticated else '0'
 
-
-
 def FetchTopic(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -305,11 +303,12 @@ def Regist(request):
         password = mMs.Decrypt(mMs.DecodeWithBase64(
             request.POST.get('password')))
         email = mMs.Decrypt(mMs.DecodeWithBase64(request.POST.get('email')))
+        mMs.SendMail(email,usernickname,username)
         try:
                 # 这里通过前端注册账号一定要是要create_user 不然后期登录的时候
                 # auth.authenticate无法验证用户名和密码
             newUser = User.objects.create_user(
-                username, Nick=usernickname, password=password, email=email)
+                username, Nick=usernickname, password=password, email=email, is_active=False)
 
             newUser.Avatar = mMs.UserAvatarOperation(request.POST.get(
                 'userimagedata'), request.POST.get('userimageformat'), APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL, ''))['Path']
@@ -338,131 +337,13 @@ def AddNotification(Region, ObjectID, AnchorID, TargetUser, SourceUser):
     except Exception as e:
         raise e
 
-'''
-@csrf_exempt
-def NotificationInfo(request):
-    print(request.method)
-    if request.method == 'GET':
-        if request.user.is_authenticated:
-            try:
-                NotificationObjects = QRC(
-                    'Notification.objects.filter(TargetUser=%s)', 0, request.user)
-                if NotificationObjects:
-                    dataList = []
-                    for Object in NotificationObjects:
-                        dataDict = {}
-                        dataDict['ID'] = str(Object.ID)
-                        dataDict['Region'] = Object.Region
-                        dataDict['ObjectID'] = Object.ObjectID
-                        dataDict['AnchorID'] = Object.AnchorID
-                        dataDict['Title'] = QRC(dataDict['Region'].replace('Special', '') + 'Info.objects.get(ObjectID=%s)', None, dataDict[
-                                                'ObjectID']).Title[0:10] + '...'
-                        dataDict['PageNumber'] = GetPageNumber(dataDict['Region'], dataDict[
-                                                               'ObjectID'], dataDict['AnchorID'])
-                        dataDict['TargetURL'] = '/' + dataDict['Region'] + '/Content/' + dataDict[
-                            'ObjectID'] + '/LE/' + dataDict['PageNumber'] + '/' + dataDict['AnchorID']
-                        dataDict['SourceUser'] = Object.SourceUser.Nick
-                        dataList.append(dataDict)
-                    jsondata = json.dumps(dataList, ensure_ascii=False)
-                    return HttpResponse(jsondata)
-                else:
-                    return HttpResponse('None')
-            except Exception as e:
-                raise e
-        else:
-            return HttpResponse('login')
-    else:
-        if RequestDataUnbox(request).get('IDs'):
-            IDs = RequestDataUnbox(request).get('IDs').split(',')
-            if request.user.is_authenticated:
-                if len(IDs) == 1:
-                    try:
-                        QRC('Notification.objects.get(ID=%s)',
-                            0, IDs[0]).delete()
-                        return HttpResponse('OneDeleteOk')
-                    except Exception as e:
-                        raise e
-                else:
-                    for ID in IDs:
-                        QRC('Notification.objects.get(ID=%s)', 0, ID).delete()
-                    return HttpResponse('AllDeleteOk')
-        else:
-            return HttpResponse('DeleteFail')
-'''
+
 @csrf_exempt
 def NoticeOpreate(request):
     if request.method == 'GET':
-        NoticeGet(request)
+        return NoticeGet(request)
     elif request.method == 'DELETE':
-        NoticeDelete(request)
-'''
-@csrf_exempt
-def NoticeGet(request):
-    if request.user.is_authenticated:
-        Notices = QRC(
-            'Notice.objects.filter(TargetUser=%s)', 0, request.user)
-        if Notices:
-            dataList = []
-            for Notice in Notices:
-                dataDict = {}
-                dataDict['ID'] = Notice.ID
-                dataDict['Region'] = Notice.Region
-                dataDict['ObjectID'] = Notice.ObjectID
-                dataDict['AnchorID'] = Notice.AnchorID
-                dataDict['Title'] = QRC(dataDict['Region'].replace('Special', '') + 'Info.objects.get(ObjectID=%s)', None, dataDict[
-                                        'ObjectID']).Title[0:10] + '...'
-                dataDict['PageNumber'] = GetPageNumber(dataDict['Region'], dataDict[
-                                                       'ObjectID'], dataDict['AnchorID'])
-                dataDict['TargetURL'] = '/' + dataDict['Region'] + '/Content/' + dataDict[
-                    'ObjectID'] + '/LE/' + dataDict['PageNumber'] + '/' + dataDict['AnchorID']
-                dataDict['SourceUser'] = Notice.SourceUser.Nick
-                dataList.append(dataDict)
-            jsondata = json.dumps(dataList, ensure_ascii=False)
-            return HttpResponse(jsondata)
-        else:
-            return HttpResponse('None')
-    else:
-        return HttpResponse('login')
-
-@csrf_exempt
-def NoticeDelete(request):
-    if RequestDataUnbox(request).get('IDs'):
-        IDs = RequestDataUnbox(request).get('IDs').split(',')
-        if request.user.is_authenticated:
-            if len(IDs) == 1:
-                try:
-                    QRC('Notification.objects.get(ID=%s)',
-                        0, IDs[0]).delete()
-                    return HttpResponse('OneDeleteOk')
-                except Exception as e:
-                    raise e
-            else:
-                for ID in IDs:
-                    QRC('Notice.objects.get(ID=%s)', 0, ID).delete()
-                return HttpResponse('AllDeleteOk')
-    else:
-        return HttpResponse('DeleteFail')
-
-def RequestDataUnbox(request):
-    qd = QueryDict(request.body)
-    data_dict = {k: v[0] if len(v) == 1 else v for k, v in qd.lists()}
-    return data_dict
-'''
-
-def GetPageNumber(Region, ObjectID, AnchorID):
-    APPConf = AC()
-    if Region in 'SpecialTopic':
-        CommentObjects = QRC(
-            "CommentInfo.objects.filter(ObjectID=%s).order_by('-EditDate')", 0, ObjectID)
-        Number = 0
-        for CommentObject in CommentObjects:
-            Number += 1
-            if str(CommentObject.ObjectID) == AnchorID:
-                break
-        PageNumber = Number // APPConf.CommentsPageLimit if Number % APPConf.CommentsPageLimit == 0 else Number // APPConf.CommentsPageLimit + 1
-        return str(PageNumber)
-    else:
-        return '1'
+        return NoticeDelete(request)
 
 
 def BlackListOperation(request):

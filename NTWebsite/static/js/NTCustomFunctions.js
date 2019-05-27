@@ -120,17 +120,13 @@ function GetNotificationInfo(){
         NTDiv.setAttribute('id', jsonData[i].ID);
 
         var NTUser = document.createElement('a');
-        NTUser.setAttribute('href', '/UserProfile/Publish/'+ jsonData[i].SourceUser +'/LE/1/');
+        NTUser.setAttribute('href', '/UserProfile/Topic/'+ jsonData[i].SourceUserID +'/LE/1/');
         NTUser.setAttribute('style', 'text-decoration:none;');
-        NTUser.innerText = jsonData[i].SourceUser + ' ';
+        NTUser.innerText = jsonData[i].SourceUserNick + ' ';
 
         var NTDefualt = document.createElement('span');
-        if (jsonData[i].Region == 'RollCall'){
-          NTDefualt.innerText = '  点您名了  ';
-        }else{
-          NTDefualt.innerText = '  回复了您  ';
-        }
-        
+        NTDefualt.innerText = ' ' + jsonData[i].Connector + ' '
+
         var NTTopic = document.createElement('a');
         NTTopic.setAttribute('href', "javascript:RemoveNotificationInfo('one','"+ jsonData[i].ID +"','"+ jsonData[i].TargetURL +"')");
         NTTopic.setAttribute('style', 'text-decoration:none;');
@@ -168,7 +164,7 @@ function RemoveNotificationInfo(method, ID, TargetUrl){
       }
     }
     IDs = ID_Array.join(',');
-    $.ajax({type:'delete',url:'/NotificationInfo/',data:{'IDs':IDs}});
+    $.ajax({type:'delete',url:'/Notice/',data:{'IDs':IDs}});
     var NotificationCountNode = document.getElementById('NotificationCount');
     if (NotificationCountNode){
       NotificationCountNode.parentNode.removeChild(NotificationCountNode);

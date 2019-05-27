@@ -204,8 +204,26 @@ STATICFILES_DIRS = (
 # STATIC_URL 映射无效，Web服务器直接接管
 # STATICFILES_DIRS 指定无效，Web服务器直接接管
 
+# 配置邮箱发邮件的相关功能
 
-
+#这一项是固定的
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# smtp服务的邮箱服务器 我用的是163
+EMAIL_HOST = 'smtp.yeah.net'
+# smtp服务固定的端口是25
+EMAIL_PORT = 25
+#发送邮件的邮箱
+EMAIL_HOST_USER = 'nagetive@yeah.net'
+#在邮箱中设置的客户端授权密码
+EMAIL_HOST_PASSWORD = 'q63785095'
+#收件人看到的发件人 <此处要和发送邮件的邮箱相同>
+EMAIL_FROM = '球莫名堂<nagetive@yeah.net>'
+#邮件标准标题
+EMAIL_TITLE = "球莫名堂注册确认邮件"
+#邮件标准内容
+EMAIL_CONTENT = "欢迎'%s'的加入球莫名堂!"
+#邮件复制内容
+EMAIL_BODY = ""
 
 # 增加ckeditor的功能
 CKEDITOR_CONFIGS = {
@@ -255,46 +273,6 @@ CKEDITOR_CONFIGS = {
         ),
     }
 }
-
-'''
-    'html': {
-        'toolbar': (
-            ['div', 'Source', '-', 'Save', 'NewPage', 'Preview', '-', 'Templates'],
-            ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord',
-                '-', 'Print', 'SpellChecker', 'Scayt'],
-            ['Undo', 'Redo', '-', 'Find', 'Replace',
-             '-', 'SelectAll', 'RemoveFormat'],
-            ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea',
-             'Select', 'Button', 'ImageButton', 'HiddenField'],
-            ['Bold', 'Italic', 'Underline', 'Strike',
-             '-', 'Subscript', 'Superscript'],
-            ['NumberedList', 'BulletedList', '-',
-             'Outdent', 'Indent', 'Blockquote'],
-            ['JustifyLeft', 'JustifyCenter',
-                            'JustifyRight', 'JustifyBlock'],
-            ['Link', 'Unlink', 'Anchor'],
-            ['Table', 'HorizontalRule',
-             'Smiley', 'SpecialChar', 'PageBreak'],
-            ['Styles', 'Format', 'Font', 'FontSize'],
-            ['TextColor', 'BGColor'],
-            ['Maximize', 'ShowBlocks', '-', 'About', 'pbckcode'],
-        ),
-    }
-
-'''
-
-JoinStringMap = {'Comment': {'JoinStr': '评论了',
-                             'QueryString': 'TopicInfo.objects.get(ObjectID=%s)'},
-                 'CommentReplay': {'JoinStr': '回复了',
-                                   'QueryString': 'CommentInfo.objects.get(ID=%s)'},
-                 'Topic1': {'JoinStr': '赞了',
-                            'QueryString': 'TopicInfo.objects.get(ObjectID=%s)'},
-                 'Topic0': {'JoinStr': '怼了',
-                            'QueryString': 'TopicInfo.objects.get(ObjectID=%s)'},
-                 'Comment1': {'JoinStr': '赞了',
-                              'QueryString': 'TopicInfo.objects.get(ObjectID=%s)'},
-                 'Comment0': {'JoinStr': '怼了',
-                              'QueryString': 'TopicInfo.objects.get(ObjectID=%s)'}, }
 
 
 if __name__ == '__main__':

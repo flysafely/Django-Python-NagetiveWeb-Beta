@@ -7,7 +7,7 @@ from NTWebsite import MainMethods as mMs
 
 @receiver(post_save, dispatch_uid=User)
 def user_create(sender, instance, created, **kwargs):
-    if created and isinstance(instance, User):
+    if created and instance.is_superuser:
         print('新建超级账户：',instance.username)
         mMs.QueryFilterCreate()
 
@@ -59,11 +59,12 @@ def comment_create(sender, instance, created, **kwargs):
     if created and isinstance(instance, CommentInfo):
         mMs.CounterOperate(instance.TopicID, 'Comment', '+')
         mMs.CounterOperate(
-            instance.Publisher, 'TRCount' if instance.Type == 'Topic' else 'SRCount', '+')
+            instance.Publisher, 'TRCount' if instance.TopicID.Type == 'Topic' else 'SRCount', '+')
         if instance.TopicID.Type == 'Topic':
-            mMs.AddNotification('TCR' if instance.Parent else 'TC', instance, instance.Publisher, instance.Parent.Publisher)
+            mMs.AddNotification('TCR' if instance.Parent else 'TC', instance, instance.Publisher, instance.Parent.Publisher if instance.Parent else instance.TopicID.Publisher)
         else:
-            mMs.AddNotification('SCR' if instance.Parent else 'SC', instance, instance.Publisher, instance.Parent.Publisher)
+            mMs.AddNotification('SCR' if instance.Parent else 'SC', instance, instance.Publisher, instance.Parent.Publisher if instance.Parent else instance.TopicID.Publisher)
+
 
 @receiver(post_delete, dispatch_uid=CommentInfo)
 def comment_delete(sender, instance, **kwargs):
@@ -125,7 +126,7 @@ def TopicAttitude_create(sender, instance, created, **kwargs):
     if created and isinstance(instance, TopicAttitude):
         print("Topic Create Point")
         mMs.CounterOperate(instance.ObjectID, 'Like' if instance.Point == 1 else 'Dislike', '+')
-        mMs.AddNotification('TAL' if instance.Point == 1 else 'TAD', instance, instance.Publisher, instance.ObjectID.Publisher)
+        mMs.AddNotification('TAL' if instance.Point == 1 else 'TAD', instance.ObjectID, instance.Publisher, instance.ObjectID.Publisher)
     elif (not created) and isinstance(instance, TopicAttitude):
         mMs.CounterOperate(instance.ObjectID, 'Like' if int(instance.Point) == 1 else 'Dislike', '+')
         mMs.CounterOperate(instance.ObjectID, 'Like' if abs(int(instance.Point) - 1) == 1 else 'Dislike', '-')
@@ -143,7 +144,7 @@ def CommentAttitude_create(sender, instance, created, **kwargs):
     if created and isinstance(instance, CommentAttitude):
         print("Comment Create Point")
         mMs.CounterOperate(instance.ObjectID, 'Like' if instance.Point == 1 else 'Dislike', '+')
-        mMs.AddNotification('CAL' if instance.Point == 1 else 'CAD', instance, instance.Publisher, instance.ObjectID.Publisher)
+        mMs.AddNotification('CAL' if instance.Point == 1 else 'CAD', instance.ObjectID, instance.Publisher, instance.ObjectID.Publisher)
     elif (not created) and isinstance(instance, CommentAttitude):
         mMs.CounterOperate(instance.ObjectID, 'Like' if int(instance.Point) == 1 else 'Dislike', '+')
         mMs.CounterOperate(instance.ObjectID, 'Like' if abs(int(instance.Point) - 1) == 1 else 'Dislike', '-')

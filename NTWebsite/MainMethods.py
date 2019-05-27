@@ -1,6 +1,8 @@
 from NTWebsite import Config
 from NTWebsite.models.Configuration import *
 from NTConfig import settings
+from django.conf import settings as ST
+from django.core.mail import send_mail
 from .improtFiles.models_import_head import *
 from .Config import AppConfig as AC
 from .Config import NotificationDict as ND
@@ -62,7 +64,7 @@ def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
     if CacheHandler.get(QueryString_MD5) and TimeOut != 0:
         return CacheHandler.get(QueryString_MD5)
     else:
-        '''
+
         try:
             #print('查询语句(带变量值):', FinalQueryString_For_MD5)
             #print('查询语句(带变量名):', FinalQueryString)
@@ -78,6 +80,7 @@ def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
             QueryResult = eval(FinalQueryString)
             CacheHandler.set(QueryString_MD5, QueryResult, TimeOut)
             return QueryResult
+        '''
 
 def PicUploadOperate(UploadedFile):
     APPConf = AC()
@@ -145,8 +148,8 @@ def UserAvatarOperation(ImageData, ImageFormat, OldAvatar):
                 compress_avatar = sizeHandle.resize(
                     (APPConf.AvatarResolution, APPConf.AvatarResolution), im.BILINEAR).convert('RGBA' if ImageFormat == 'png' else 'RGB')
                 compress_avatar.save(saveFilePath)
-            print("OldAvatar:",OldAvatar)
-            print("asdadadasd:",APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL,''))
+            #print("OldAvatar:",OldAvatar)
+            #print("asdadadasd:",APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL,''))
             if OldAvatar != APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL,''):
                 if os.path.exists(os.path.join(settings.MEDIA_ROOT, OldAvatar)):
                     os.remove(os.path.join(settings.MEDIA_ROOT, OldAvatar))
@@ -187,6 +190,11 @@ def MD5(data):
     hash_md5 = hashlib.md5(data.encode('utf-8'))
     return hash_md5.hexdigest()
 
+def SendMail(address, nick, username):
+    try:
+        send_mail(settings.EMAIL_TITLE, (settings.EMAIL_CONTENT % nick),ST.EMAIL_FROM,[address,],html_message=settings.EMAIL_BODY)
+    except Exception as e:
+        print(e)
 
 def GetUserIP(request):
     if 'HTTP_X_FORWARDED_FOR' in request.META:
@@ -205,7 +213,7 @@ def CreateUUIDstr():
 
 # 初始化网站配置信息 创建超级用户的时候在数据库中按照默认配置信息写入
 def QueryFilterCreate():
-    for name,detail in AppConfig.DefualtFilterDict.items():
+    for name,detail in Config.DefualtFilterDict.items():
         if not FilterQueryString.objects.filter(Name=name):
             FilterQueryString.objects.create(Name=name,MethodString=detail['MethodString'],QueryString=detail['QueryString'],Template=detail['Template'])
             print("成功创建:'%s'" % name)
@@ -214,7 +222,7 @@ def QueryFilterCreate():
 
 def AddNotification(Type, Object, Source, Target):
     with transaction.atomic():
-        eval("Notice.objects.create(ID=CreateUUIDstr(), Type=Type, %s=Object, SourceUser=Source, TargetUser=Target)" % ND[Type])
+        eval("Notice.objects.create(ID=CreateUUIDstr(), Type=Type, %s=Object, SourceUser=Source, TargetUser=Target)" % ND[Type]['Table'])
 
 if __name__ == "__main__":
-    pass
+    SendMail('616604060@qq.com')

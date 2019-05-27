@@ -1,5 +1,6 @@
 /static/
 /https/
+__pycache__/
 db.sqlite3
 dump.rdb
 *.ini
