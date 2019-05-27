@@ -13,3 +13,5 @@ dump.rdb
 *.pem.
 *.pem
 *.pyc
+*.JPG
+*.PNG

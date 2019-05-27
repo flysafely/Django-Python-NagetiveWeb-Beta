@@ -17,6 +17,10 @@ def NoticeGet(request):
                 dataDict['ObjectID'] = eval('Notice.%s.%sObjectID' % (ND[Notice.Type]['Table'], 'TopicID.' if 'C' in Notice.Type else '')) if Notice.Type != 'L' else ''
                 dataDict['AnchorID'] = Notice.CommentInfo.ObjectID if 'C' in Notice.Type and Notice.CommentInfo else ''
                 dataDict['Title'] = eval('Notice.%s.%sTitle' % (ND[Notice.Type]['Table'], 'TopicID.' if 'C' in Notice.Type else ''))[0:10] if Notice.Type != 'L' else ''
+<<<<<<< HEAD
+=======
+                print(dataDict['Region'])
+>>>>>>> 765ffb832531aa35d9759c6dc9245d19981dbc01
                 dataDict['PageNumber'] = GetPageNumber(ND[Notice.Type]['Table'], dataDict['ObjectID'], Notice.CommentInfo if 'C' in Notice.Type and Notice.CommentInfo else '')
                 dataDict['TargetURL'] = '/' + dataDict['Region'] + '/Content/' + dataDict[
                     'ObjectID'] + '/LE/' + dataDict['PageNumber'] + '/' + dataDict['AnchorID']
@@ -34,7 +38,11 @@ def NoticeGet(request):
 def NoticeDelete(request):
     #print(request.DELETE.get('IDs'))
     if RequestDataUnbox(request).get('IDs'):
+<<<<<<< HEAD
         #print(RequestDataUnbox(request).get('IDs'))
+=======
+        print(RequestDataUnbox(request).get('IDs'))
+>>>>>>> 765ffb832531aa35d9759c6dc9245d19981dbc01
         IDs = RequestDataUnbox(request).get('IDs').split(',')
         if request.user.is_authenticated:
             if len(IDs) == 1:
