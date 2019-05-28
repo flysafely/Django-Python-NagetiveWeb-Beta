@@ -25,6 +25,7 @@ def PaginatorInfoGet(objects, number, URLParams):
 def NoticeCount(request):
     return str(QRC('Notice.objects.filter(TargetUser=%s).count()', None, request.user)) if request.user.is_authenticated else '0'
 
+
 def FetchTopic(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -129,7 +130,7 @@ def ContextConfirm(request, **Params):
     PublisherList = QRC("PublisherList.objects.all()", None)
     # 生成上下文字典
     ContextDict = {"Layout_Sizer": Params['URLParams'],
-                   "Main_URL_Sizer": {'Topic': ('is-active', '', ''), 'RollCall': ('', 'is-active', ''), 'SpecialTopic': ('', '', 'is-active'), 'UserProfile': ('', '', ''),'Search': ('', '', '')}[Params['URLParams']['Region']],
+                   "Main_URL_Sizer": {'Topic': ('is-active', '', ''), 'RollCall': ('', 'is-active', ''), 'SpecialTopic': ('', '', 'is-active'), 'UserProfile': ('', '', ''), 'Search': ('', '', '')}[Params['URLParams']['Region']],
                    "ExportItem_UserInfo": Params['User'] if 'User' in Params else '',
                    "Export_Object": Params['MainObject'] if 'MainObject' in Params else '',
                    "ExportList_Topic": Params['Object'] if 'Object' in Params else '',
@@ -222,7 +223,8 @@ def Replay(request):
                     'SpecialTopic': 'SRCount', 'RollCall': 'RCount'}
         Type = request.POST.get('Type')
         ObjectID = request.POST.get('ObjectID')
-        TopicObject = QRC('TopicInfo.objects.get(ObjectID=%s)', None, request.POST.get('ObjectID'))
+        TopicObject = QRC('TopicInfo.objects.get(ObjectID=%s)',
+                          None, request.POST.get('ObjectID'))
         Content = request.POST.get('Content')
         ParentID = request.POST.get('ParentID')
         if request.user.is_authenticated:
@@ -247,14 +249,15 @@ def Collect(request):
         Object = QRC(('Topic' if Type in 'CollectConcern' else 'RollCall') +
                      'Info.objects.get(ObjectID=%s)', 0, request.POST.get('ObjectID'))
 
-        result = QRC(Type + '.objects.filter(Publisher=%s,ObjectID=%s)', 0, request.user, Object)
+        result = QRC(
+            Type + '.objects.filter(Publisher=%s,ObjectID=%s)', 0, request.user, Object)
         if not result:
             QRC(Type + '.objects.create(Publisher=%s,ObjectID=%s)',
                 0, request.user, Object)
             return HttpResponse(Type)
         else:
             result[0].delete()
-            return HttpResponse(Type +'Cancel')
+            return HttpResponse(Type + 'Cancel')
     else:
         return HttpResponse('login')
 
@@ -275,6 +278,23 @@ def Param(request):
         else:
             pass
 
+# 新用户激活
+
+
+def UserActive(userid, key):
+    APPConf = AC()
+    print('userid:',userid)
+    print(mMs.RedisCacheOperation('get',TimeOut=0,key=key))
+    if userid == mMs.RedisCacheOperation('get',TimeOut=0,key=key):
+        UserObject=User.objects.get(id=int(userid))
+        UserObject.is_active=True
+        UserObject.save()
+        mMs.RedisCacheOperation('delete',TimeOut=0, key=key)
+        return HttpResponseRedirect(APPConf.IndexURL)
+    else:
+        return HttpResponse('未匹配')
+    # 用户登录
+
 
 def Login(request):
     if request.method == 'POST':
@@ -290,6 +310,16 @@ def Login(request):
             return HttpResponse(True)
         else:
             return HttpResponse("")
+
+# 忘记密码
+
+
+def ChangePassWord(request):
+    if request.method == 'POST':
+        username = mMs.Decrypt(mMs.DecodeWithBase64(
+            request.POST.get('username')))
+        email = mMs.Decrypt(mMs.DecodeWithBase64(request.POST.get('email')))
+
 # 注册界面
 
 
@@ -303,13 +333,12 @@ def Regist(request):
         password = mMs.Decrypt(mMs.DecodeWithBase64(
             request.POST.get('password')))
         email = mMs.Decrypt(mMs.DecodeWithBase64(request.POST.get('email')))
-        mMs.SendMail(email,usernickname,username)
         try:
                 # 这里通过前端注册账号一定要是要create_user 不然后期登录的时候
                 # auth.authenticate无法验证用户名和密码
             newUser = User.objects.create_user(
                 username, Nick=usernickname, password=password, email=email, is_active=False)
-
+            mMs.SendMail('regist', newUser)
             newUser.Avatar = mMs.UserAvatarOperation(request.POST.get(
                 'userimagedata'), request.POST.get('userimageformat'), APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL, ''))['Path']
             newUser.save()

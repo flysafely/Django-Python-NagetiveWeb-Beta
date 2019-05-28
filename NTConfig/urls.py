@@ -44,6 +44,7 @@ urlpatterns = [
     path('BlackListOperation/', P.BlackListOperation),
     path('regist/', P.Regist),# RUST POST
     path('Param/', P.Param),
+    re_path(r'^activate/(?P<UserID>.*)/(?P<Key>.*)/$', V.Activate),
     path('FetchTopic/', P.FetchTopic),# RUST GET
     re_path(r'^%s(?P<path>.*)$' % re.escape(settings.MEDIA_URL.lstrip('/')), serve, kwargs={'document_root':settings.MEDIA_ROOT}),# RUST GET
     re_path(r'^(?P<Region>.*)/(?P<Part>.*)/(?P<FilterValue>.*)/(?P<Order>.*)/(?P<PageNumber>.*)/(?P<ExtraParam>.*)$', V.Launcher),# main URL # RUST

@@ -52,7 +52,6 @@ DefualtFilterDict = {"Search-User-LE": {"MethodString": "lambdaR,D,A,U:SearchInf
                      "UserProfile-TopicLike-LE": {"MethodString": "lambdaR,D,A,U:UserProfileInfoGet(R,D,A,U)", "QueryString": "TopicAttitude.objects.filter(Publisher=%s,Point=1).order_by('-EditTime')", "Template": "Main-Frame.html"},
                      "UserProfile-CommentDislike-LE": {"MethodString": "lambdaR,D,A,U:UserProfileInfoGet(R,D,A,U)", "QueryString": "CommentAttitude.objects.filter(Publisher=%s,Point=0).order_by('-EditTime')", "Template": "Main-Frame.html"},
                      "UserProfile-CommentLike-LE": {"MethodString": "lambdaR,D,A,U:UserProfileInfoGet(R,D,A,U)", "QueryString": "CommentAttitude.objects.filter(Publisher=%s,Point=1).order_by('-EditTime')", "Template": "Main-Frame.html"},
-                     "UserProfile-Commit-LE": {"MethodString": "lambdaR,D,A,U:UserProfileInfoGet(R,D,A,U)", "QueryString": "CommentInfo.objects.filter(Publisher=%s).order_by('-EditDate')", "Template": "Main-Frame.html"},
                      "UserProfile-SpecialTopic-LE": {"MethodString": "lambdaR,D,A,U:UserProfileInfoGet(R,D,A,U)", "QueryString": "TopicInfo.objects.filter(Publisher=%s,Type='SpecialTopic').order_by('-EditTime')", "Template": "Main-Frame.html"},
                      "UserProfile-Topic-LE": {"MethodString": "lambdaR,D,A,U:UserProfileInfoGet(R,D,A,U)", "QueryString": "TopicInfo.objects.filter(Publisher=%s,Type='Topic').order_by('-EditTime')", "Template": "Main-Frame.html"},
                      "RollCall-Time-LE": {"MethodString": "lambdaR,D,A,U:RollCallsInfoGet(R,D,A,U)", "QueryString": "RollCallInfo.objects.filter(EditDate=%s).order_by('-Hot')", "Template": "Main-Frame.html"},
@@ -171,18 +170,27 @@ PermissionDict = {
 
 # 通知类型筛选
 NotificationDict = {
-    'R': {'Table':'RollCallInfo','Region':'RollCall','Connector':'点了您'},
-    'RD': {'Table':'RollCallInfo','Region':'RollCall','Connector':'回点了您'},    
-    'RP': {'Table':'RollCallInfo','Region':'RollCall','Connector':'发布点名'},    
-    'TC': {'Table':'CommentInfo','Region':'Topic','Connector':'评论了'},
-    'TCR': {'Table':'CommentInfo','Region':'Topic','Connector':'回复了'},
-    'SC': {'Table':'CommentInfo','Region':'SpecialTopic','Connector':'评论了'},
-    'SCR': {'Table':'CommentInfo','Region':'SpecialTopic','Connector':'回复了'},    
-    'L': {'Table':'UserLink','Region':'UserProfile','Connector':'关注了您'},
-    'TAL': {'Table':'TopicInfo','Region':'Topic','Connector':'赞了'},
-    'TAD': {'Table':'TopicInfo','Region':'Topic','Connector':'怼了'},
-    'CAL': {'Table':'CommentInfo','Region':'Topic','Connector':'赞了'},
-    'CAD': {'Table':'CommentInfo','Region':'Topic','Connector':'怼了'},
-    'TP': {'Table':'TopicInfo','Region':'Topic','Connector':'发布文章'},
-    'SP': {'Table':'TopicInfo','Region':'SpecialTopic','Connector':'发布专题'},
+    'R': {'Table': 'RollCallInfo', 'Region': 'RollCall', 'Connector': '点了您'},
+    'RD': {'Table': 'RollCallInfo', 'Region': 'RollCall', 'Connector': '回点了您'},
+    'RP': {'Table': 'RollCallInfo', 'Region': 'RollCall', 'Connector': '发布点名'},
+    'TC': {'Table': 'CommentInfo', 'Region': 'Topic', 'Connector': '评论了'},
+    'TCR': {'Table': 'CommentInfo', 'Region': 'Topic', 'Connector': '回复了'},
+    'SC': {'Table': 'CommentInfo', 'Region': 'SpecialTopic', 'Connector': '评论了'},
+    'SCR': {'Table': 'CommentInfo', 'Region': 'SpecialTopic', 'Connector': '回复了'},
+    'L': {'Table': 'UserLink', 'Region': 'UserProfile', 'Connector': '关注了您'},
+    'TAL': {'Table': 'TopicInfo', 'Region': 'Topic', 'Connector': '赞了'},
+    'TAD': {'Table': 'TopicInfo', 'Region': 'Topic', 'Connector': '怼了'},
+    'CAL': {'Table': 'CommentInfo', 'Region': 'Topic', 'Connector': '赞了'},
+    'CAD': {'Table': 'CommentInfo', 'Region': 'Topic', 'Connector': '怼了'},
+    'TP': {'Table': 'TopicInfo', 'Region': 'Topic', 'Connector': '发布文章'},
+    'SP': {'Table': 'TopicInfo', 'Region': 'SpecialTopic', 'Connector': '发布专题'},
+}
+
+# EMAIL BODY
+Regist_HTML = "<html><head><link rel='stylesheet' href='http://cdn.staticfile.org/twitter-bootstrap/3.0.1/css/bootstrap.min.css'></head><div class='container'><div class='row clearfix'><div class='col-md-12 column'><div class='jumbotron'><h1>欢迎混入球莫名堂!</h1><p>我们只求您不作恶足矣!以下按钮用于激活您刚注册的账号。</p><p><a class='btn btn-primary btn-large' href='http://127.0.0.1:8000/activate/%s/%s/'>点击激活</a></p></div></div></div></div></html>"
+
+# 邮件场景模板
+EMAIL_Dict = {
+    'regist': {'Title': '球莫名堂账号激活邮件', 'Content': "欢迎'%s'的加入球莫名堂!", 'Body': Regist_HTML},
+    'change': {},
 }

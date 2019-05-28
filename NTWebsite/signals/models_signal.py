@@ -7,9 +7,10 @@ from NTWebsite import MainMethods as mMs
 
 @receiver(post_save, dispatch_uid=User)
 def user_create(sender, instance, created, **kwargs):
-    if created and instance.is_superuser:
-        print('新建超级账户：',instance.username)
-        mMs.QueryFilterCreate()
+    print(instance)
+    if created and isinstance(instance,User): # instance 是一个log对象,里面的user属性才是存储的新建用户对象实例
+        if instance.is_superuser:
+            mMs.QueryFilterCreate()
 
 
 @receiver(post_save, dispatch_uid=TopicInfo)
@@ -124,7 +125,6 @@ def userlink_delete(sender, instance, **kwargs):
 @receiver(post_save, dispatch_uid=TopicAttitude)
 def TopicAttitude_create(sender, instance, created, **kwargs):
     if created and isinstance(instance, TopicAttitude):
-        print("Topic Create Point")
         mMs.CounterOperate(instance.ObjectID, 'Like' if instance.Point == 1 else 'Dislike', '+')
         mMs.AddNotification('TAL' if instance.Point == 1 else 'TAD', instance.ObjectID, instance.Publisher, instance.ObjectID.Publisher)
     elif (not created) and isinstance(instance, TopicAttitude):
@@ -142,7 +142,6 @@ def TopicAttitude_delete(sender, instance, **kwargs):
 @receiver(post_save, dispatch_uid=CommentAttitude)
 def CommentAttitude_create(sender, instance, created, **kwargs):
     if created and isinstance(instance, CommentAttitude):
-        print("Comment Create Point")
         mMs.CounterOperate(instance.ObjectID, 'Like' if instance.Point == 1 else 'Dislike', '+')
         mMs.AddNotification('CAL' if instance.Point == 1 else 'CAD', instance.ObjectID, instance.Publisher, instance.ObjectID.Publisher)
     elif (not created) and isinstance(instance, CommentAttitude):

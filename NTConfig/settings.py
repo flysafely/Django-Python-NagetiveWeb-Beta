@@ -218,12 +218,7 @@ EMAIL_HOST_USER = 'nagetive@yeah.net'
 EMAIL_HOST_PASSWORD = 'q63785095'
 #收件人看到的发件人 <此处要和发送邮件的邮箱相同>
 EMAIL_FROM = '球莫名堂<nagetive@yeah.net>'
-#邮件标准标题
-EMAIL_TITLE = "球莫名堂注册确认邮件"
-#邮件标准内容
-EMAIL_CONTENT = "欢迎'%s'的加入球莫名堂!"
-#邮件复制内容
-EMAIL_BODY = ""
+
 
 # 增加ckeditor的功能
 CKEDITOR_CONFIGS = {

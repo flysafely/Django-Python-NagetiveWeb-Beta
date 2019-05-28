@@ -10,6 +10,8 @@ def Launcher(request, **URLParams):
     # 执行对应的方法
     return MethodSwitcher(request, DBConf, AC(), URLParams)
 
+def Activate(request, **URLParams):
+    return P.UserActive(URLParams['UserID'],URLParams['Key'])
 
 def TopicsInfoGet(request, DBConf, APPConf, URLParams):
     # 获取符合条件的文章对象并且获取权限
