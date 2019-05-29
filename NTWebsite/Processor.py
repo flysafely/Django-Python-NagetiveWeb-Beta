@@ -279,12 +279,8 @@ def Param(request):
             pass
 
 # 新用户激活
-
-
 def UserActive(userid, key):
     APPConf = AC()
-    print('userid:',userid)
-    print(mMs.RedisCacheOperation('get',TimeOut=0,key=key))
     if userid == mMs.RedisCacheOperation('get',TimeOut=0,key=key):
         UserObject=User.objects.get(id=int(userid))
         UserObject.is_active=True
@@ -311,14 +307,37 @@ def Login(request):
         else:
             return HttpResponse("")
 
-# 忘记密码
+# 发送邮箱确认密令
+def SendMailCode(request):
+    if request.method == 'POST':
+        username = mMs.Decrypt(mMs.DecodeWithBase64(request.POST.get('username')))
+        try:
+            UserObject = QRC('User.objects.get(username=%s)',None,username)
+            ActiveMailThread = threading.Thread(target=mMs.SendMail,args=('change', UserObject))
+            ActiveMailThread.start()
+            return HttpResponse('ok')
+        except Exception as e:
+            return HttpResponse(e)
 
+        
 
-def ChangePassWord(request):
+# 修改密码
+def ChangePWD(request):
     if request.method == 'POST':
         username = mMs.Decrypt(mMs.DecodeWithBase64(
             request.POST.get('username')))
-        email = mMs.Decrypt(mMs.DecodeWithBase64(request.POST.get('email')))
+        newpwd = mMs.Decrypt(mMs.DecodeWithBase64(
+            request.POST.get('newpwd')))
+        code = mMs.Decrypt(mMs.DecodeWithBase64(request.POST.get('code')))
+        print('code:',mMs.RedisCacheOperation('get',TimeOut=0,key=username + '&CPW'))
+        if code == mMs.RedisCacheOperation('get',TimeOut=0,key=username + '&CPW'):
+            UserObject = QRC('User.objects.get(username=%s)',None,username)
+            UserObject.set_password(newpwd)
+            UserObject.save()
+            return HttpResponse('ok')
+        else:
+            return HttpResponse('codeerror')
+
 
 # 注册界面
 
@@ -334,11 +353,14 @@ def Regist(request):
             request.POST.get('password')))
         email = mMs.Decrypt(mMs.DecodeWithBase64(request.POST.get('email')))
         try:
-                # 这里通过前端注册账号一定要是要create_user 不然后期登录的时候
-                # auth.authenticate无法验证用户名和密码
+            # 这里通过前端注册账号一定要是要create_user 不然后期登录的时候
+            # auth.authenticate无法验证用户名和密码
             newUser = User.objects.create_user(
                 username, Nick=usernickname, password=password, email=email, is_active=False)
-            mMs.SendMail('regist', newUser)
+            # 启用多线程发送邮件
+            ActiveMailThread = threading.Thread(target=mMs.SendMail,args=('regist', newUser))
+            ActiveMailThread.start()
+            # 用户新建后执行头像设置操作
             newUser.Avatar = mMs.UserAvatarOperation(request.POST.get(
                 'userimagedata'), request.POST.get('userimageformat'), APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL, ''))['Path']
             newUser.save()

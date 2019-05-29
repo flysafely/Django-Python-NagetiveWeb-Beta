@@ -187,10 +187,11 @@ NotificationDict = {
 }
 
 # EMAIL BODY
-Regist_HTML = "<html><head><link rel='stylesheet' href='http://cdn.staticfile.org/twitter-bootstrap/3.0.1/css/bootstrap.min.css'></head><div class='container'><div class='row clearfix'><div class='col-md-12 column'><div class='jumbotron'><h1>欢迎混入球莫名堂!</h1><p>我们只求您不作恶足矣!以下按钮用于激活您刚注册的账号。</p><p><a class='btn btn-primary btn-large' href='http://127.0.0.1:8000/activate/%s/%s/'>点击激活</a></p></div></div></div></div></html>"
+Regist_HTML = "<html><head><link rel='stylesheet' href='http://cdn.staticfile.org/twitter-bootstrap/3.0.1/css/bootstrap.min.css'></head><div class='container'><div class='row clearfix'><div class='col-md-12 column'><div class='jumbotron'><h1>欢迎'%s'混入球莫名堂!</h1><p>我们只求您不作恶足矣!以下按钮用于激活您刚注册的账号。</p><p><a class='btn btn-primary btn-large' href='http://127.0.0.1:8000/activate/%s/%s/'>点击激活</a></p></div></div></div></div></html>"
+Change_HTML = "<h1>'%s'正在被修改密码!</h1></hr><b>授权密令:%s</b>"
 
 # 邮件场景模板
 EMAIL_Dict = {
     'regist': {'Title': '球莫名堂账号激活邮件', 'Content': "欢迎'%s'的加入球莫名堂!", 'Body': Regist_HTML},
-    'change': {},
+    'change': {'Title': '<球莫名堂>密码修改确认', 'Content': "修改邮件", 'Body': Change_HTML},
 }

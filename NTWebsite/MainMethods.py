@@ -210,14 +210,18 @@ def SendMail(scene, user):
         try:
             ActiveNumber = CreateUUIDstr()
             send_mail(Config.EMAIL_Dict['regist']['Title'], (Config.EMAIL_Dict['regist']['Content'] % user.Nick),
-                      settings.EMAIL_FROM, [user.email, ], html_message=(Config.EMAIL_Dict['regist']['Body'] % (str(user.id), ActiveNumber)))
-            RedisCacheOperation('set', TimeOut=60, key=ActiveNumber, value=str(user.id))
+                      settings.EMAIL_FROM, [str(user.email), ], html_message=(Config.EMAIL_Dict['regist']['Body'] % (user.Nick, str(user.id), ActiveNumber)))
+            RedisCacheOperation('set', TimeOut=60,
+                                key=ActiveNumber, value=str(user.id))
         except Exception as e:
             print(e)
-    if scene == 'change':
+    elif scene == 'change':
         try:
-            send_mail(settings.EMAIL_TITLE, (settings.EMAIL_CONTENT % nick),
-                      ST.EMAIL_FROM, [address, ], html_message=settings.EMAIL_BODY)
+            CodeNumber = CreateUUIDstr()
+            send_mail(Config.EMAIL_Dict['change']['Title'], (Config.EMAIL_Dict['change']['Content']),
+                      settings.EMAIL_FROM, [str(user.email), ], html_message=(Config.EMAIL_Dict['change']['Body'] % (user.username, CodeNumber)))
+            RedisCacheOperation('set', TimeOut=60,
+                                key=(user.username + '&CPW'), value=CodeNumber)
         except Exception as e:
             print(e)
 

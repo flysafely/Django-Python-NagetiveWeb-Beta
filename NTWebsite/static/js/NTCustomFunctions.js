@@ -32,13 +32,16 @@ function LoginAndRegistWithValidateCode(from,submitName,csrftoken)
  {
    alert("验证码输入有误！");
  }
- else 
+ else
  {
   if(submitName == 'LoginSubmit'){
     LoginSubmit(csrftoken);
-  }else if(submitName == 'RegistSubmit')
+  }else if(submitName == 'RegistSubmit'){
     RegistSubmit(csrftoken);
- }    
+  }else if(submitName == 'ChangeSubmit'){
+    ChangeSubmit(csrftoken);
+  }
+ }
 }
 
 // 加密选项
@@ -619,21 +622,64 @@ function Logout(url)
 
 function RegistSubmit(csrftoken)
 {
-    var userimagedata = document.getElementById('UserImageShow').src;
-    var format = document.getElementById('UserImageInput').value;
-    var userimageformat = format.split('.')[1];
-    var username = DoEncrypt('SecretKey',csrftoken,document.getElementById('registusername').value);
-    var usernickname = DoEncrypt('SecretKey',csrftoken,document.getElementById('registusernickname').value);
-    var password = DoEncrypt('SecretKey',csrftoken,document.getElementById('registpassword').value);
-    var email = DoEncrypt('SecretKey',csrftoken,document.getElementById('registemail').value);
-    $.post('/regist/',{csrfmiddlewaretoken: csrftoken,'userimagedata':userimagedata,'userimageformat':userimageformat,'username':username,'usernickname':usernickname,'password':password,'email':email},function(status)
+  var userimagedata = document.getElementById('UserImageShow').src;
+  var format = document.getElementById('UserImageInput').value;
+  var userimageformat = format.split('.')[1];
+  var username = DoEncrypt('SecretKey',csrftoken,document.getElementById('registusername').value);
+  var usernickname = DoEncrypt('SecretKey',csrftoken,document.getElementById('registusernickname').value);
+  var password = DoEncrypt('SecretKey',csrftoken,document.getElementById('registpassword').value);
+  var email = DoEncrypt('SecretKey',csrftoken,document.getElementById('registemail').value);
+  $.post('/Regist/',{csrfmiddlewaretoken: csrftoken,'userimagedata':userimagedata,'userimageformat':userimageformat,'username':username,'usernickname':usernickname,'password':password,'email':email},function(status)
+    {if(status=='ok'){
+      alert('注册成功!');
+      location.reload();
+    }else{
+      alert(status);
+    }
+  });
+}
+
+function GetInputLength(Object)
+{
+  return Object.value.replace(/(^s*)|(s*$)/g, "").length
+}
+
+function ChangeSubmit(csrftoken)
+{ 
+  var input_username = document.getElementById('changeusername');
+  var input_newpwd = document.getElementById('newpassword');
+  var input_code = document.getElementById('mailcode');
+  var username = DoEncrypt('SecretKey',csrftoken,input_username.value);
+  var newpwd = DoEncrypt('SecretKey',csrftoken,input_newpwd.value);
+  var code = DoEncrypt('SecretKey',csrftoken,input_code.value);
+  if(GetInputLength(input_username) != 0 && GetInputLength(input_newpwd) != 0 && GetInputLength(input_code) != 0)
+    $.post('/Change/',{csrfmiddlewaretoken: csrftoken,'username':username,'newpwd':newpwd,'code':code},function(status)
       {if(status=='ok'){
-        alert('注册成功!');
+        alert('修改成功');
         location.reload();
+      }else{
+        alert('授权密令错误!');
+      }
+    });
+  else{
+    alert('必填项目不能为空!')
+  }
+}
+
+function SendMailCode(csrftoken)
+{ 
+  if(GetInputLength(document.getElementById('changeusername')) != 0){
+    var username = DoEncrypt('SecretKey',csrftoken,document.getElementById('changeusername').value);
+    $.post('/MailCode/',{csrfmiddlewaretoken: csrftoken,'username':username},function(status)
+      {if(status=='ok'){
+        alert('密令已发送到注册邮箱，有效时间为60秒!');
       }else{
         alert(status);
       }
-    });
+    });    
+  }else{
+    alert('请输入账号!');
+  }
 }
 
 function Search(source)

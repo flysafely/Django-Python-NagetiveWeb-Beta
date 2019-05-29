@@ -7,7 +7,6 @@ from NTWebsite import MainMethods as mMs
 
 @receiver(post_save, dispatch_uid=User)
 def user_create(sender, instance, created, **kwargs):
-    print(instance)
     if created and isinstance(instance,User): # instance 是一个log对象,里面的user属性才是存储的新建用户对象实例
         if instance.is_superuser:
             mMs.QueryFilterCreate()

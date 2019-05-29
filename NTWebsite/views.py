@@ -10,8 +10,10 @@ def Launcher(request, **URLParams):
     # 执行对应的方法
     return MethodSwitcher(request, DBConf, AC(), URLParams)
 
+
 def Activate(request, **URLParams):
-    return P.UserActive(URLParams['UserID'],URLParams['Key'])
+    return P.UserActive(URLParams['UserID'], URLParams['Key'])
+
 
 def TopicsInfoGet(request, DBConf, APPConf, URLParams):
     # 获取符合条件的文章对象并且获取权限
@@ -37,10 +39,9 @@ def TopicContentInfoGet(request, DBConf, APPConf, URLParams):
         mMs.CounterOperate(QRC('TopicInfo.objects.get(ObjectID=%s)',
                                0, URLParams['FilterValue']), 'Hot', '+')
     # 获取指定文章对象
-
-    #print('获取指定文章对象', QRC(DBConf.QueryString, None, URLParams['FilterValue']))
     TopicObject = A.Empower(URLParams['Region'], QRC(
         DBConf.QueryString, None, URLParams['FilterValue']), request)
+
     # 获取评论对象
     CommentObjects = P.CommentPackage(A.Empower('Comment',
                                                 QRC("CommentInfo.objects.filter(TopicID=%s).order_by('-EditDate')",

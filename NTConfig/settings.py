@@ -215,7 +215,7 @@ EMAIL_PORT = 25
 #发送邮件的邮箱
 EMAIL_HOST_USER = 'nagetive@yeah.net'
 #在邮箱中设置的客户端授权密码
-EMAIL_HOST_PASSWORD = 'q63785095'
+EMAIL_HOST_PASSWORD = 'xAf19901101'
 #收件人看到的发件人 <此处要和发送邮件的邮箱相同>
 EMAIL_FROM = '球莫名堂<nagetive@yeah.net>'
 
