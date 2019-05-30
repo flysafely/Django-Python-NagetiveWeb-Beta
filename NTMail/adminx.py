@@ -1,11 +1,11 @@
 from django.contrib import admin
-from NTNotification.models import *
+from NTMail.models import *
 # Register your models here.
 from xadmin import views
 import xadmin
 
-class NoticeAdminView(object):
+class MailBodyAdminView(object):
     """docstring for PublishNotification"""
-    list_display = ('ID',)
+    list_display = ('Scene',)
 
-xadmin.site.register(Notice,NoticeAdminView)
+xadmin.site.register(MailBody,MailBodyAdminView)

@@ -25,7 +25,8 @@ SECRET_KEY = '$@&+60oqu5u900a+1*qo*!5nn#ljd3lj=3%p@#dmw%=mle$+_x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'www.nagetive.com', 'www.nagetives.com', '192.168.3.69','192.168.3.79']
+ALLOWED_HOSTS = ['127.0.0.1', 'www.nagetive.com',
+                 'www.nagetives.com', '192.168.3.69', '192.168.3.79']
 
 APP_NAMES = ['NTWebsite', ]
 # Application definition
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     # 使用了staticfiles 就必须定义STATIC_URL   URL路由指向STATIC_ROOT路径
     'django.contrib.staticfiles',
     'NTWebsite',
+    'NTMail',
     'NTNotification',
     'ckeditor',
     'ckeditor_uploader',
@@ -158,7 +160,7 @@ USE_TZ = True
 
 #LOGIN_URL = '/login/'
 
-# 当在开发模式下时候 URL映射有效 
+# 当在开发模式下时候 URL映射有效
 # 作用是告诉请求，在服务器的那个物理位置去获取资源
 # 例如 请求链接中出现127.0.0.1:8000/static/   就会自动首先在DIRS中寻找资源，再到App static中寻找
 # 当找到第一个符合的资源时候就会停止搜索
@@ -181,7 +183,9 @@ APP_ROOT = os.path.join(BASE_DIR)
 # 用于存放用户上传资源
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-CKEDITOR_UPLOAD_PATH = "TopicPicUpload/" # Ckeditor文件上传目录是MEDIA_ROOT + CKEDITOR_UPLOAD_PATH 组合而成，是简单的字符串拼接，不是os.path.join自动补全斜杆，所以需要在
+# Ckeditor文件上传目录是MEDIA_ROOT + CKEDITOR_UPLOAD_PATH
+# 组合而成，是简单的字符串拼接，不是os.path.join自动补全斜杆，所以需要在
+CKEDITOR_UPLOAD_PATH = "TopicPicUpload/"
 '''
 STATICFILES_DIRS = (
     ('css', os.path.join(STATIC_ROOT, 'css/')),
@@ -206,19 +210,18 @@ STATICFILES_DIRS = (
 
 # 配置邮箱发邮件的相关功能
 
-#这一项是固定的
+# 这一项是固定的
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# smtp服务的邮箱服务器 我用的是163
+# smtp服务的邮箱服务器
 EMAIL_HOST = 'smtp.yeah.net'
 # smtp服务固定的端口是25
 EMAIL_PORT = 25
-#发送邮件的邮箱
+# 发送邮件的邮箱
 EMAIL_HOST_USER = 'nagetive@yeah.net'
-#在邮箱中设置的客户端授权密码
+# 在邮箱中设置的客户端授权密码
 EMAIL_HOST_PASSWORD = 'xAf19901101'
-#收件人看到的发件人 <此处要和发送邮件的邮箱相同>
+# 收件人看到的发件人 <此处要和发送邮件的邮箱相同>
 EMAIL_FROM = '球莫名堂<nagetive@yeah.net>'
-
 
 # 增加ckeditor的功能
 CKEDITOR_CONFIGS = {

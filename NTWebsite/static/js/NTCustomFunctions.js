@@ -631,7 +631,7 @@ function RegistSubmit(csrftoken)
   var email = DoEncrypt('SecretKey',csrftoken,document.getElementById('registemail').value);
   $.post('/Regist/',{csrfmiddlewaretoken: csrftoken,'userimagedata':userimagedata,'userimageformat':userimageformat,'username':username,'usernickname':usernickname,'password':password,'email':email},function(status)
     {if(status=='ok'){
-      alert('注册成功!');
+      alert('注册成功,请前往邮箱激活该账号!');
       location.reload();
     }else{
       alert(status);

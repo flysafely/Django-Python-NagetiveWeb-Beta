@@ -279,13 +279,15 @@ def Param(request):
             pass
 
 # 新用户激活
-def UserActive(userid, key):
+
+
+def UserActive(username, key):
     APPConf = AC()
-    if userid == mMs.RedisCacheOperation('get',TimeOut=0,key=key):
-        UserObject=User.objects.get(id=int(userid))
-        UserObject.is_active=True
+    if key == mMs.RedisCacheOperation('get', TimeOut=0, key=username + '&regist'):
+        UserObject = User.objects.get(username=username)
+        UserObject.is_active = True
         UserObject.save()
-        mMs.RedisCacheOperation('delete',TimeOut=0, key=key)
+        mMs.RedisCacheOperation('delete', TimeOut=0, key=username + '&regist')
         return HttpResponseRedirect(APPConf.IndexURL)
     else:
         return HttpResponse('未匹配')
@@ -308,18 +310,21 @@ def Login(request):
             return HttpResponse("")
 
 # 发送邮箱确认密令
+
+
 def SendMailCode(request):
     if request.method == 'POST':
-        username = mMs.Decrypt(mMs.DecodeWithBase64(request.POST.get('username')))
+        username = mMs.Decrypt(mMs.DecodeWithBase64(
+            request.POST.get('username')))
         try:
-            UserObject = QRC('User.objects.get(username=%s)',None,username)
-            ActiveMailThread = threading.Thread(target=mMs.SendMail,args=('change', UserObject))
+            UserObject = QRC('User.objects.get(username=%s)', None, username)
+            ActiveMailThread = threading.Thread(
+                target=SendMail, args=('change', UserObject))
             ActiveMailThread.start()
             return HttpResponse('ok')
         except Exception as e:
             return HttpResponse(e)
 
-        
 
 # 修改密码
 def ChangePWD(request):
@@ -329,11 +334,14 @@ def ChangePWD(request):
         newpwd = mMs.Decrypt(mMs.DecodeWithBase64(
             request.POST.get('newpwd')))
         code = mMs.Decrypt(mMs.DecodeWithBase64(request.POST.get('code')))
-        print('code:',mMs.RedisCacheOperation('get',TimeOut=0,key=username + '&CPW'))
-        if code == mMs.RedisCacheOperation('get',TimeOut=0,key=username + '&CPW'):
-            UserObject = QRC('User.objects.get(username=%s)',None,username)
+        print('code:', mMs.RedisCacheOperation(
+            'get', TimeOut=0, key=username + '&change'))
+        if code == mMs.RedisCacheOperation('get', TimeOut=0, key=username + '&change'):
+            UserObject = QRC('User.objects.get(username=%s)', None, username)
             UserObject.set_password(newpwd)
             UserObject.save()
+            mMs.RedisCacheOperation(
+                'delete', TimeOut=0, key=username + '&change')
             return HttpResponse('ok')
         else:
             return HttpResponse('codeerror')
@@ -358,7 +366,8 @@ def Regist(request):
             newUser = User.objects.create_user(
                 username, Nick=usernickname, password=password, email=email, is_active=False)
             # 启用多线程发送邮件
-            ActiveMailThread = threading.Thread(target=mMs.SendMail,args=('regist', newUser))
+            ActiveMailThread = threading.Thread(
+                target=SendMail, args=('regist', newUser))
             ActiveMailThread.start()
             # 用户新建后执行头像设置操作
             newUser.Avatar = mMs.UserAvatarOperation(request.POST.get(

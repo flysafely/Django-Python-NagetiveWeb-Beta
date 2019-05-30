@@ -2,7 +2,6 @@ from NTWebsite import Config
 from NTWebsite.models.Configuration import *
 from NTConfig import settings
 from django.conf import settings as ST
-from django.core.mail import send_mail
 from .improtFiles.models_import_head import *
 from .Config import AppConfig as AC
 from .Config import NotificationDict as ND
@@ -72,6 +71,7 @@ def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
         except Exception as e:
             # 不直接raise Http404的原因是:部分get查询只是判断某些表中是否存在相应数据，不存在则忽略，不需要直接返回404
             print('查询错误信息:', e)
+            return None
             #raise Http404
         else:
             CacheHandler.set(QueryString_MD5, QueryResult, TimeOut)
@@ -203,27 +203,6 @@ def DecodeWithBase64(data):
 def MD5(data):
     hash_md5 = hashlib.md5(data.encode('utf-8'))
     return hash_md5.hexdigest()
-
-
-def SendMail(scene, user):
-    if scene == 'regist':
-        try:
-            ActiveNumber = CreateUUIDstr()
-            send_mail(Config.EMAIL_Dict['regist']['Title'], (Config.EMAIL_Dict['regist']['Content'] % user.Nick),
-                      settings.EMAIL_FROM, [str(user.email), ], html_message=(Config.EMAIL_Dict['regist']['Body'] % (user.Nick, str(user.id), ActiveNumber)))
-            RedisCacheOperation('set', TimeOut=60,
-                                key=ActiveNumber, value=str(user.id))
-        except Exception as e:
-            print(e)
-    elif scene == 'change':
-        try:
-            CodeNumber = CreateUUIDstr()
-            send_mail(Config.EMAIL_Dict['change']['Title'], (Config.EMAIL_Dict['change']['Content']),
-                      settings.EMAIL_FROM, [str(user.email), ], html_message=(Config.EMAIL_Dict['change']['Body'] % (user.username, CodeNumber)))
-            RedisCacheOperation('set', TimeOut=60,
-                                key=(user.username + '&CPW'), value=CodeNumber)
-        except Exception as e:
-            print(e)
 
 
 def GetUserIP(request):

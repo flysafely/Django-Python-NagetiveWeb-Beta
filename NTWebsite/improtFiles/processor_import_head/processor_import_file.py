@@ -21,6 +21,7 @@ from NTWebsite.improtFiles.models_import_head import *
 from NTWebsite import MainMethods as mMs
 from NTWebsite.models import *
 from NTNotification.Processor import *
+from NTMail.Processor import *
 
 from PIL import Image as im
 from NTConfig import settings
