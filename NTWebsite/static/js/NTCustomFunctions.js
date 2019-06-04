@@ -69,9 +69,9 @@ function DoEncrypt(keyword,csrftoken,data){
   $.ajaxSettings.async = false;
   var jsonData = new Object();
   $.get('/Param/',{csrfmiddlewaretoken: csrftoken,'KeyWord':keyword},function(result){
-    jsonData = JSON.parse(result);
+    jsonData = result;
   });
-  return encrypt(data,jsonData[0],jsonData[1]);
+  return encrypt(data,jsonData.SecretKey,jsonData.SecretVI);
 }
 
 function decrypt(data,aeskey,cbciv){
@@ -510,7 +510,7 @@ function AttitudeOperate(Type,ObjectID,Point,csrftoken) {
 }
 
 
-function PublishTopic(object,type,csrftoken)
+function AddTopic(object,type,csrftoken)
 {   
     object.innerText = '发布中...';
     var TopicID = (type == 'Edit' ? document.getElementById('Topic' + type + 'ID').value : '');
@@ -525,7 +525,7 @@ function PublishTopic(object,type,csrftoken)
        && Description.replace(/(^s*)|(s*$)/g, "").length !=0 
        && Themes.replace(/(^s*)|(s*$)/g, "").length !=0)
     {
-      $.post('/PublishTopic/',{csrfmiddlewaretoken: csrftoken,
+      $.post('/Topic/',{csrfmiddlewaretoken: csrftoken,
                                'TopicID':TopicID,
                                'Title':Title,
                                'Category':Category,
@@ -547,26 +547,37 @@ function PublishTopic(object,type,csrftoken)
     }
 }
 
+function DeleteTopic(csrftoken)
+{ 
+  var TopicID = document.getElementById('TopicEditID').value;
+  $.ajax({type:'POST',url:'/Topic/',data:{'TopicID':TopicID,csrfmiddlewaretoken: csrftoken},success: function(data){
+    if(data == 'ok'){
+      alert('删除成功!');
+      location.reload();
+    }else{
+      alert(data);
+    }
+  }
+  });
+}
 
-function FetchTopic(TopicID, csrftoken)
+function GetTopic(TopicID, csrftoken)
 {
-  $.post('/FetchTopic/', {'TopicID':TopicID, csrfmiddlewaretoken: csrftoken}, function(result){
-    var FetchInfo = JSON.parse(result);
-    if (FetchInfo){
-      document.getElementById('TopicEditTitle').value = FetchInfo.Title;
+  $.get('/Topic/', {'TopicID':TopicID}, function(result){
+    if (result){
+      document.getElementById('TopicEditTitle').value = result.Title;
       var opts = document.getElementById("TopicEditCategory");
       for(var i=0;i<opts.options.length;i++){
-        if(FetchInfo.Category==opts.options[i].value){
+        if(result.Category==opts.options[i].value){
           opts.options[i].selected = 'selected';
         }
       }
-      CKEDITOR.instances.TopicEditTextArea.setData(FetchInfo.Content);
-      document.getElementById('TopicEditThemes').value = FetchInfo.Themes;
-      document.getElementById('TopicEditID').value = FetchInfo.TopicID;
+      CKEDITOR.instances.TopicEditTextArea.setData(result.Content);
+      document.getElementById('TopicEditThemes').value = result.Themes;
+      document.getElementById('TopicEditID').value = result.TopicID;
     }
   }) 
 }
-
 
 
 function ClickButton(id)
@@ -648,19 +659,23 @@ function ChangeSubmit(csrftoken)
 { 
   var input_username = document.getElementById('changeusername');
   var input_newpwd = document.getElementById('newpassword');
+  var input_newpwdcomfirm = document.getElementById('newpasswordcomfirm');
   var input_code = document.getElementById('mailcode');
   var username = DoEncrypt('SecretKey',csrftoken,input_username.value);
   var newpwd = DoEncrypt('SecretKey',csrftoken,input_newpwd.value);
   var code = DoEncrypt('SecretKey',csrftoken,input_code.value);
+  if(input_newpwd.value != input_newpwdcomfirm.value){
+    return alert('两次密码输入不一致!');
+  }
   if(GetInputLength(input_username) != 0 && GetInputLength(input_newpwd) != 0 && GetInputLength(input_code) != 0)
     $.post('/Change/',{csrfmiddlewaretoken: csrftoken,'username':username,'newpwd':newpwd,'code':code},function(status)
       {if(status=='ok'){
         alert('修改成功');
         location.reload();
-      }else{
+        }else{
         alert('授权密令错误!');
-      }
-    });
+        }
+      });
   else{
     alert('必填项目不能为空!')
   }

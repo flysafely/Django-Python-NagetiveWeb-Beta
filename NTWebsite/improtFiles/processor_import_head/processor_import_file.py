@@ -6,7 +6,7 @@ from django.core.cache import caches
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.http import QueryDict
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render_to_response, render
 from django.template import Template, Context, RequestContext
 

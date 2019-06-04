@@ -156,6 +156,11 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <div class="DivUserInput">
+                                <input type="password" id='newpasswordcomfirm' placeholder="确认新密码" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <div class="MailCodeInput">
                                 <input type="text" id='mailcode' placeholder="邮箱密令" class="form-control" />
                             </div>
@@ -281,7 +286,7 @@
                     </form>
                     
                     <div class="Modal-dialog-BtnDiv">
-                        <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:PublishTopic(this,'Publish','{{ csrf_token }}')">
+                        <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:AddTopic(this,'Publish','{{ csrf_token }}')">
                             发  布
                         </button>
                         <button type="button" class="btn btn-default btn-link" style="padding: 10px 0px 0px 0px;" data-dismiss="modal">
@@ -299,7 +304,6 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" enctype="multipart/form-data">
-                        {% csrf_token %}
                         <div class="form-group Modal-Edit-TitleBG">
                             <h4 class="modal-dialog-Title">编辑</h4>
                         </div>
@@ -327,8 +331,11 @@
                     </form>
                     
                     <div class="Modal-dialog-BtnDiv">
-                        <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:PublishTopic(this,'Edit','{{ csrf_token }}')">
+                        <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:AddTopic(this,'Edit','{{ csrf_token }}')">
                             发  布
+                        </button>
+                        <button type="button" class="btn btn-default btn-block btn-primary-red" onclick="javascript:DeleteTopic('{{ csrf_token }}')">
+                            删  除
                         </button>
                         <button type="button" class="btn btn-default btn-link" style="padding: 10px 0px 0px 0px;" data-dismiss="modal">
                             取  消

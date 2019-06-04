@@ -1,5 +1,6 @@
 from django.http import HttpResponse, QueryDict
 from NTWebsite.MainMethods import QueryRedisCache as QRC
+from NTWebsite.MainMethods import RequestDataUnbox as RD
 from NTWebsite.Config import NotificationDict as ND
 from NTWebsite.Config import AppConfig as AC
 import json
@@ -33,8 +34,8 @@ def NoticeGet(request):
 
 def NoticeDelete(request):
     #print(request.DELETE.get('IDs'))
-    if RequestDataUnbox(request).get('IDs'):
-        IDs = RequestDataUnbox(request).get('IDs').split(',')
+    if RD(request).get('IDs'):
+        IDs = RD(request).get('IDs').split(',')
         if request.user.is_authenticated:
             if len(IDs) == 1:
                 try:
@@ -59,7 +60,3 @@ def GetPageNumber(Tabel, TopicID, Object):
         return str(PageNumber)
     else:
         return '1'
-
-def RequestDataUnbox(request):
-    qd = QueryDict(request.body)
-    return {k: v[0] if len(v)==1 else v for k, v in qd.lists()}

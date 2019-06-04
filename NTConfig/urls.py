@@ -32,7 +32,8 @@ urlpatterns = [
     # Processor中没有返回页面的操作
     path('', P.indexView),
     path('logout/', P.Logout),
-    path('PublishTopic/', P.PublishTopic),# RUST POST
+    #path('PublishTopic/', P.PublishTopic),# RUST POST
+    path('Topic/', P.TopicOpretion),
     path('AttitudeOperate/', P.AttitudeOperate),# RUST POST
     path('PublishRollCall/', P.PublishRollCall),# RUST POST
     path('UserProfileUpdate/', P.UserProfileUpdate),# RUST POST
@@ -46,7 +47,7 @@ urlpatterns = [
     path('Change/', P.ChangePWD),# RUST POST
     path('MailCode/', P.SendMailCode),# RUST POST
     path('Param/', P.Param),
-    path('FetchTopic/', P.FetchTopic),# RUST GET
+    #path('FetchTopic/', P.FetchTopic),# RUST GET
     re_path(r'^activate/(?P<UserID>.*)/(?P<Key>.*)/$', V.Activate),
     re_path(r'^%s(?P<path>.*)$' % re.escape(settings.MEDIA_URL.lstrip('/')), serve, kwargs={'document_root':settings.MEDIA_ROOT}),# RUST GET
     re_path(r'^(?P<Region>.*)/(?P<Part>.*)/(?P<FilterValue>.*)/(?P<Order>.*)/(?P<PageNumber>.*)/(?P<ExtraParam>.*)$', V.Launcher),# main URL # RUST

@@ -100,7 +100,7 @@
         {% endif %}
         {% if not Card.1|GetDictValue:'EditBtn' == 'hidden' %}
         <span {{Card.1|GetDictValue:'EditBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
-            <button class="ActionsFontColor NoDecoration TopicActions" onclick="javascript:FetchTopic('{{Card.0.ObjectID}}','{{ csrf_token }}')" data-toggle="modal" data-target="#TopicEditBoard">
+            <button class="ActionsFontColor NoDecoration TopicActions" onclick="javascript:GetTopic('{{Card.0.ObjectID}}','{{ csrf_token }}')" data-toggle="modal" data-target="#TopicEditBoard">
                 <span class="TopicActions">
                     <img src="{{MEDIA_URL}}SVG/TAB-Edit.svg">
                 </span>

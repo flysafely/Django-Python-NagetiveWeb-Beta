@@ -22,7 +22,7 @@ class ConfigParams(models.Model):
                                           default='差评', blank=False, verbose_name='点名热搜词')
     SpecialTopicHotKeyWord = models.CharField(max_length=20,
                                               default='差评', blank=False, verbose_name='专题热搜词')
-
+    ActivePage = models.CharField(max_length=100,default='ActivePage.html',blank=False,verbose_name='激活跳转页')
     TopicsLimit = models.CharField(max_length=20,
                                    default=100, blank=False, verbose_name='文章获取数量')
     CommentsLimit = models.CharField(max_length=20,

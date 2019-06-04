@@ -6,7 +6,7 @@ from .improtFiles.models_import_head import *
 from .Config import AppConfig as AC
 from .Config import NotificationDict as ND
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect,QueryDict
 from django_redis import get_redis_connection
 from django.http import Http404
 from django.views.decorators.cache import cache_page
@@ -26,7 +26,7 @@ import shutil
 import sys
 import time
 
-
+APPConf = AC()
 def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
     if TimeOut == None:
         TimeOut = AC().TimeOut
@@ -97,7 +97,6 @@ def RedisCacheOperation(method, TimeOut=None, **kw):
 
 
 def PicUploadOperate(UploadedFile):
-    APPConf = AC()
     # 返回json格式:{"uploaded":1,"fileName":"20170419091732.jpg","url":"/Upload/editor/20170419/20170419091732.jpg"}
     PicFormat = str(UploadedFile).split('.')[-1].lower()
     if PicFormat in APPConf.PicUploadFormat:
@@ -120,7 +119,6 @@ def PicUploadOperate(UploadedFile):
 
 
 def MovePicToSavePath(Content):
-    APPConf = AC()
     result = re.findall("src=\"([^']+?)\"", Content)
     if os.path.exists(settings.MEDIA_ROOT + APPConf.PicSavePath) == False:
         os.makedirs(settings.MEDIA_ROOT + APPConf.PicSavePath)
@@ -146,7 +144,6 @@ def RemovePicFromSavePath(TopicID, ContentUpdate):
 
 
 def UserAvatarOperation(ImageData, ImageFormat, OldAvatar):
-    APPConf = AC()
     if ImageFormat != None and ImageFormat.upper() in APPConf.PicUploadFormat:
         savePath = os.path.join(settings.MEDIA_ROOT, APPConf.AvatarSavePath)
         saveFile = str(uuid.uuid1())[0:8] + '.' + ImageFormat
@@ -175,14 +172,12 @@ def UserAvatarOperation(ImageData, ImageFormat, OldAvatar):
 
 
 def Encrypt(data):
-    APPConf = AC()
     return symmetric.aes_cbc_pkcs7_encrypt(APPConf.SecretKey.encode('utf-8'),
                                            data.encode('utf-8'),
                                            APPConf.SecretVI.encode('utf-8'))[1]
 
 
 def Decrypt(data):
-    APPConf = AC()
     return symmetric.aes_cbc_pkcs7_decrypt(APPConf.SecretKey.encode('utf-8'),
                                            data,
                                            APPConf.SecretVI.encode('utf-8')).decode('utf-8')
@@ -234,6 +229,9 @@ def QueryFilterCreate():
         else:
             print("跳过:'%s'" % name)
 
+def RequestDataUnbox(request):
+    qd = QueryDict(request.body)
+    return {k: v[0] if len(v)==1 else v for k, v in qd.lists()}
 
 def AddNotification(Type, Object, Source, Target):
     with transaction.atomic():

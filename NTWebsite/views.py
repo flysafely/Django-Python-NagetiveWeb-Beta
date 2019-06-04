@@ -12,7 +12,7 @@ def Launcher(request, **URLParams):
 
 
 def Activate(request, **URLParams):
-    return P.UserActive(URLParams['UserID'], URLParams['Key'])
+    return P.UserActive(request, URLParams['UserID'], URLParams['Key'])
 
 
 def TopicsInfoGet(request, DBConf, APPConf, URLParams):

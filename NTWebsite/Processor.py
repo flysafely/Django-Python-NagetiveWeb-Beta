@@ -3,9 +3,10 @@ from NTWebsite.improtFiles.models_import_head import *
 from NTWebsite.Config import AppConfig as AC
 from NTWebsite.Config import DBConfig as DC
 
+APPConf = AC()
 
 def indexView(request):
-    APPConf = AC()
+    
     return HttpResponseRedirect(APPConf.IndexURL)
 
 
@@ -25,72 +26,91 @@ def PaginatorInfoGet(objects, number, URLParams):
 def NoticeCount(request):
     return str(QRC('Notice.objects.filter(TargetUser=%s).count()', None, request.user)) if request.user.is_authenticated else '0'
 
-
-def FetchTopic(request):
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            TopicObject = QRC('TopicInfo.objects.get(ObjectID=%s)',
-                              0, request.POST.get('TopicID'))
-            TopicID = str(TopicObject.ObjectID)
-            Title = TopicObject.Title
-            Content = TopicObject.Content
-            Category = TopicObject.Category.Name
-            themes = []
-            for theme in TopicObject.Theme.all():
-                themes.append(theme.Name)
-            Themes = '&'.join(themes)
-            jsondata = json.dumps({'TopicID': TopicID, 'Title': Title, 'Content': Content,
-                                   'Category': Category, 'Themes': Themes}, ensure_ascii=False)
-            return HttpResponse(jsondata)
-
-
-def PublishTopic(request):
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            InsertDataDict = {'Title': request.POST.get('Title'),
-                              'Category': request.POST.get('Category'),
-                              'Content': request.POST.get('Content'),
-                              'Description': request.POST.get('Description'), }
-            TopicID = request.POST.get('TopicID')
-            Themes = request.POST.get('Themes')
-            InsertDataDict['Category'] = QRC(
-                'TopicCategoryInfo.objects.get(Name=%s)', None, InsertDataDict['Category'])
-            # 将主题按&分割后使用get_or_create有就返回，没有就创建了返回
-            ThemeObjects = []
-            for Theme in Themes.split('&'):
-                ThemeObjects.append(
-                    QRC('TopicThemeInfo.objects.get_or_create(Name=%s)', None, Theme)[0])
-            try:
-                # 放在try里面执行，避免图片被移动后，检查出标题重复的问题
-                InsertDataDict['Content'] = mMs.MovePicToSavePath(
-                    InsertDataDict['Content'])
-                # 如果Topic有值则为编辑文章
-                if TopicID:
-                    mMs.RemovePicFromSavePath(
-                        TopicID, InsertDataDict['Content'])
-                    Topic = TopicInfo.objects.filter(
-                        ObjectID=TopicID).update(**InsertDataDict)
-                    Topic = TopicInfo.objects.get(ObjectID=TopicID)
-                else:
-                    # 不用QRC的原因是ContentText文章中的引号容易出现问题!
-                    Topic = TopicInfo.objects.create(ObjectID=mMs.CreateUUIDstr(),
-                                                     Title=InsertDataDict[
-                                                         'Title'],
-                                                     Content=InsertDataDict[
-                                                         'Content'],
-                                                     Description=InsertDataDict[
-                                                         'Description'],
-                                                     Category=InsertDataDict[
-                                                         'Category'],
-                                                     Publisher=request.user,)
-                Topic.Theme.clear()
-                Topic.Theme.add(*ThemeObjects)
-                Topic.save()
-                return HttpResponse('ok')
-            except Exception as e:
-                return HttpResponse(str(e) + "验证！")
+def TopicOpretion(request):
+    if request.method == 'GET':
+        return GetTopic(request)
+    elif request.method == 'POST':# CSRF验证 只支持POST DELETE未能成功
+        if 'Title' in mMs.RequestDataUnbox(request):
+            return AddTopic(request)
         else:
-            return HttpResponse('login')
+            return DeleteTopic(request)
+
+def DeleteTopic(request):
+    try:
+        QRC('TopicInfo.objects.get(ObjectID=%s)',
+                              0, mMs.RequestDataUnbox(request).get('TopicID')).delete()
+        return HttpResponse('ok')
+    except Exception as e:
+        print(str(e))
+        return HttpResponse(str(e))
+
+def GetTopic(request):
+    if request.user.is_authenticated:
+        TopicObject = QRC('TopicInfo.objects.get(ObjectID=%s)',
+                          0, request.GET.get('TopicID'))
+        DataDict = {}
+        DataDict['TopicID'] = str(TopicObject.ObjectID)
+        DataDict['Title'] = TopicObject.Title
+        DataDict['Content'] = TopicObject.Content
+        DataDict['Category'] = TopicObject.Category.Name
+        themes = []
+        for theme in TopicObject.Theme.all():
+            themes.append(theme.Name)
+        DataDict['Themes'] = '&'.join(themes)
+        '''
+        jsondata = json.dumps({'TopicID': TopicID, 'Title': Title, 'Content': Content,
+                               'Category': Category, 'Themes': Themes}, ensure_ascii=False)
+        
+        return HttpResponse(jsondata)
+        '''
+        return JsonResponse(DataDict)
+
+def AddTopic(request):
+    if request.user.is_authenticated:
+        InsertDataDict = {'Title': request.POST.get('Title'),
+                          'Category': request.POST.get('Category'),
+                          'Content': request.POST.get('Content'),
+                          'Description': request.POST.get('Description'), }
+        TopicID = request.POST.get('TopicID')
+        Themes = request.POST.get('Themes')
+        InsertDataDict['Category'] = QRC(
+            'TopicCategoryInfo.objects.get(Name=%s)', None, InsertDataDict['Category'])
+        # 将主题按&分割后使用get_or_create有就返回，没有就创建了返回
+        ThemeObjects = []
+        for Theme in Themes.split('&'):
+            ThemeObjects.append(
+                QRC('TopicThemeInfo.objects.get_or_create(Name=%s)', None, Theme)[0])
+        try:
+            # 放在try里面执行，避免图片被移动后，检查出标题重复的问题
+            InsertDataDict['Content'] = mMs.MovePicToSavePath(
+                InsertDataDict['Content'])
+            # 如果Topic有值则为编辑文章
+            if TopicID:
+                mMs.RemovePicFromSavePath(
+                    TopicID, InsertDataDict['Content'])
+                Topic = TopicInfo.objects.filter(
+                    ObjectID=TopicID).update(**InsertDataDict)
+                Topic = TopicInfo.objects.get(ObjectID=TopicID)
+            else:
+                # 不用QRC的原因是ContentText文章中的引号容易出现问题!
+                Topic = TopicInfo.objects.create(ObjectID=mMs.CreateUUIDstr(),
+                                                 Title=InsertDataDict[
+                                                     'Title'],
+                                                 Content=InsertDataDict[
+                                                     'Content'],
+                                                 Description=InsertDataDict[
+                                                     'Description'],
+                                                 Category=InsertDataDict[
+                                                     'Category'],
+                                                 Publisher=request.user,)
+            Topic.Theme.clear()
+            Topic.Theme.add(*ThemeObjects)
+            Topic.save()
+            return HttpResponse('ok')
+        except Exception as e:
+            return HttpResponse(str(e) + "验证！")
+    else:
+        return HttpResponse('login')
 
 
 def PublishRollCall(request):
@@ -271,29 +291,32 @@ def Param(request):
     if request.method == "GET":
         KeyWord = request.GET.get('KeyWord')
         if KeyWord == 'SecretKey':
-            APPConf = AC()
+            DataDict = {}
+            DataDict['SecretKey'] = APPConf.SecretKey
+            DataDict['SecretVI'] = APPConf.SecretVI
+            '''
             jsondata = json.dumps(
                 [APPConf.SecretKey, APPConf.SecretVI], ensure_ascii=False)
-            return HttpResponse(jsondata)
+            '''
+            return JsonResponse(DataDict)
         else:
             pass
 
 # 新用户激活
-
-
-def UserActive(username, key):
-    APPConf = AC()
+def UserActive(request, username, key):
+    message = ''
     if key == mMs.RedisCacheOperation('get', TimeOut=0, key=username + '&regist'):
         UserObject = User.objects.get(username=username)
         UserObject.is_active = True
         UserObject.save()
         mMs.RedisCacheOperation('delete', TimeOut=0, key=username + '&regist')
-        return HttpResponseRedirect(APPConf.IndexURL)
+        message = '激活成功!(账号已经可以登录)'
     else:
-        return HttpResponse('未匹配')
-    # 用户登录
+        message = '激活失败!(激活链接超时,或者账号异常)'
+    return render(request, APPConf.ActivePage, {'AlertInfo':message,'RedirectURL': '127.0.0.1:8000' if settings.DEBUG else 'www.nagetive.com'})
 
 
+# 用户登录
 def Login(request):
     if request.method == 'POST':
         # 注册信息获取
@@ -349,9 +372,8 @@ def ChangePWD(request):
 
 # 注册界面
 
-
 def Regist(request):
-    APPConf = AC()
+    
     if request.method == 'POST':
         username = mMs.Decrypt(mMs.DecodeWithBase64(
             request.POST.get('username')))
@@ -389,14 +411,14 @@ def Logout(request):
     else:
         return HttpResponse('not get')
 
-
+'''
 def AddNotification(Region, ObjectID, AnchorID, TargetUser, SourceUser):
     try:
         QRC('Notification.objects.create(ID=%s, Region=%s, ObjectID=%s, AnchorID=%s, TargetUser=%s, SourceUser=%s)',
             0, mMs.CreateUUIDstr(), Region, ObjectID, AnchorID, TargetUser, SourceUser)
     except Exception as e:
         raise e
-
+'''
 
 @csrf_exempt
 def NoticeOpreate(request):
@@ -441,7 +463,6 @@ def UserLink(request):
                 if Operation == 'add':
                     QRC('UserLink.objects.get_or_create(UserBeLinked=%s,UserLinking=%s)',
                         0, UserObject, request.user)
-                    #UserLink.objects.get_or_create(UserBeLinked=UserObject, UserLinking=request.user)
                     return HttpResponse('add')
                 elif Operation == 'delete':
                     QRC('UserLink.objects.get(UserBeLinked=%s,UserLinking=%s)',
@@ -454,7 +475,7 @@ def UserLink(request):
 
 
 def UserProfileUpdate(request):
-    APPConf = AC()
+    
     if request.method == 'POST':
         UserImageData = request.POST.get('UserImageData')
         UserImageFormat = request.POST.get('UserImageFormat')
