@@ -30,10 +30,15 @@ def TopicOpretion(request):
     if request.method == 'GET':
         return GetTopic(request)
     elif request.method == 'POST':# CSRF验证 只支持POST DELETE未能成功
+        return AddTopic(request)
+    elif request.method == 'DELETE':
+        return DeleteTopic(request)
+    '''
         if 'Title' in mMs.RequestDataUnbox(request):
             return AddTopic(request)
         else:
             return DeleteTopic(request)
+    '''
 
 def DeleteTopic(request):
     try:
@@ -57,12 +62,7 @@ def GetTopic(request):
         for theme in TopicObject.Theme.all():
             themes.append(theme.Name)
         DataDict['Themes'] = '&'.join(themes)
-        '''
-        jsondata = json.dumps({'TopicID': TopicID, 'Title': Title, 'Content': Content,
-                               'Category': Category, 'Themes': Themes}, ensure_ascii=False)
-        
-        return HttpResponse(jsondata)
-        '''
+
         return JsonResponse(DataDict)
 
 def AddTopic(request):
@@ -294,10 +294,6 @@ def Param(request):
             DataDict = {}
             DataDict['SecretKey'] = APPConf.SecretKey
             DataDict['SecretVI'] = APPConf.SecretVI
-            '''
-            jsondata = json.dumps(
-                [APPConf.SecretKey, APPConf.SecretVI], ensure_ascii=False)
-            '''
             return JsonResponse(DataDict)
         else:
             pass
@@ -411,14 +407,6 @@ def Logout(request):
     else:
         return HttpResponse('not get')
 
-'''
-def AddNotification(Region, ObjectID, AnchorID, TargetUser, SourceUser):
-    try:
-        QRC('Notification.objects.create(ID=%s, Region=%s, ObjectID=%s, AnchorID=%s, TargetUser=%s, SourceUser=%s)',
-            0, mMs.CreateUUIDstr(), Region, ObjectID, AnchorID, TargetUser, SourceUser)
-    except Exception as e:
-        raise e
-'''
 
 @csrf_exempt
 def NoticeOpreate(request):

@@ -1,13 +1,13 @@
 {% load CustomFuncTags %}
 <div>
     <span>
-        <button {{Card.2.1|GetDictValue:'CVoteBtn'}} id="Button1#{{Card.2.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.2.1|GetDictValue:'CVote1Status'}}" onclick="AttitudeOperate('Comment','{{Card.2.0.ObjectID}}','1','{{ csrf_token }}')">
+        <button {{Card.2.1|GetDictValue:'CVoteBtn'}} id="Button1#{{Card.2.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.2.1|GetDictValue:'CVote1Status'}}" onclick="AttitudeOperate('Comment','{{Card.2.0.ObjectID}}','1')">
             <span class="AttitudeActions">
                 <img src="{{MEDIA_URL}}SVG/TAB-Like.svg">
             </span>
             <span id='Span1#{{Card.2.0.ObjectID}}'>{{Card.2.0.Like}}</span>
         </button>
-        <button {{Card.2.1|GetDictValue:'CVoteBtn'}} id="Button0#{{Card.2.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.2.1|GetDictValue:'CVote0Status'}}" onclick="AttitudeOperate('Comment','{{Card.2.0.ObjectID}}','0','{{ csrf_token }}')">
+        <button {{Card.2.1|GetDictValue:'CVoteBtn'}} id="Button0#{{Card.2.0.ObjectID}}" class="Button VoteButton VoteButton--up {{Card.2.1|GetDictValue:'CVote0Status'}}" onclick="AttitudeOperate('Comment','{{Card.2.0.ObjectID}}','0')">
             <span class="AttitudeActions">
                 <img src="{{MEDIA_URL}}SVG/TAB-Dislike.svg">
             </span>
@@ -15,7 +15,7 @@
         </button>
     </span>
     <span {{Card.2.1|GetDictValue:'TipOffBtn'}} class="ContentItem-action Button--plain Button--withIcon Button--withLabel">
-        <button class="ActionsFontColor NoDecoration TopicActions" id="{{Card.2.0.ObjectID}}#replayBtn" href="javascript:void(0)" style="display: inline-flex; align-items: center;" onclick="javascript:ShowReplayBox(this,'{{ csrf_token }}','{{Card.2.0.ObjectID}}','{{Layout_Sizer|GetDictValue:'Region'}}')">
+        <button class="ActionsFontColor NoDecoration TopicActions" id="{{Card.2.0.ObjectID}}#replayBtn" href="javascript:void(0)" style="display: inline-flex; align-items: center;" onclick="javascript:ShowReplayBox(this,'{{Card.2.0.ObjectID}}','{{Layout_Sizer|GetDictValue:'Region'}}')">
             <span class="AttitudeActions">
                 <img src="{{MEDIA_URL}}SVG/CAB-Replay.svg">
             </span>
