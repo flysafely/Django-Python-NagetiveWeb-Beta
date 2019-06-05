@@ -74,9 +74,9 @@ function encrypt(data,aeskey,cbciv){
 function DoEncrypt(keyword,data){
   $.ajaxSettings.async = false;
   var jsonData = new Object();
-  $.get('/Param/',{'KeyWord':keyword},function(result){
+  $.ajax({type:'GET',url:'/Param/',data:{'KeyWord':keyword},success:function(result){
     jsonData = result;
-  });
+  }});
   return encrypt(data,jsonData.SecretKey,jsonData.SecretVI);
 }
 
@@ -117,7 +117,7 @@ function GetNotificationInfo(){
       PushNotificationslist.removeChild(PushNotificationslist.firstChild);
     }
   }  
-  $.get('/Notice/',{},function(returndata){
+  $.ajax({type:'GET',url:'/Notice/',data:{},success:function(returndata){
     if (returndata == 'login'){
       document.getElementById('loginbutton').click();  
     }else{
@@ -150,7 +150,7 @@ function GetNotificationInfo(){
 
       }
     }
-  })
+  }})
 }
 
 function RemoveNotificationInfo(method, ID, TargetUrl){
@@ -411,7 +411,7 @@ function UserCollect(url,ArticleID){
 function UserLink(url,userid,operation){
   var LinkButton = document.getElementById('LinkButton');
   LinkButton.disabled='disabled';
-  $.ajax({type:'POST',url:url,data:{'UserID':userid,'Operation':operation},function(status){
+  $.ajax({type:'POST',url:url,data:{'UserID':userid,'Operation':operation},success:function(status){
                                                                                           if(status=='add'){
                                                                                             alert('已关注');
                                                                                             window.location.reload();

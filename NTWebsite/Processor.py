@@ -214,53 +214,50 @@ def AttitudeOperate(request):
 
 @csrf_exempt
 def UploadImg(request):
-    if request.method == 'POST':
-        return HttpResponse(mMs.PicUploadOperate(request.FILES['upload']))
+    return HttpResponse(mMs.PicUploadOperate(request.FILES['upload']))
 
 
 def TipOff(request):
-    if request.method == 'POST':
-        Type = request.POST.get('Type')
-        TopicID = request.POST.get('TopicID')
-        Content = request.POST.get('Content')
-        if request.user.is_authenticated:
-            userObject = QRC('User.objects.get(id=%s)', None, request.user.id)
-            TipOffObject = QRC(
-                'TipOffBox.objects.filter(ObjectID=%s,Publisher=%s)', 0, TopicID, userObject)
-            if TipOffObject:
-                return HttpResponse('cancel')
-            else:
-                QRC('TipOffBox.objects.create(ObjectID=%s, Publisher=%s, Type=%s, Content=%s)',
-                    0, TopicID, userObject, Type, Content)
-                return HttpResponse('success')
+    Type = request.POST.get('Type')
+    TopicID = request.POST.get('TopicID')
+    Content = request.POST.get('Content')
+    if request.user.is_authenticated:
+        userObject = QRC('User.objects.get(id=%s)', None, request.user.id)
+        TipOffObject = QRC(
+            'TipOffBox.objects.filter(ObjectID=%s,Publisher=%s)', 0, TopicID, userObject)
+        if TipOffObject:
+            return HttpResponse('cancel')
         else:
-            return HttpResponse('login')
+            QRC('TipOffBox.objects.create(ObjectID=%s, Publisher=%s, Type=%s, Content=%s)',
+                0, TopicID, userObject, Type, Content)
+            return HttpResponse('success')
+    else:
+        return HttpResponse('login')
 
 
 def Replay(request):
-    if request.method == 'POST':
-        temp_Map = {'Topic': 'TRCount',
-                    'SpecialTopic': 'SRCount', 'RollCall': 'RCount'}
-        Type = request.POST.get('Type')
-        ObjectID = request.POST.get('ObjectID')
-        TopicObject = QRC('TopicInfo.objects.get(ObjectID=%s)',
-                          None, request.POST.get('ObjectID'))
-        Content = request.POST.get('Content')
-        ParentID = request.POST.get('ParentID')
-        if request.user.is_authenticated:
-            if Type in 'SpecialTopic':
-                ReplayObject = QRC('CommentInfo.objects.create(ObjectID=%s, TopicID=%s,Content=%s,Parent=%s,Type=%s,Publisher=%s)',
-                                   0, mMs.CreateUUIDstr(), TopicObject, Content, QRC('CommentInfo.objects.get(ObjectID=%s)', None, ParentID), Type, request.user)
-            else:
-                RollCall = QRC(
-                    'RollCallInfo.objects.get(ObjectID=%s)', None, ObjectID)
-                ReplayObject = QRC('RollCallDialogue.objects.create(ObjectID=%s,RollCallID=%s,Content=%s,Display=%s,Publisher=%s)',
-                                   0, mMs.CreateUUIDstr(), RollCall, Content, '' if RollCall.Publisher == request.user else 'right', request.user)
-                if not RollCall.Publisher == request.user:
-                    pass
-            return HttpResponse('replayok')
+    temp_Map = {'Topic': 'TRCount',
+                'SpecialTopic': 'SRCount', 'RollCall': 'RCount'}
+    Type = request.POST.get('Type')
+    ObjectID = request.POST.get('ObjectID')
+    TopicObject = QRC('TopicInfo.objects.get(ObjectID=%s)',
+                      None, request.POST.get('ObjectID'))
+    Content = request.POST.get('Content')
+    ParentID = request.POST.get('ParentID')
+    if request.user.is_authenticated:
+        if Type in 'SpecialTopic':
+            ReplayObject = QRC('CommentInfo.objects.create(ObjectID=%s, TopicID=%s,Content=%s,Parent=%s,Type=%s,Publisher=%s)',
+                               0, mMs.CreateUUIDstr(), TopicObject, Content, QRC('CommentInfo.objects.get(ObjectID=%s)', None, ParentID), Type, request.user)
         else:
-            return HttpResponse('login')
+            RollCall = QRC(
+                'RollCallInfo.objects.get(ObjectID=%s)', None, ObjectID)
+            ReplayObject = QRC('RollCallDialogue.objects.create(ObjectID=%s,RollCallID=%s,Content=%s,Display=%s,Publisher=%s)',
+                               0, mMs.CreateUUIDstr(), RollCall, Content, '' if RollCall.Publisher == request.user else 'right', request.user)
+            if not RollCall.Publisher == request.user:
+                pass
+        return HttpResponse('replayok')
+    else:
+        return HttpResponse('login')
 
 
 def Collect(request):
@@ -288,15 +285,14 @@ def StatisticalDataUpdata(objectStr, methodDsc):
 
 
 def Param(request):
-    if request.method == "GET":
-        KeyWord = request.GET.get('KeyWord')
-        if KeyWord == 'SecretKey':
-            DataDict = {}
-            DataDict['SecretKey'] = APPConf.SecretKey
-            DataDict['SecretVI'] = APPConf.SecretVI
-            return JsonResponse(DataDict)
-        else:
-            pass
+    KeyWord = request.GET.get('KeyWord')
+    if KeyWord == 'SecretKey':
+        DataDict = {}
+        DataDict['SecretKey'] = APPConf.SecretKey
+        DataDict['SecretVI'] = APPConf.SecretVI
+        return JsonResponse(DataDict)
+    else:
+        pass
 
 # 新用户激活
 def UserActive(request, username, key):
@@ -314,101 +310,93 @@ def UserActive(request, username, key):
 
 # 用户登录
 def Login(request):
-    if request.method == 'POST':
-        # 注册信息获取
-        username = mMs.Decrypt(mMs.DecodeWithBase64(
-            request.POST.get('username')))
-        userpassword = mMs.Decrypt(
-            mMs.DecodeWithBase64(request.POST.get('password')))
-        user = auth.authenticate(username=username, password=userpassword)
+    # 注册信息获取
+    username = mMs.Decrypt(mMs.DecodeWithBase64(
+        request.POST.get('username')))
+    userpassword = mMs.Decrypt(
+        mMs.DecodeWithBase64(request.POST.get('password')))
+    user = auth.authenticate(username=username, password=userpassword)
 
-        if user:
-            login(request, user)
-            return HttpResponse(True)
-        else:
-            return HttpResponse("")
+    if user:
+        login(request, user)
+        return HttpResponse(True)
+    else:
+        return HttpResponse("")
 
 # 发送邮箱确认密令
 
 
 def SendMailCode(request):
-    if request.method == 'POST':
-        username = mMs.Decrypt(mMs.DecodeWithBase64(
-            request.POST.get('username')))
-        try:
-            UserObject = QRC('User.objects.get(username=%s)', None, username)
-            ActiveMailThread = threading.Thread(
-                target=SendMail, args=('change', UserObject))
-            ActiveMailThread.start()
-            return HttpResponse('ok')
-        except Exception as e:
-            return HttpResponse(e)
+    username = mMs.Decrypt(mMs.DecodeWithBase64(
+        request.POST.get('username')))
+    try:
+        UserObject = QRC('User.objects.get(username=%s)', None, username)
+        ActiveMailThread = threading.Thread(
+            target=SendMail, args=('change', UserObject))
+        ActiveMailThread.start()
+        return HttpResponse('ok')
+    except Exception as e:
+        return HttpResponse(e)
 
 
 # 修改密码
 def ChangePWD(request):
-    if request.method == 'POST':
-        username = mMs.Decrypt(mMs.DecodeWithBase64(
-            request.POST.get('username')))
-        newpwd = mMs.Decrypt(mMs.DecodeWithBase64(
-            request.POST.get('newpwd')))
-        code = mMs.Decrypt(mMs.DecodeWithBase64(request.POST.get('code')))
-        print('code:', mMs.RedisCacheOperation(
-            'get', TimeOut=0, key=username + '&change'))
-        if code == mMs.RedisCacheOperation('get', TimeOut=0, key=username + '&change'):
-            UserObject = QRC('User.objects.get(username=%s)', None, username)
-            UserObject.set_password(newpwd)
-            UserObject.save()
-            mMs.RedisCacheOperation(
-                'delete', TimeOut=0, key=username + '&change')
-            return HttpResponse('ok')
-        else:
-            return HttpResponse('codeerror')
+    username = mMs.Decrypt(mMs.DecodeWithBase64(
+        request.POST.get('username')))
+    newpwd = mMs.Decrypt(mMs.DecodeWithBase64(
+        request.POST.get('newpwd')))
+    code = mMs.Decrypt(mMs.DecodeWithBase64(request.POST.get('code')))
+    print('code:', mMs.RedisCacheOperation(
+        'get', TimeOut=0, key=username + '&change'))
+    if code == mMs.RedisCacheOperation('get', TimeOut=0, key=username + '&change'):
+        UserObject = QRC('User.objects.get(username=%s)', None, username)
+        UserObject.set_password(newpwd)
+        UserObject.save()
+        mMs.RedisCacheOperation(
+            'delete', TimeOut=0, key=username + '&change')
+        return HttpResponse('ok')
+    else:
+        return HttpResponse('codeerror')
 
 
 # 注册界面
 
 def Regist(request):
-    
-    if request.method == 'POST':
-        username = mMs.Decrypt(mMs.DecodeWithBase64(
-            request.POST.get('username')))
-        usernickname = mMs.Decrypt(mMs.DecodeWithBase64(
-            request.POST.get('usernickname')))
-        password = mMs.Decrypt(mMs.DecodeWithBase64(
-            request.POST.get('password')))
-        email = mMs.Decrypt(mMs.DecodeWithBase64(request.POST.get('email')))
-        try:
-            # 这里通过前端注册账号一定要是要create_user 不然后期登录的时候
-            # auth.authenticate无法验证用户名和密码
-            newUser = User.objects.create_user(
-                username, Nick=usernickname, password=password, email=email, is_active=False)
-            # 启用多线程发送邮件
-            ActiveMailThread = threading.Thread(
-                target=SendMail, args=('regist', newUser))
-            ActiveMailThread.start()
-            # 用户新建后执行头像设置操作
-            newUser.Avatar = mMs.UserAvatarOperation(request.POST.get(
-                'userimagedata'), request.POST.get('userimageformat'), APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL, ''))['Path']
-            newUser.save()
-            return HttpResponse('ok')
+    username = mMs.Decrypt(mMs.DecodeWithBase64(
+        request.POST.get('username')))
+    usernickname = mMs.Decrypt(mMs.DecodeWithBase64(
+        request.POST.get('usernickname')))
+    password = mMs.Decrypt(mMs.DecodeWithBase64(
+        request.POST.get('password')))
+    email = mMs.Decrypt(mMs.DecodeWithBase64(request.POST.get('email')))
+    try:
+        # 这里通过前端注册账号一定要是要create_user 不然后期登录的时候
+        # auth.authenticate无法验证用户名和密码
+        newUser = User.objects.create_user(
+            username, Nick=usernickname, password=password, email=email, is_active=False)
+        # 启用多线程发送邮件
+        ActiveMailThread = threading.Thread(
+            target=SendMail, args=('regist', newUser))
+        ActiveMailThread.start()
+        # 用户新建后执行头像设置操作
+        newUser.Avatar = mMs.UserAvatarOperation(request.POST.get(
+            'userimagedata'), request.POST.get('userimageformat'), APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL, ''))['Path']
+        newUser.save()
+        return HttpResponse('ok')
 
-        except Exception as e:
-            return HttpResponse(str(e))
+    except Exception as e:
+        return HttpResponse(str(e))
 
 
 def Logout(request):
-    if request.method == 'GET':
-        if request.user.is_authenticated:
-            auth.logout(request)
-            return HttpResponse('Logout')
-        else:
-            return HttpResponse('logouted')
+    if request.user.is_authenticated:
+        auth.logout(request)
+        return HttpResponse('Logout')
     else:
-        return HttpResponse('not get')
+        return HttpResponse('logouted')
 
 
-@csrf_exempt
+#@csrf_exempt
 def NoticeOpreate(request):
     if request.method == 'GET':
         return NoticeGet(request)
@@ -417,78 +405,74 @@ def NoticeOpreate(request):
 
 
 def BlackListOperation(request):
-    if request.method == 'POST':
-        UserID = request.POST.get('UserID')
-        Operation = request.POST.get('Operation')
-        UserObject = QRC('User.objects.get(id=%s)', None, UserID)
-        if request.user.is_authenticated and Operation == 'add':
-            try:
-                if not QRC('BlackList.objects.filter(Enforceder=%s, Handler=%s)', 0, UserObject, request.user):
-                    BlackList.objects.create(ID=mMs.CreateUUIDstr(
-                    ), Enforceder=UserObject, Handler=request.user)
-                return HttpResponse('add')
-            except Exception as e:
-                return HttpResponse(e)
+    UserID = request.POST.get('UserID')
+    Operation = request.POST.get('Operation')
+    UserObject = QRC('User.objects.get(id=%s)', None, UserID)
+    if request.user.is_authenticated and Operation == 'add':
+        try:
+            if not QRC('BlackList.objects.filter(Enforceder=%s, Handler=%s)', 0, UserObject, request.user):
+                BlackList.objects.create(ID=mMs.CreateUUIDstr(
+                ), Enforceder=UserObject, Handler=request.user)
+            return HttpResponse('add')
+        except Exception as e:
+            return HttpResponse(e)
 
-        elif request.user.is_authenticated and Operation == 'delete':
-            try:
-                QRC('BlackList.objects.get(Enforceder=%s,Handler=%s)',
-                    0, UserObject, request.user).delete()
-                return HttpResponse('delete')
-            except Exception as e:
-                return HttpResponse(e)
-        else:
-            return HttpResponse('login')
+    elif request.user.is_authenticated and Operation == 'delete':
+        try:
+            QRC('BlackList.objects.get(Enforceder=%s,Handler=%s)',
+                0, UserObject, request.user).delete()
+            return HttpResponse('delete')
+        except Exception as e:
+            return HttpResponse(e)
+    else:
+        return HttpResponse('login')
 
 
 def UserLink(request):
     Operation = request.POST.get('Operation')
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            UserID = request.POST.get('UserID')
-            UserObject = QRC('User.objects.get(id=%s)', None, UserID)
-            try:
-                if Operation == 'add':
-                    QRC('UserLink.objects.get_or_create(UserBeLinked=%s,UserLinking=%s)',
-                        0, UserObject, request.user)
-                    return HttpResponse('add')
-                elif Operation == 'delete':
-                    QRC('UserLink.objects.get(UserBeLinked=%s,UserLinking=%s)',
-                        0, UserObject, request.user).delete()
-                    return HttpResponse('delete')
-            except Exception as e:
-                return HttpResponse(e)
-        else:
-            return HttpResponse('login')
+    if request.user.is_authenticated:
+        UserID = request.POST.get('UserID')
+        UserObject = QRC('User.objects.get(id=%s)', None, UserID)
+        try:
+            if Operation == 'add':
+                QRC('UserLink.objects.get_or_create(UserBeLinked=%s,UserLinking=%s)',
+                    0, UserObject, request.user)
+                return HttpResponse('add')
+            elif Operation == 'delete':
+                QRC('UserLink.objects.get(UserBeLinked=%s,UserLinking=%s)',
+                    0, UserObject, request.user).delete()
+                return HttpResponse('delete')
+        except Exception as e:
+            return HttpResponse(e)
+    else:
+        return HttpResponse('login')
 
 
 def UserProfileUpdate(request):
-    
-    if request.method == 'POST':
-        UserImageData = request.POST.get('UserImageData')
-        UserImageFormat = request.POST.get('UserImageFormat')
-        UserNickName = request.POST.get('UserNickName')
-        UserDescription = request.POST.get('UserDescription')
-        UserSex = request.POST.get('UserSex')
-        UserConstellation = request.POST.get('UserConstellation')
-        UserEmail = request.POST.get('UserEmail')
-        UserRegion = request.POST.get('UserRegion')
-        userObject = QRC('User.objects.get(Nick=%s)', 0, request.user.Nick)
-        if QRC('User.objects.get(Nick=%s)', 0, UserNickName) and QRC('User.objects.get(Nick=%s)', 0, UserNickName) != request.user:
-            return HttpResponse('Nick')
-        else:
-            UploadImage_Operated = ''
-            UploadImage_Operated = mMs.UserAvatarOperation(
-                UserImageData, UserImageFormat, userObject.Avatar)
-            userObject.Avatar = UploadImage_Operated['Path']
-            userObject.Nick = UserNickName
-            userObject.Sex = UserSex
-            userObject.Region = UserRegion
-            userObject.email = UserEmail
-            userObject.Description = UserDescription
-            userObject.Constellation = UserConstellation
-            userObject.save()
-            return HttpResponse(UploadImage_Operated['Status'])
+    UserImageData = request.POST.get('UserImageData')
+    UserImageFormat = request.POST.get('UserImageFormat')
+    UserNickName = request.POST.get('UserNickName')
+    UserDescription = request.POST.get('UserDescription')
+    UserSex = request.POST.get('UserSex')
+    UserConstellation = request.POST.get('UserConstellation')
+    UserEmail = request.POST.get('UserEmail')
+    UserRegion = request.POST.get('UserRegion')
+    userObject = QRC('User.objects.get(Nick=%s)', 0, request.user.Nick)
+    if QRC('User.objects.get(Nick=%s)', 0, UserNickName) and QRC('User.objects.get(Nick=%s)', 0, UserNickName) != request.user:
+        return HttpResponse('Nick')
+    else:
+        UploadImage_Operated = ''
+        UploadImage_Operated = mMs.UserAvatarOperation(
+            UserImageData, UserImageFormat, userObject.Avatar)
+        userObject.Avatar = UploadImage_Operated['Path']
+        userObject.Nick = UserNickName
+        userObject.Sex = UserSex
+        userObject.Region = UserRegion
+        userObject.email = UserEmail
+        userObject.Description = UserDescription
+        userObject.Constellation = UserConstellation
+        userObject.save()
+        return HttpResponse(UploadImage_Operated['Status'])
 
 
 if __name__ == "__main__":
