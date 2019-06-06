@@ -26,7 +26,7 @@ SECRET_KEY = '$@&+60oqu5u900a+1*qo*!5nn#ljd3lj=3%p@#dmw%=mle$+_x'
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'www.nagetive.com',
-                 'www.nagetives.com', '192.168.3.69', '192.168.3.79']
+                 'www.nagetives.com', '192.168.3.69', '192.168.3.79','192.168.1.100']
 
 APP_NAMES = ['NTWebsite', ]
 # Application definition

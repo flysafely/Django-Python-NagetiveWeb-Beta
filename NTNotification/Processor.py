@@ -33,7 +33,6 @@ def NoticeGet(request):
         return HttpResponse('login')
 
 def NoticeDelete(request):
-    #print(request.DELETE.get('IDs'))
     if RD(request).get('IDs'):
         IDs = RD(request).get('IDs').split(',')
         if request.user.is_authenticated:

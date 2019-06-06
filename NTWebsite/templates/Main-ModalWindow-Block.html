@@ -57,6 +57,7 @@
                 <img src="{{ MEDIA_URL }}Logo.png" class="LogoImgLogin" onclick="javascript:window.location.href='www.nagetive.com'">              
                 <div class="modal-body">
                     <form class="form-horizontal" role="form">
+                        {% csrf_token %}
                         <div class="form-group">
                             <div class="DivUserInput">
                                 <input type="text" id='loginusername' placeholder="用户名" class="form-control" />
@@ -93,7 +94,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" enctype="multipart/form-data">
-                        
+                        {% csrf_token %}
                         <img id="UserImageShow" target="UserImageInput" title="点击切换头像" src="{{MEDIA_URL}}default.png" class="UserImageShow" onclick="javascript:UploadImg('UserImageInput',this.id)">
                         <input id="UserImageInput" data-source="" type="file" class="UserImageInput" name="pclogo" onchange="javascript:UploadUserImg(this)" accept="image/*">
                         <div class="form-group">
@@ -143,7 +144,7 @@
                 <img src="{{ MEDIA_URL }}Logo.png" class="LogoImgLogin" onclick="javascript:window.location.href='www.nagetive.com'">  
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" enctype="multipart/form-data">
-                        
+                        {% csrf_token %}
                         <div class="form-group">
                             <div class="DivUserInput">
                                 <input type="text" id='changeusername' placeholder="用户名" class="form-control" />
@@ -192,7 +193,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" enctype="multipart/form-data">
-                        
+                        {% csrf_token %}
                         <div class="form-group Modal-RollCall-TitleBG">
                             <h4 class="modal-dialog-Title">指名道姓!</h4>
                         </div>
@@ -231,6 +232,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" enctype="multipart/form-data">
+                        {% csrf_token %}
                         <div class="form-group Modal-TipOff-TitleBG">
                             <h4 class="modal-dialog-Title">投诉举报</h4>
                         </div> 
@@ -257,7 +259,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" enctype="multipart/form-data">
-                        
+                        {% csrf_token %}
                         <div class="form-group Modal-Topic-TitleBG">
                             <h4 class="modal-dialog-Title">欲求不满!</h4>
                         </div>
@@ -302,6 +304,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <form class="form-horizontal" role="form" enctype="multipart/form-data">
+                        {% csrf_token %}
                         <div class="form-group Modal-Edit-TitleBG">
                             <h4 class="modal-dialog-Title">编辑</h4>
                         </div>
