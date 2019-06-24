@@ -1,0 +1,63 @@
+{% if not Paginator_num_pages == 0 %}
+<div id="anchorDiv" class="Comments-container">
+    {% for Card in ExportList_Cards %}
+    <div id="{{Card.2.0.CommentID}}" class="CommentsV2 CommentsV2--withEditor CommentsV2-footer">
+        <div class="FeedSource">
+            {% include 'Comment-PublisherInfo-Block.html' %}
+            <div class="FeedSource-firstline">
+                <span style="margin: 2px 0px 5px 0px;float:left;">
+                    <svg viewBox="0 -4 33 33" width="1.2em" height="1.2em" fill="#0077E6">
+                        <path d="M2 26h4.5v-4.5h-4.5v4.5zM7.5 26h5v-4.5h-5v4.5zM2 20.5h4.5v-5h-4.5v5zM7.5 20.5h5v-5h-5v5zM2 14.5h4.5v-4.5h-4.5v4.5zM13.5 26h5v-4.5h-5v4.5zM7.5 14.5h5v-4.5h-5v4.5zM19.5 26h4.5v-4.5h-4.5v4.5zM13.5 20.5h5v-5h-5v5zM8 7v-4.5c0-0.266-0.234-0.5-0.5-0.5h-1c-0.266 0-0.5 0.234-0.5 0.5v4.5c0 0.266 0.234 0.5 0.5 0.5h1c0.266 0 0.5-0.234 0.5-0.5zM19.5 20.5h4.5v-5h-4.5v5zM13.5 14.5h5v-4.5h-5v4.5zM19.5 14.5h4.5v-4.5h-4.5v4.5zM20 7v-4.5c0-0.266-0.234-0.5-0.5-0.5h-1c-0.266 0-0.5 0.234-0.5 0.5v4.5c0 0.266 0.234 0.5 0.5 0.5h1c0.266 0 0.5-0.234 0.5-0.5zM26 6v20c0 1.094-0.906 2-2 2h-22c-1.094 0-2-0.906-2-2v-20c0-1.094 0.906-2 2-2h2v-1.5c0-1.375 1.125-2.5 2.5-2.5h1c1.375 0 2.5 1.125 2.5 2.5v1.5h6v-1.5c0-1.375 1.125-2.5 2.5-2.5h1c1.375 0 2.5 1.125 2.5 2.5v1.5h2c1.094 0 2 0.906 2 2z">
+                        </path>
+                    </svg>
+                </span>
+                <a class="ExponentTagItem TagSVG" style="text-decoration:none;color:#0077E6;">{{Card.2.0.EditDate}}</a>                
+            </div>
+        </div>
+        <div class="ContentItem AnswerItem">
+            <div>
+                <hr style=" height:1px;border:none;border-top:1px solid #F9F9F9;margin:3px 0px 0px 0px;">
+            </div>
+            <div style="font-size:16px;margin:8px 0px 8px 0px;color:#000000">{{Card.2.0.Content}}</div>
+            {% if Card.0 == '1' %}
+            <div class="CommentsV2 CommentsV2--withEditor CommentsV2-withPagination CommentsV2-footer" style="margin:0px 0px 12px 0px;">
+                <div class="FeedSource-firstline">
+                    <a class="TagItem" style="background:#77839C;text-decoration:none;color:#FFFFFF;">回复</a> 
+                    <img width=25 height=25 style="cursor:pointer;-webkit-border-radius: 12.5px;" src="{{MEDIA_URL}}{{Card.1.Publisher.Avatar}}">
+                    <a title="{{Card.1.Publisher.id}}" style="color:#333333;font-size:16px;text-decoration:none;" href="/UserProfile/Publish/{{Card.1.Publisher.id}}/LE/1"><b>{{Card.1.Publisher.Nick}}</b></a>
+                    <span style="padding: 0px 2px 0px 2px"><b>·</b></span>
+                    <span style="font-size:14px;color:#8590A6;width:60%;">{{Card.1.Publisher.Description}}</span>
+                </div>
+                <div class="FeedSource-firstline">
+                    <span style="padding: 2px 0px 0px 0px;float:left;">
+                        <svg viewBox="0 -4 33 33" width="1.2em" height="1.2em" fill="#0077E6">
+                            <path d="M2 26h4.5v-4.5h-4.5v4.5zM7.5 26h5v-4.5h-5v4.5zM2 20.5h4.5v-5h-4.5v5zM7.5 20.5h5v-5h-5v5zM2 14.5h4.5v-4.5h-4.5v4.5zM13.5 26h5v-4.5h-5v4.5zM7.5 14.5h5v-4.5h-5v4.5zM19.5 26h4.5v-4.5h-4.5v4.5zM13.5 20.5h5v-5h-5v5zM8 7v-4.5c0-0.266-0.234-0.5-0.5-0.5h-1c-0.266 0-0.5 0.234-0.5 0.5v4.5c0 0.266 0.234 0.5 0.5 0.5h1c0.266 0 0.5-0.234 0.5-0.5zM19.5 20.5h4.5v-5h-4.5v5zM13.5 14.5h5v-4.5h-5v4.5zM19.5 14.5h4.5v-4.5h-4.5v4.5zM20 7v-4.5c0-0.266-0.234-0.5-0.5-0.5h-1c-0.266 0-0.5 0.234-0.5 0.5v4.5c0 0.266 0.234 0.5 0.5 0.5h1c0.266 0 0.5-0.234 0.5-0.5zM26 6v20c0 1.094-0.906 2-2 2h-22c-1.094 0-2-0.906-2-2v-20c0-1.094 0.906-2 2-2h2v-1.5c0-1.375 1.125-2.5 2.5-2.5h1c1.375 0 2.5 1.125 2.5 2.5v1.5h6v-1.5c0-1.375 1.125-2.5 2.5-2.5h1c1.375 0 2.5 1.125 2.5 2.5v1.5h2c1.094 0 2 0.906 2 2z">
+                            </path>
+                        </svg>
+                    </span>
+                    <a class="ExponentTagItem TagSVG" style="text-decoration:none;color:#0077E6;">{{Card.1.EditDate}}</a>
+                </div>
+                <div class="ContentItem">
+                    <span>
+                        <svg viewBox="0 -5 38 38" width="14" height="14" fill="#4F4F4F">
+                            <path d="M7.031 14c3.866 0 7 3.134 7 7s-3.134 7-7 7-7-3.134-7-7l-0.031-1c0-7.732 6.268-14 14-14v4c-2.671 0-5.182 1.040-7.071 2.929-0.364 0.364-0.695 0.751-0.995 1.157 0.357-0.056 0.724-0.086 1.097-0.086zM25.031 14c3.866 0 7 3.134 7 7s-3.134 7-7 7-7-3.134-7-7l-0.031-1c0-7.732 6.268-14 14-14v4c-2.671 0-5.182 1.040-7.071 2.929-0.364 0.364-0.695 0.751-0.995 1.157 0.358-0.056 0.724-0.086 1.097-0.086z" fill-rule="evenodd">
+                            </path>
+                        </svg>
+                    </span>
+                    <i style="font-size:13px;color;#333333;">{{Card.1.Content}}</i>
+                    <span>
+                        <svg viewBox="0 -5 38 38" width="14" height="14" fill="#4F4F4F">
+                            <path d="M25 20c-3.866 0-7-3.134-7-7s3.134-7 7-7 7 3.134 7 7l0.031 1c0 7.732-6.268 14-14 14v-4c2.671 0 5.182-1.040 7.071-2.929 0.364-0.364 0.695-0.75 0.995-1.157-0.357 0.056-0.724 0.086-1.097 0.086zM7 20c-3.866 0-7-3.134-7-7s3.134-7 7-7 7 3.134 7 7l0.031 1c0 7.732-6.268 14-14 14v-4c2.671 0 5.182-1.040 7.071-2.929 0.364-0.364 0.695-0.75 0.995-1.157-0.357 0.056-0.724 0.086-1.097 0.086z" fill-rule="evenodd">
+                            </path>
+                        </svg>
+                    </span>                         
+                </div>     
+            </div>
+            {% endif %}
+            {% include 'Comment-Actions-Block.html' %}
+        </div>
+    </div>
+    {% endfor %}
+    {% include "Paginator.html" %}
+</div> 
+{% endif %}
