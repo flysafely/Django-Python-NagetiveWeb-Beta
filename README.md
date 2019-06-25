@@ -45,6 +45,8 @@
 
 `uWSGI           2.0.18`
 
+`Xadmin          2.0.1`:[ZIP下载](https://github.com/sshwsfc/xadmin/tree/django2)
+
 ### 配置
 配置都是在`setting.py`中.部分配置迁移到了后台配置中。
 
