@@ -214,7 +214,7 @@ STATICFILES_DIRS = (
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # smtp服务的邮箱服务器
 EMAIL_HOST = 'smtp.yeah.net'
-# smtp服务固定的端口是25
+# smtp服务固定的端口是25,服务器需要手动开启25端口
 EMAIL_PORT = 25
 # 发送邮件的邮箱
 EMAIL_HOST_USER = 'nagetive@yeah.net'
