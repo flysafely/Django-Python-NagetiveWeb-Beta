@@ -2,12 +2,11 @@ from NTWebsite import Config
 from NTWebsite.models.Configuration import *
 from NTConfig import settings
 from django.conf import settings as ST
-from django.core.mail import send_mail
 from .improtFiles.models_import_head import *
 from .Config import AppConfig as AC
 from .Config import NotificationDict as ND
 
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect,QueryDict
 from django_redis import get_redis_connection
 from django.http import Http404
 from django.views.decorators.cache import cache_page
@@ -27,7 +26,7 @@ import shutil
 import sys
 import time
 
-
+APPConf = AC()
 def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
     if TimeOut == None:
         TimeOut = AC().TimeOut
@@ -70,7 +69,9 @@ def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
             #print('查询语句(带变量名):', FinalQueryString)
             QueryResult = eval(FinalQueryString)
         except Exception as e:
-            print('查询错误信息:', e) # 不直接raise Http404的原因是:部分get查询只是判断某些表中是否存在相应数据，不存在则忽略，不需要直接返回404
+            # 不直接raise Http404的原因是:部分get查询只是判断某些表中是否存在相应数据，不存在则忽略，不需要直接返回404
+            print('查询错误信息:', e)
+            return None
             #raise Http404
         else:
             CacheHandler.set(QueryString_MD5, QueryResult, TimeOut)
@@ -82,10 +83,22 @@ def QueryRedisCache(MainBodyString, TimeOut=None, *Others):
             return QueryResult
         '''
 
+
+def RedisCacheOperation(method, TimeOut=None, **kw):
+    if TimeOut == None:
+        TimeOut = AC().TimeOut
+    CacheHandler = caches['default']
+    if method == 'get':
+        return CacheHandler.get(kw['key'])
+    elif method == 'set':
+        return CacheHandler.set(kw['key'], kw['value'], TimeOut)
+    elif method == 'delete':
+        CacheHandler.delete(kw['key'])
+
+
 def PicUploadOperate(UploadedFile):
-    APPConf = AC()
     # 返回json格式:{"uploaded":1,"fileName":"20170419091732.jpg","url":"/Upload/editor/20170419/20170419091732.jpg"}
-    PicFormat = str(UploadedFile).split('.')[-1].lower()
+    PicFormat = str(UploadedFile).split('.')[-1].upper()
     if PicFormat in APPConf.PicUploadFormat:
         PicUUID = str(uuid.uuid4())[-12:]
         PicSavePath = settings.MEDIA_ROOT + APPConf.PicTempPath
@@ -98,7 +111,7 @@ def PicUploadOperate(UploadedFile):
         with im.open(UploadedFile) as picHandle:
             W, H = picHandle.size
             temp_Pic = picHandle.resize(
-                (APPConf.PicUploadWidth, int(H / W * APPConf.PicUploadWidth)), im.BILINEAR).convert('RGBA' if ImageFormat == 'png' else 'RGB')
+                (APPConf.PicUploadWidth, int(H / W * APPConf.PicUploadWidth)), im.BILINEAR).convert('RGBA' if PicFormat == 'png' else 'RGB')
             temp_Pic.save(SaveFullPath)
         return json.dumps({"uploaded": 1, "fileName": PicSaveName, "url": SaveFullPath_Preview}, ensure_ascii=False)
     else:
@@ -106,7 +119,6 @@ def PicUploadOperate(UploadedFile):
 
 
 def MovePicToSavePath(Content):
-    APPConf = AC()
     result = re.findall("src=\"([^']+?)\"", Content)
     if os.path.exists(settings.MEDIA_ROOT + APPConf.PicSavePath) == False:
         os.makedirs(settings.MEDIA_ROOT + APPConf.PicSavePath)
@@ -132,7 +144,6 @@ def RemovePicFromSavePath(TopicID, ContentUpdate):
 
 
 def UserAvatarOperation(ImageData, ImageFormat, OldAvatar):
-    APPConf = AC()
     if ImageFormat != None and ImageFormat.upper() in APPConf.PicUploadFormat:
         savePath = os.path.join(settings.MEDIA_ROOT, APPConf.AvatarSavePath)
         saveFile = str(uuid.uuid1())[0:8] + '.' + ImageFormat
@@ -148,9 +159,9 @@ def UserAvatarOperation(ImageData, ImageFormat, OldAvatar):
                 compress_avatar = sizeHandle.resize(
                     (APPConf.AvatarResolution, APPConf.AvatarResolution), im.BILINEAR).convert('RGBA' if ImageFormat == 'png' else 'RGB')
                 compress_avatar.save(saveFilePath)
-            #print("OldAvatar:",OldAvatar)
-            #print("asdadadasd:",APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL,''))
-            if OldAvatar != APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL,''):
+            # print("OldAvatar:",OldAvatar)
+            # print("asdadadasd:",APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL,''))
+            if OldAvatar != APPConf.DefaultAvatar.url.replace(settings.MEDIA_URL, ''):
                 if os.path.exists(os.path.join(settings.MEDIA_ROOT, OldAvatar)):
                     os.remove(os.path.join(settings.MEDIA_ROOT, OldAvatar))
             return {'Status': 'success', 'Path': os.path.join(APPConf.AvatarSavePath, saveFile)}
@@ -161,14 +172,12 @@ def UserAvatarOperation(ImageData, ImageFormat, OldAvatar):
 
 
 def Encrypt(data):
-    APPConf = AC()
     return symmetric.aes_cbc_pkcs7_encrypt(APPConf.SecretKey.encode('utf-8'),
                                            data.encode('utf-8'),
                                            APPConf.SecretVI.encode('utf-8'))[1]
 
 
 def Decrypt(data):
-    APPConf = AC()
     return symmetric.aes_cbc_pkcs7_decrypt(APPConf.SecretKey.encode('utf-8'),
                                            data,
                                            APPConf.SecretVI.encode('utf-8')).decode('utf-8')
@@ -190,11 +199,6 @@ def MD5(data):
     hash_md5 = hashlib.md5(data.encode('utf-8'))
     return hash_md5.hexdigest()
 
-def SendMail(address, nick, username):
-    try:
-        send_mail(settings.EMAIL_TITLE, (settings.EMAIL_CONTENT % nick),ST.EMAIL_FROM,[address,],html_message=settings.EMAIL_BODY)
-    except Exception as e:
-        print(e)
 
 def GetUserIP(request):
     if 'HTTP_X_FORWARDED_FOR' in request.META:
@@ -202,27 +206,37 @@ def GetUserIP(request):
     else:
         return request.META['REMOTE_ADDR']
 
+
 def CounterOperate(object, field, method):
     with transaction.atomic():
         exec("object.%s = F('%s')%s1" % (field, field, method))
         exec('object.save()')
         return exec('object.refresh_from_db()')
 
+
 def CreateUUIDstr():
     return str(uuid.uuid4())[-12:]
 
 # 初始化网站配置信息 创建超级用户的时候在数据库中按照默认配置信息写入
+
+
 def QueryFilterCreate():
-    for name,detail in Config.DefualtFilterDict.items():
+    for name, detail in Config.DefualtFilterDict.items():
         if not FilterQueryString.objects.filter(Name=name):
-            FilterQueryString.objects.create(Name=name,MethodString=detail['MethodString'],QueryString=detail['QueryString'],Template=detail['Template'])
+            FilterQueryString.objects.create(Name=name, MethodString=detail[
+                                             'MethodString'], QueryString=detail['QueryString'], Template=detail['Template'])
             print("成功创建:'%s'" % name)
         else:
             print("跳过:'%s'" % name)
 
+def RequestDataUnbox(request):
+    qd = QueryDict(request.body)
+    return {k: v[0] if len(v)==1 else v for k, v in qd.lists()}
+
 def AddNotification(Type, Object, Source, Target):
     with transaction.atomic():
-        eval("Notice.objects.create(ID=CreateUUIDstr(), Type=Type, %s=Object, SourceUser=Source, TargetUser=Target)" % ND[Type]['Table'])
+        eval("Notice.objects.create(ID=CreateUUIDstr(), Type=Type, %s=Object, SourceUser=Source, TargetUser=Target)" % ND[
+             Type]['Table'])
 
 if __name__ == "__main__":
     SendMail('616604060@qq.com')

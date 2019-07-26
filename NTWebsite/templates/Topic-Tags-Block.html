@@ -5,13 +5,9 @@
             <img src="{{MEDIA_URL}}SVG/TTB-DateTime.svg">
         </span>
         {% if Layout_Sizer|GetDictValue:'Region' == 'UserProfile' %}
-        <button class="ExponentTagItem TagSVG" onclick="javascript:window.location.href='/{{Card.0.Type}}/Time/{{ Card.0.EditTime | date:'Y-m-d' }}/LE/1/'">{{Card.0.EditTime}}</button> 
+        <button class="ExponentTagItem TagSVG" onclick="javascript:window.location.href='/{{Card.0.Type}}/Time/{{ Card.0.CreateTime | date:'Y-m-d' }}/LE/1/'">{{Card.0.CreateTime}}</button> 
         {% else %}
-        {% if Layout_Sizer|GetDictValue:'Part' == 'Content' %}
         <button title='编辑时间' class="ExponentTagItem TagSVG" onclick="javascript:window.location.href='/{{Layout_Sizer|GetDictValue:'Region'}}/Time/{{ Card.0.EditTime | date:'Y-m-d' }}/LE/1/'">{{Card.0.EditTime}}</button>
-        {% else %}
-        <button title='发布时间' class="ExponentTagItem TagSVG" onclick="javascript:window.location.href='/{{Layout_Sizer|GetDictValue:'Region'}}/Time/{{ Card.0.CreateTime | date:'Y-m-d' }}/LE/1/'">{{Card.0.CreateTime}}</button>
-        {% endif %}
         {% endif %}
         <span class="ThemeTagSVG">
             <img src="{{MEDIA_URL}}SVG/TTB-Hot.svg">

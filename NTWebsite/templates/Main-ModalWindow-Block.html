@@ -49,7 +49,7 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->
     </div>
-
+    
     <!-- 登录模态窗口-->
     <div class="modal fade" id="LoginBoard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog-232px">
@@ -69,14 +69,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <input id="LoginVfCodeInput" class="VerificationCode" onclick="createCode('LoginVfCodeInput')" type="text" readonly="readonly" />
+                            <input id="LoginVfCodeInput" class="VerificationCode" onclick="javascript:createCode('LoginVfCodeInput')" type="text" readonly="readonly" />
                             <div class="LoginCodeInput">
                                 <input type="text" id="LoginCodeInput" placeholder="验证码" class="form-control" />
                             </div>
                         </div>
                     </form>
                         <div class="Modal-dialog-BtnDiv">
-                            <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:LoginAndRegistWithValidateCode('LoginCodeInput','LoginSubmit','{{ csrf_token }}')">
+                            <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:LoginAndRegistWithValidateCode('LoginCodeInput','LoginSubmit')">
                                 登  录
                             </button>
                             <button type="button" class="btn btn-default btn-link BtnLogin" data-dismiss="modal" data-toggle='modal' data-target="#RegistBoard" onclick="document.getElementById('RegistVfCodeInput').click();">
@@ -118,14 +118,14 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <input id="RegistVfCodeInput" class="VerificationCode" onclick="createCode('RegistVfCodeInput')" type="text" readonly="readonly" />
+                            <input id="RegistVfCodeInput" class="VerificationCode" onclick="javascript:createCode('RegistVfCodeInput')" type="text" readonly="readonly" />
                             <div class="LoginCodeInput">
                                 <input type="text" id="RegistCodeInput" placeholder="验证码" class="form-control" />
                             </div>
                         </div>
                     </form>
                         <div class="Modal-dialog-BtnDiv">
-                            <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:LoginAndRegistWithValidateCode('RegistCodeInput','RegistSubmit','{{ csrf_token }}')">
+                            <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:LoginAndRegistWithValidateCode('RegistCodeInput','RegistSubmit',)">
                                 注  册
                             </button>
                             <button type="button" class="btn btn-default btn-link BtnLogin" data-dismiss="modal" data-toggle='modal' data-target="#LoginBoard">
@@ -137,6 +137,56 @@
         </div><!-- /.modal -->
     </div>
 
+    <!-- 修改密码模态窗口-->
+    <div class="modal fade" id="ChangeBoard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog-232px">
+            <div class="modal-content">
+                <img src="{{ MEDIA_URL }}Logo.png" class="LogoImgLogin" onclick="javascript:window.location.href='www.nagetive.com'">  
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <div class="DivUserInput">
+                                <input type="text" id='changeusername' placeholder="用户名" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="DivUserInput">
+                                <input type="password" id='newpassword' placeholder="新密码" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="DivUserInput">
+                                <input type="password" id='newpasswordcomfirm' placeholder="确认新密码" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="MailCodeInput">
+                                <input type="text" id='mailcode' placeholder="邮箱密令" class="form-control" />
+                            </div>
+                            <div class="MailCodeA">
+                                <a href="javascript:void(0);" onclick="javascript:SendMailCode()">获取密令</a> 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input id="ChangeVfCodeInput" class="VerificationCode" onclick="javascript:createCode('ChangeVfCodeInput')" type="text" readonly="readonly" />
+                            <div class="LoginCodeInput">
+                                <input type="text" id="ChangeCodeInput" placeholder="验证码" class="form-control" />
+                            </div>
+                        </div>
+                    </form>
+                    <div class="Modal-dialog-BtnDiv">
+                        <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:LoginAndRegistWithValidateCode('ChangeCodeInput','ChangeSubmit',)">
+                            提  交
+                        </button>
+                        <button type="button" class="btn btn-default btn-link BtnLogin" data-dismiss="modal" data-toggle='modal'>
+                            取  消
+                        </button>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
     <!-- 短文发布模态窗口-->
     <div class="modal fade" id="EssayPublishBoard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog-594px">
@@ -164,7 +214,7 @@
                         </div>
                     </form>
                         <div class="Modal-dialog-BtnDiv">
-                            <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:PublishRollCall('{{ csrf_token }}')">
+                            <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:PublishRollCall()">
                                 发  布
                             </button>
                             <button id='EssayPublishBoardCancel' type="button" class="btn btn-default btn-link" style="padding: 10px 0px 0px 0px;" data-dismiss="modal">
@@ -193,7 +243,7 @@
                         </div>
                     </form>
                         <div class="Modal-dialog-BtnDiv">
-                            <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:TipOff('{{ csrf_token }}')" data-dismiss="modal">
+                            <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:TipOff()" data-dismiss="modal">
                                 投  诉
                             </button>
                         </div>
@@ -236,7 +286,7 @@
                     </form>
                     
                     <div class="Modal-dialog-BtnDiv">
-                        <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:PublishTopic(this,'Publish','{{ csrf_token }}')">
+                        <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:AddTopic(this,'Publish')">
                             发  布
                         </button>
                         <button type="button" class="btn btn-default btn-link" style="padding: 10px 0px 0px 0px;" data-dismiss="modal">
@@ -282,8 +332,11 @@
                     </form>
                     
                     <div class="Modal-dialog-BtnDiv">
-                        <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:PublishTopic(this,'Edit','{{ csrf_token }}')">
+                        <button type="submit" class="btn btn-default btn-block btn-primary" onclick="javascript:AddTopic(this,'Edit')">
                             发  布
+                        </button>
+                        <button type="button" class="btn btn-default btn-block btn-primary-red" onclick="javascript:DeleteTopic()">
+                            删  除
                         </button>
                         <button type="button" class="btn btn-default btn-link" style="padding: 10px 0px 0px 0px;" data-dismiss="modal">
                             取  消

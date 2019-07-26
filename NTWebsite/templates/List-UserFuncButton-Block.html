@@ -2,17 +2,17 @@
     <div class="GlobalWrite">
         <div class="GlobalWrite-nav">
             <button title="登录" style="" id='loginbutton' class="GlobalWrite-navItem NoDecoration" type="button" data-toggle='modal' data-target="#LoginBoard" onclick="document.getElementById('LoginVfCodeInput').click();">
-                <span class="GlobalSideBar-categoryIcon">
-                    <img src="{{MEDIA_URL}}SVG/LUB-UserLogin.svg">
-                </span>
-                <div class="GlobalSideBar-categoryLabel">登录</div>
+                <img src="{{MEDIA_URL}}SVG/LUB-UserLogin.svg">
+                <div class="GlobalSideBar-UserFuncLabel">登录</div>
             </button>
             <button title="注册" style="" id='Registbutton' class="GlobalWrite-navItem NoDecoration" type="button" data-toggle='modal' data-target="#RegistBoard" onclick="document.getElementById('RegistVfCodeInput').click();">
-                <span class="GlobalSideBar-categoryIcon">
-                   <img src="{{MEDIA_URL}}SVG/LUB-UserLogout.svg"> 
-                </span>
-                <div class="GlobalSideBar-categoryLabel">注册</div>
-            </button>               
-        </div>                      
+                <img src="{{MEDIA_URL}}SVG/LUB-UserRegist.svg"> 
+                <div class="GlobalSideBar-UserFuncLabel">注册</div>
+            </button>
+            <button title="修改密码" style="" id='Changebutton' class="GlobalWrite-navItem NoDecoration" type="button" data-toggle='modal' data-target="#ChangeBoard" onclick="document.getElementById('ChangeVfCodeInput').click();">
+                <img src="{{MEDIA_URL}}SVG/LUB-UserChange.svg"> 
+                <div class="GlobalSideBar-UserFuncLabel">修改密码</div>
+            </button>
+        </div>
     </div>
 </div>

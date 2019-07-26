@@ -3,6 +3,7 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from imagekit.processors import SmartResize
 
+
 class ConfigParams(models.Model):
     """docstring for ConfigParams"""
 
@@ -12,7 +13,7 @@ class ConfigParams(models.Model):
         default=60, blank=False, verbose_name='缓存时间')
 
     IndexURL = models.CharField(max_length=200,
-                                      default='/Topic/List/0/LE/1', blank=False, verbose_name='首页URL')
+                                default='/Topic/List/0/LE/1', blank=False, verbose_name='首页URL')
     ReadsThreshold = models.CharField(max_length=20,
                                       default=10, blank=False, verbose_name='阅读量阈值')
     TopicHotKeyWord = models.CharField(max_length=20,
@@ -21,7 +22,7 @@ class ConfigParams(models.Model):
                                           default='差评', blank=False, verbose_name='点名热搜词')
     SpecialTopicHotKeyWord = models.CharField(max_length=20,
                                               default='差评', blank=False, verbose_name='专题热搜词')
-
+    ActivePage = models.CharField(max_length=100,default='ActivePage.html',blank=False,verbose_name='激活跳转页')
     TopicsLimit = models.CharField(max_length=20,
                                    default=100, blank=False, verbose_name='文章获取数量')
     CommentsLimit = models.CharField(max_length=20,
@@ -47,11 +48,11 @@ class ConfigParams(models.Model):
     PicUploadFormat = models.CharField(max_length=20,
                                        default='jpg,png', blank=False, verbose_name='上传图片格式')
     PicTempPath = models.CharField(max_length=50,
-                                       default='TopicPicUpload/Temp/', blank=False, verbose_name='文章临时图片路径')
+                                   default='TopicPicUpload/Temp/', blank=False, verbose_name='文章临时图片路径')
     PicSavePath = models.CharField(max_length=50,
-                                       default='TopicPicUpload/Save/', blank=False, verbose_name='文章发布图片路径')
+                                   default='TopicPicUpload/Save/', blank=False, verbose_name='文章发布图片路径')
     AvatarSavePath = models.CharField(max_length=50,
-                                       default='Avatar/', blank=False, verbose_name='头像存放路径')
+                                      default='Avatar/', blank=False, verbose_name='头像存放路径')
     DefaultAvatar = models.ImageField(
         upload_to='Avatar', blank=True, verbose_name='默认头像', default='')
 
@@ -74,16 +75,14 @@ class PreferredConfigName(models.Model):
         verbose_name = '配置设置'
         app_label = 'NTWebsite'
         # 末尾不加s
-
         verbose_name_plural = '3.配置设置'
-        pass
 
 
 class FilterQueryString(models.Model):
     Name = models.CharField(
-        max_length=100, unique=True,verbose_name='过滤器关键')
+        max_length=100, unique=True, verbose_name='过滤器关键')
     MethodString = models.CharField(
-        max_length=200, blank=False, default='',verbose_name='匹配方法')
+        max_length=200, blank=False, default='', verbose_name='匹配方法')
     QueryString = models.CharField(
         max_length=200, blank=False, verbose_name='查询语句')
     Template = models.CharField(

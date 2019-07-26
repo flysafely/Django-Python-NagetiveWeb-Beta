@@ -1,5 +1,11 @@
 ﻿var VFCode;
 
+$.ajaxSetup({
+    beforeSend:function (xhr,settings) {
+        xhr.setRequestHeader("X-CSRFtoken",$.cookie("csrftoken"))
+    }
+});
+
 function createCode(from) 
 {
  VFCode = "";
@@ -21,7 +27,7 @@ function createCode(from)
 
 }
 
-function LoginAndRegistWithValidateCode(from,submitName,csrftoken) 
+function LoginAndRegistWithValidateCode(from,submitName) 
 {
  var inputCode=document.getElementById(from).value;
  if(inputCode.length <= 0) 
@@ -32,13 +38,16 @@ function LoginAndRegistWithValidateCode(from,submitName,csrftoken)
  {
    alert("验证码输入有误！");
  }
- else 
+ else
  {
   if(submitName == 'LoginSubmit'){
-    LoginSubmit(csrftoken);
-  }else if(submitName == 'RegistSubmit')
-    RegistSubmit(csrftoken);
- }    
+    LoginSubmit();
+  }else if(submitName == 'RegistSubmit'){
+    RegistSubmit();
+  }else if(submitName == 'ChangeSubmit'){
+    ChangeSubmit();
+  }
+ }
 }
 
 // 加密选项
@@ -62,13 +71,13 @@ function encrypt(data,aeskey,cbciv){
 }
 
 
-function DoEncrypt(keyword,csrftoken,data){
+function DoEncrypt(keyword,data){
   $.ajaxSettings.async = false;
   var jsonData = new Object();
-  $.get('/Param/',{csrfmiddlewaretoken: csrftoken,'KeyWord':keyword},function(result){
-    jsonData = JSON.parse(result);
-  });
-  return encrypt(data,jsonData[0],jsonData[1]);
+  $.ajax({type:'GET',url:'/Param/',data:{'KeyWord':keyword},success:function(result){
+    jsonData = result;
+  }});
+  return encrypt(data,jsonData.SecretKey,jsonData.SecretVI);
 }
 
 function decrypt(data,aeskey,cbciv){
@@ -83,8 +92,8 @@ function decrypt(data,aeskey,cbciv){
 
 
 
-function BlackListOperation(opreration,userid,csrftoken){
-  $.post('/BlackListOperation/',{'Operation':opreration,csrfmiddlewaretoken: csrftoken,'UserID':userid},function(status){
+function BlackListOperation(opreration,userid,){
+  $.ajax({type:'POST',url:'/BlackListOperation/',data:{'Operation':opreration,'UserID':userid},success:function(status){
     if (status == 'login'){
       document.getElementById('loginbutton').click();
     }else if(status == 'add'){
@@ -98,7 +107,7 @@ function BlackListOperation(opreration,userid,csrftoken){
     }else{
       alert(status);
     }
-  })
+  }})
 }
 
 function GetNotificationInfo(){
@@ -108,7 +117,7 @@ function GetNotificationInfo(){
       PushNotificationslist.removeChild(PushNotificationslist.firstChild);
     }
   }  
-  $.get('/Notice/',{},function(returndata){
+  $.ajax({type:'GET',url:'/Notice/',data:{},success:function(returndata){
     if (returndata == 'login'){
       document.getElementById('loginbutton').click();  
     }else{
@@ -141,7 +150,7 @@ function GetNotificationInfo(){
 
       }
     }
-  })
+  }})
 }
 
 function RemoveNotificationInfo(method, ID, TargetUrl){
@@ -182,12 +191,12 @@ function TickDiv(){
   }
 }
 
-function CommentConversation(url,csrftoken,ObjectID,replayuser,replayeduser,from){
-  $.post(url,{csrfmiddlewaretoken: csrftoken,'ObjectID':ObjectID,'replayuser':replayuser,'replayeduser':replayeduser,'from':from},function(status){})
+function CommentConversation(url,ObjectID,replayuser,replayeduser,from){
+  $.ajax({type:'POST',url:url,data:{'ObjectID':ObjectID,'replayuser':replayuser,'replayeduser':replayeduser,'from':from},success:function(status){}})
 }
 
-function SpecialTopicFollow(url,csrftoken,SpecialTopicID){
-  $.post(url,{csrfmiddlewaretoken: csrftoken,'SpecialTopicID':SpecialTopicID},function(status){
+function SpecialTopicFollow(url,SpecialTopicID){
+  $.ajax({type:'POST',url:url,data:{'SpecialTopicID':SpecialTopicID},success:function(status){
     if(status == 'follow'){
       alert('关注成功!');
       location.reload();
@@ -197,11 +206,11 @@ function SpecialTopicFollow(url,csrftoken,SpecialTopicID){
       alert('取消关注!');
       location.reload();
     }
-  })  
+  }})  
 }
 
 function Circusee(url,FilterWord){
-  $.get(url,{'RollCallID':FilterWord},function(status){
+  $.ajax({type:'GET',url:url,data:{'RollCallID':FilterWord},success:function(status){
     if(status == 'collect'){
       alert('收藏成功!');
     }else if(status == 'login'){
@@ -209,10 +218,10 @@ function Circusee(url,FilterWord){
     }else{
       alert(status);
     }
-  })
+  }})
 }
 
-function RollCallReplay(url,csrftoken,FilterWord){
+function RollCallReplay(url,FilterWord){
   var RollCallReplayContent=document.getElementById('RollCallReplayTextArea').value;
   var Chk_RollCallReplayContent = RollCallReplayContent.replace(/(^s*)|(s*$)/g, "").length;
   if(Chk_RollCallReplayContent != 0){
@@ -222,14 +231,14 @@ function RollCallReplay(url,csrftoken,FilterWord){
       if(Chk_RollCallReplayContent > 50){
         alert('观点不能多于50个字符!')
       }else{
-        $.post(url,{csrfmiddlewaretoken: csrftoken,'RollCallReplayContent':RollCallReplayContent,'FilterWord':FilterWord},function(status){
+        $.ajax({type:'POST',url:url,data:{'RollCallReplayContent':RollCallReplayContent,'FilterWord':FilterWord},success:function(status){
           if(status=='replayok'){
             alert('回复成功！');
             location.reload();
           }else{
             alert(status);
           }           
-        })
+        }})
       }
     }
   }else{
@@ -237,7 +246,7 @@ function RollCallReplay(url,csrftoken,FilterWord){
   }
 }
 
-function PublishRollCall(csrftoken){
+function PublishRollCall(){
   var RollCallTitle = document.getElementById('RollCallTitle').value;
   var TargetUserNick = document.getElementById('TargetUserNick').value;
   var RollCallContent = document.getElementById('RollCallContent').value;
@@ -248,7 +257,7 @@ function PublishRollCall(csrftoken){
     if(Chk_RollCallContent>30){
       alert('发表观点不能超过30个字符!');
     }else{
-    $.post('/PublishRollCall/',{csrfmiddlewaretoken: csrftoken,'RollCallTitle':RollCallTitle,'TargetUserNick':TargetUserNick,'RollCallContent':RollCallContent},function(status){
+    $.ajax({type:'POST',url:'/PublishRollCall/',data:{'RollCallTitle':RollCallTitle,'TargetUserNick':TargetUserNick,'RollCallContent':RollCallContent},success:function(status){
       if(status=='publishok'){
         alert('发布成功！');
         location.reload();
@@ -260,13 +269,14 @@ function PublishRollCall(csrftoken){
       }else{
         alert(status);
       }      
-    });}
+    }});
+    }
   }else{
     alert('请完整输入必要栏目！');
   }
 }
 
-function Replay(csrftoken,ParentID,Type){
+function Replay(ParentID,Type){
   var ObjectID = document.getElementById("ObjectContent").getAttribute('ObjectID');
   if (ParentID){
     var ContentObject = document.getElementById('Replaybox#' + ParentID);    
@@ -277,28 +287,28 @@ function Replay(csrftoken,ParentID,Type){
   var Content = ContentObject.value;
   var Chk_Content = Content.replace(/(^s*)|(s*$)/g, "").length;
   if(Chk_Content!=0){
-    $.post('/Replay/',{'Type':Type,csrfmiddlewaretoken: csrftoken,'ObjectID':ObjectID,'ParentID':ParentID,'Content':Content},function(status){
+    $.ajax({type:'POST',url:'/Replay/',data:{'Type':Type,'ObjectID':ObjectID,'ParentID':ParentID,'Content':Content},success:function(status){
       if(status=='replayok'){
         alert('回复成功！');
         location.reload();
       }else if(status=='login'){
         document.getElementById('loginbutton').click();
       }
-    });    
+    }});    
   }else{
     alert('没有回复内容！');
     CommentObject.focus();
   }
 }
 
-function HideReplayBox(changeSuffix,removeSuffix,csrftoken,ParentID,from){
-  document.getElementById(ParentID+changeSuffix).setAttribute('onclick', "javascript:ShowReplayBox(this,'" + csrftoken + "','" + ParentID + "','" + from + "')")
+function HideReplayBox(changeSuffix,removeSuffix,ParentID,from){
+  document.getElementById(ParentID+changeSuffix).setAttribute('onclick', "javascript:ShowReplayBox(this,'" +  + "','" + ParentID + "','" + from + "')")
   var parentDIV = document.getElementById(ParentID);
   parentDIV.removeChild(document.getElementById(ParentID + removeSuffix))
 }
 
-function ShowReplayBox(obj,csrftoken,ParentID,from){
-  obj.setAttribute('onclick', "javascript:HideReplayBox('#replayBtn','#replayDiv','" + csrftoken + "','"+ ParentID +"','" + from + "')");
+function ShowReplayBox(obj,ParentID,from){
+  obj.setAttribute('onclick', "javascript:HideReplayBox('#replayBtn','#replayDiv','" +  + "','"+ ParentID +"','" + from + "')");
 
   var replayDiv = document.createElement('div');
   replayDiv.setAttribute('style', 'margin-top:8px;');
@@ -314,12 +324,12 @@ function ShowReplayBox(obj,csrftoken,ParentID,from){
   replaybutton.setAttribute('class', 'Button Button--primary Button--blue');
   replaybutton.innerText='确定';
   replaybutton.setAttribute('style', 'height:30px;width:70px;font-size:10px;margin-right:8px;')
-  replaybutton.setAttribute('onclick', "javascript:Replay('" + csrftoken + "','" + ParentID +"','" + from + "')");
+  replaybutton.setAttribute('onclick', "javascript:Replay('" +  + "','" + ParentID +"','" + from + "')");
   var replaycancel = document.createElement("button");
   replaycancel.setAttribute('class', 'Button Button--primary');
   replaycancel.innerText='取消';
   replaycancel.setAttribute('style', 'height:30px;width:70px;font-size:10px;');
-  replaycancel.setAttribute('onclick', "javascript:HideReplayBox('#replayBtn','#replayDiv','" + csrftoken + "','"+ ParentID +"','" + from + "')");
+  replaycancel.setAttribute('onclick', "javascript:HideReplayBox('#replayBtn','#replayDiv','" +  + "','"+ ParentID +"','" + from + "')");
 
   var parent = document.getElementById(ParentID);
   replaybuttonDiv.appendChild(replaybutton);
@@ -338,9 +348,9 @@ function OpenTipOffView(ObjectID, Type){
 }
 
 
-function TipOff(csrftoken){
+function TipOff(){
   var content = document.getElementById('TipOffContent').value;
-  $.post('/TipOff/',{csrfmiddlewaretoken: csrftoken,'TopicID':TipOffObjectID,'Type':TipOffType, 'Content':content},function(status){
+  $.ajax({type:'POST',url:'/TipOff/',data:{'TopicID':TipOffObjectID,'Type':TipOffType, 'Content':content},success:function(status){
                 if(status=='success'){
                   alert('已收到您的投诉!');
                   location.reload();
@@ -350,11 +360,11 @@ function TipOff(csrftoken){
                 }else{
                   document.getElementById('loginbutton').click();
                 }
-              });  
+              }});  
 }
 
-function Collect(ObjectID, csrftoken, Type){
-  $.post('/Collect/',{csrfmiddlewaretoken: csrftoken,'ObjectID':ObjectID,'Type':Type},function(status){
+function Collect(ObjectID, Type){
+  $.ajax({type:'POST',url:'/Collect/',data:{'ObjectID':ObjectID,'Type':Type},success:function(status){
                 if(status=='Collect'){
                   alert('已收藏');
                   location.reload();
@@ -376,14 +386,14 @@ function Collect(ObjectID, csrftoken, Type){
                 }else{
                   document.getElementById('loginbutton').click();
                 }
-              });  
+              }});  
 }
 
-function UserCollect(url,csrftoken,ArticleID){
+function UserCollect(url,ArticleID){
   var CollectButton = document.getElementById('CollectButton');
   CollectButton.disabled='disabled';
-  $.post(url,{csrfmiddlewaretoken: csrftoken,'ArticleID':ArticleID
-              },function(status){
+  $.ajax({type:'POST',url:url,data:{'ArticleID':ArticleID
+              },success:function(status){
                 if(status=='collect'){
                   alert('已收藏');
                   location.reload();
@@ -393,34 +403,32 @@ function UserCollect(url,csrftoken,ArticleID){
                 }else{
                   document.getElementById('loginbutton').click();
                 }
-              }
+              }}
         )
   setTimeout(function(){CollectButton.disabled='';},1000);
 }
 
-function UserLink(url,csrftoken,userid,operation){
+function UserLink(url,userid,operation){
   var LinkButton = document.getElementById('LinkButton');
   LinkButton.disabled='disabled';
-  $.post(url,{csrfmiddlewaretoken: csrftoken,
-              'UserID':userid,'Operation':operation
-              },function(status){
-                if(status=='add'){
-                  alert('已关注');
-                  window.location.reload();
-                }else if(status=='delete'){
-                  alert('已取消关注');
-                  window.location.reload();
-                }else if(status=='login'){
-                  document.getElementById('loginbutton').click();
-                }else{
-                  alert(status);
-                }
-              }
+  $.ajax({type:'POST',url:url,data:{'UserID':userid,'Operation':operation},success:function(status){
+                                                                                          if(status=='add'){
+                                                                                            alert('已关注');
+                                                                                            window.location.reload();
+                                                                                          }else if(status=='delete'){
+                                                                                            alert('已取消关注');
+                                                                                            window.location.reload();
+                                                                                          }else if(status=='login'){
+                                                                                            document.getElementById('loginbutton').click();
+                                                                                          }else{
+                                                                                            alert(status);
+                                                                                          }
+                                                                                        }}
         )
   setTimeout(function(){LinkButton.disabled='';},1000);
 }
 
-function UserProfileUpdate(url,csrftoken){
+function UserProfileUpdate(url,){
   var UserImageData = document.getElementById('UserImageChangeShow').src;
   var UserImageFormat = document.getElementById('UserImageChangeInput').value.split('.')[1];
   var UserNickName = document.getElementById('UserProfileNickName').value;
@@ -437,7 +445,7 @@ function UserProfileUpdate(url,csrftoken){
   var Chk_UserEmail = UserEmail.replace(/(^s*)|(s*$)/g, "").length;
   var Chk_UserRegion = UserRegion.replace(/(^s*)|(s*$)/g, "").length;
   if(Chk_UserNickName !=0 && Chk_UserDescription !=0 && Chk_UserSex !=0 && Chk_UserConstellation !=0 && Chk_UserEmail !=0 && Chk_UserRegion !=0){
-    $.post(url,{csrfmiddlewaretoken: csrftoken,
+    $.ajax({type:'POST',url:url,data:{
                 'UserImageData':UserImageData,
                 'UserImageFormat':UserImageFormat,
                 'UserNickName':UserNickName,
@@ -446,7 +454,7 @@ function UserProfileUpdate(url,csrftoken){
                 'UserConstellation':UserConstellation,
                 'UserEmail':UserEmail,
                 'UserRegion':UserRegion,
-              },function(status){
+              },success:function(status){
                 if(status=='Nick'){
                   alert('昵称已经存在!');
                 }else if(status=='success'){
@@ -457,7 +465,7 @@ function UserProfileUpdate(url,csrftoken){
                 }else{
                   alert(status)
                 }
-              })
+              }})
 
   }else{
     alert('必要信息不能为空！')
@@ -484,10 +492,10 @@ function clearQRcodeDivHtml(){
   document.getElementById("qrcode").innerHTML = "";
 }
 
-function AttitudeOperate(Type,ObjectID,Point,csrftoken) {
+function AttitudeOperate(Type,ObjectID,Point) {
   var VoteBtn = document.getElementById('Button' + Point + '#' + ObjectID);
   VoteBtn.disabled = 'disabled';
-  $.post('/AttitudeOperate/',{csrfmiddlewaretoken: csrftoken,'Type':Type,'ObjectID':ObjectID,'Point':Point},function(status){
+  $.ajax({type:'POST',url:'/AttitudeOperate/',data:{'Type':Type,'ObjectID':ObjectID,'Point':Point},success:function(status){
     if(status == ('Cancel')){
       document.getElementById('Button' + Point + '#' + ObjectID).setAttribute('class','Button VoteButton VoteButton--up')
       document.getElementById('Span' + Point + '#' + ObjectID).innerText = String(parseInt(document.getElementById('Span' + Point + '#' + ObjectID).innerText) - 1)
@@ -502,12 +510,12 @@ function AttitudeOperate(Type,ObjectID,Point,csrftoken) {
     }else if(status == ('login')){
       document.getElementById('loginbutton').click();
     }
-  })
+  }})
   setTimeout(function(){VoteBtn.disabled='';},500);
 }
 
 
-function PublishTopic(object,type,csrftoken)
+function AddTopic(object,type,)
 {   
     object.innerText = '发布中...';
     var TopicID = (type == 'Edit' ? document.getElementById('Topic' + type + 'ID').value : '');
@@ -522,118 +530,152 @@ function PublishTopic(object,type,csrftoken)
        && Description.replace(/(^s*)|(s*$)/g, "").length !=0 
        && Themes.replace(/(^s*)|(s*$)/g, "").length !=0)
     {
-      $.post('/PublishTopic/',{csrfmiddlewaretoken: csrftoken,
-                               'TopicID':TopicID,
-                               'Title':Title,
-                               'Category':Category,
-                               'Content':Content,
-                               'Description':Description,
-                               'Themes':Themes},function(status){
-                                                 object.innerText = '发  布';
-                                                 if(status=='ok'){
-                                                   alert('发布成功!');
-                                                   location.reload();
-                                                 }else if(status=='login'){
-                                                   alert('还未登录!');
-                                                 }else {
-                                                   alert(status);
-                                                 }
-                                               });
+      $.ajax({type:'POST',url:'/Topic/',data:{'TopicID':TopicID,
+                                               'Title':Title,
+                                               'Category':Category,
+                                               'Content':Content,
+                                               'Description':Description,
+                                               'Themes':Themes},success:function(status){
+                                                                 object.innerText = '发  布';
+                                                                 if(status=='ok'){
+                                                                   alert('发布成功!');
+                                                                   location.reload();
+                                                                 }else if(status=='login'){
+                                                                   alert('还未登录!');
+                                                                 }else {
+                                                                   alert(status);
+                                                                 }
+                                                               }
+              });
     }else{
       alert('请完整输入必要栏目!');
     }
 }
 
+function DeleteTopic()
+{ 
+  var TopicID = document.getElementById('TopicEditID').value;
+  $.ajax({type:'DELETE',url:'/Topic/',data:{'TopicID':TopicID},success: function(data){
+    if(data == 'ok'){
+      alert('删除成功!');
+      location.reload();
+    }else{
+      alert(data);
+    }
+  }
+  });
+}
 
-function FetchTopic(TopicID, csrftoken)
+function GetTopic(TopicID)
 {
-  $.post('/FetchTopic/', {'TopicID':TopicID, csrfmiddlewaretoken: csrftoken}, function(result){
-    var FetchInfo = JSON.parse(result);
-    if (FetchInfo){
-      document.getElementById('TopicEditTitle').value = FetchInfo.Title;
+  $.ajax({type:'GET',url:'/Topic/', data:{'TopicID':TopicID}, success:function(result){
+    if (result){
+      document.getElementById('TopicEditTitle').value = result.Title;
       var opts = document.getElementById("TopicEditCategory");
       for(var i=0;i<opts.options.length;i++){
-        if(FetchInfo.Category==opts.options[i].value){
+        if(result.Category==opts.options[i].value){
           opts.options[i].selected = 'selected';
         }
       }
-      CKEDITOR.instances.TopicEditTextArea.setData(FetchInfo.Content);
-      document.getElementById('TopicEditThemes').value = FetchInfo.Themes;
-      document.getElementById('TopicEditID').value = FetchInfo.TopicID;
+      CKEDITOR.instances.TopicEditTextArea.setData(result.Content);
+      document.getElementById('TopicEditThemes').value = result.Themes;
+      document.getElementById('TopicEditID').value = result.TopicID;
     }
-  }) 
+  }}) 
 }
-
-
 
 function ClickButton(id)
 {
     document.getElementById(id).click();
 }
 
-function Comment(url, csrftoken, type)
-{   var ContentObject = document.getElementById("CommentTextArea")
-    var Comment = ContentObject.value;
-    var Chk_Content = Comment.replace(/(^s*)|(s*$)/g, "").length;
-    var TopicID = document.getElementById("TopicContent").getAttribute('TopicID');
-
-    if(Chk_Content!=0){
-      $.post(url, {'Type':type, csrfmiddlewaretoken: csrftoken, 'Comment':Comment, 'TopicID':TopicID}, function(status){
-        if(status == 'ok'){
-          alert('评论成功!');
-          location.reload();
-        }else{
-          ClickButton('loginbutton');
-        }
-      }
-      );  
-    }else{
-      alert('没有输入评论内容!');
-      ContentObject.focus();
-    }
-    
-}
-
-function LoginSubmit(csrftoken)
+function LoginSubmit()
 {   
-    var username = DoEncrypt('SecretKey',csrftoken,document.getElementById('loginusername').value);
-    var password = DoEncrypt('SecretKey',csrftoken,document.getElementById('loginpassword').value);
-    $.post('/login/',{csrfmiddlewaretoken: csrftoken,'username':username,'password':password},function(status)
+    var username = DoEncrypt('SecretKey',document.getElementById('loginusername').value);
+    var password = DoEncrypt('SecretKey',document.getElementById('loginpassword').value);
+    $.ajax({type:'POST',url:'/login/',data:{'username':username,'password':password},success:function(status)
       {if(status)
         {alert('登录成功!');
         location.reload();
       }else{
         alert('用户名或密码错误！');
       }
-    });
+    }});
 }
 
 function Logout(url)
 {
-   $.get(url,function(status){
+   $.ajax({type:'GET',url:url,success:function(status){
     if(status == 'Logout'){
       location.reload();
     }
-   })
+   }})
 }
 
-function RegistSubmit(csrftoken)
+function RegistSubmit()
 {
-    var userimagedata = document.getElementById('UserImageShow').src;
-    var format = document.getElementById('UserImageInput').value;
-    var userimageformat = format.split('.')[1];
-    var username = DoEncrypt('SecretKey',csrftoken,document.getElementById('registusername').value);
-    var usernickname = DoEncrypt('SecretKey',csrftoken,document.getElementById('registusernickname').value);
-    var password = DoEncrypt('SecretKey',csrftoken,document.getElementById('registpassword').value);
-    var email = DoEncrypt('SecretKey',csrftoken,document.getElementById('registemail').value);
-    $.post('/regist/',{csrfmiddlewaretoken: csrftoken,'userimagedata':userimagedata,'userimageformat':userimageformat,'username':username,'usernickname':usernickname,'password':password,'email':email},function(status)
+  var userimagedata = document.getElementById('UserImageShow').src;
+  var format = document.getElementById('UserImageInput').value;
+  var userimageformat = format.split('.')[1];
+  var username = DoEncrypt('SecretKey',document.getElementById('registusername').value);
+  var usernickname = DoEncrypt('SecretKey',document.getElementById('registusernickname').value);
+  var password = DoEncrypt('SecretKey',document.getElementById('registpassword').value);
+  var email = DoEncrypt('SecretKey',document.getElementById('registemail').value);
+  $.ajax({type:'POST',url:'/Regist/',data:{'userimagedata':userimagedata,'userimageformat':userimageformat,'username':username,'usernickname':usernickname,'password':password,'email':email},success:function(status)
+    {if(status=='ok'){
+      alert('注册成功,请前往邮箱激活该账号!');
+      location.reload();
+    }else{
+      alert(status);
+    }
+  }});
+}
+
+function GetInputLength(Object)
+{
+  return Object.value.replace(/(^s*)|(s*$)/g, "").length
+}
+
+function ChangeSubmit()
+{ 
+  var input_username = document.getElementById('changeusername');
+  var input_newpwd = document.getElementById('newpassword');
+  var input_newpwdcomfirm = document.getElementById('newpasswordcomfirm');
+  var input_code = document.getElementById('mailcode');
+  var username = DoEncrypt('SecretKey',input_username.value);
+  var newpwd = DoEncrypt('SecretKey',input_newpwd.value);
+  var code = DoEncrypt('SecretKey',input_code.value);
+  if(input_newpwd.value != input_newpwdcomfirm.value){
+    return alert('两次密码输入不一致!');
+  }
+  if(GetInputLength(input_username) != 0 && GetInputLength(input_newpwd) != 0 && GetInputLength(input_code) != 0)
+    $.ajax({type:'POST',url:'/Change/',data:{'username':username,'newpwd':newpwd,'code':code},success:function(status)
       {if(status=='ok'){
-        alert('注册成功!');
+        alert('修改成功');
         location.reload();
+        }else{
+        alert('授权密令错误!');
+        }
+      }});
+  else{
+    alert('必填项目不能为空!')
+  }
+}
+
+function SendMailCode()
+{ 
+  if(GetInputLength(document.getElementById('changeusername')) != 0){
+    var username = DoEncrypt('SecretKey',document.getElementById('changeusername').value);
+    $.ajax({type:'POST',url:'/MailCode/',data:{'username':username},success:function(status)
+      {if(status=='ok'){
+        alert('密令已发送到注册邮箱，有效时间为60秒!');
       }else{
         alert(status);
       }
-    });
+    }});    
+  }else{
+    alert('请输入账号!');
+  }
 }
 
 function Search(source)

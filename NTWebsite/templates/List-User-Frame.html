@@ -29,9 +29,9 @@
                 {% if Card.1|GetDictValue:'VisitorIdentity' == 'Others' %}
                     <div class="DivUserListProfile">
                     {% if Card.1|GetDictValue:'VisitorOAuth-Link' == 'Linked' %}
-                        <button id='LinkButton' class="Button Button--blue BtnCancelFocus" onclick="javascript:UserLink('/UserLink/','{{ csrf_token }}','{{Card.0.id}}','delete')">取消关注</button>
+                        <button id='LinkButton' class="Button Button--blue BtnCancelFocus" onclick="javascript:UserLink('/UserLink/','{{Card.0.id}}','delete')">取消关注</button>
                     {% elif Card.1|GetDictValue:'VisitorOAuth-Link' == 'Link' %}
-                        <button id='LinkButton' class="Button Button--blue BtnCancelFocus" onclick="javascript:UserLink('/UserLink/','{{ csrf_token }}','{{Card.0.id}}','add')">关注</button>
+                        <button id='LinkButton' class="Button Button--blue BtnCancelFocus" onclick="javascript:UserLink('/UserLink/','{{Card.0.id}}','add')">关注</button>
                     {% endif %}                        
                     </div>
                 {% endif %} 
@@ -63,9 +63,9 @@
                 {% if Card.1|GetDictValue:'VisitorIdentity' == 'Others' %}
                     <div class="DivUserListProfile">
                     {% if Card.1|GetDictValue:'VisitorOAuth-Link' == 'Linked' %}
-                        <button id='LinkButton' class="Button Button--blue BtnCancelFocus" onclick="javascript:UserLink('/UserLink/','{{ csrf_token }}','{{Card.0.id}}','delete')">取消关注</button>
+                        <button id='LinkButton' class="Button Button--blue BtnCancelFocus" onclick="javascript:UserLink('/UserLink/','{{Card.0.id}}','delete')">取消关注</button>
                     {% elif Card.1|GetDictValue:'VisitorOAuth-Link' == 'Link' %}
-                        <button id='LinkButton' class="Button Button--blue BtnCancelFocus" onclick="javascript:UserLink('/UserLink/','{{ csrf_token }}','{{Card.0.id}}','add')">关注</button>
+                        <button id='LinkButton' class="Button Button--blue BtnCancelFocus" onclick="javascript:UserLink('/UserLink/','{{Card.0.id}}','add')">关注</button>
                     {% endif %}                        
                     </div>
                 {% endif %} 
@@ -97,9 +97,9 @@
                 {% if Card.1|GetDictValue:'VisitorIdentity' == 'Others' %}
                     <div class="DivUserListSearch">
                     {% if Card.1|GetDictValue:'VisitorOAuth-Link' == 'Linked' %}
-                        <button id='LinkButton' class="Button Button--blue BtnCancelFocus" onclick="javascript:UserLink('/UserLink/','{{ csrf_token }}','{{Card.0.id}}','delete')">取消关注</button>
+                        <button id='LinkButton' class="Button Button--blue BtnCancelFocus" onclick="javascript:UserLink('/UserLink/','{{Card.0.id}}','delete')">取消关注</button>
                     {% elif Card.1|GetDictValue:'VisitorOAuth-Link' == 'Link' %}
-                        <button id='LinkButton' class="Button Button--blue BtnCancelFocus" onclick="javascript:UserLink('/UserLink/','{{ csrf_token }}','{{Card.0.id}}','add')">关注</button>
+                        <button id='LinkButton' class="Button Button--blue BtnCancelFocus" onclick="javascript:UserLink('/UserLink/','{{Card.0.id}}','add')">关注</button>
                     {% endif %}                        
                     </div>
                 {% endif %} 

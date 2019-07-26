@@ -1,6 +1,6 @@
 {% load CustomFuncTags %}
     <div class="Card">
-        {% csrf_token %}
+        
         {% if not ExportItem_UserInfo.0.1|GetDictValue:'VisitorOAuth-Read' == 'readonly' %}
         <div class="UserAvatarEditor ProfileHeader-avatar">
             <img title="点击切换头像" id="UserImageChangeShow" target="UserImageChangeInput" class="AvatarUserProfile" src="{{MEDIA_URL}}{{ExportItem_UserInfo.0.0.Avatar}}" onclick="javascript:UploadImg('UserImageChangeInput',this.id)">
@@ -20,18 +20,18 @@
             </span>
             <span>
             {% if ExportItem_UserInfo.0.1|GetDictValue:'VisitorIdentity' == 'Self' %}
-                <button class="Button Button--blue BtnUserProfileSaveInfo" onclick="javascript:UserProfileUpdate('/UserProfileUpdate/','{{ csrf_token }}')">保存</button>
+                <button class="Button Button--blue BtnUserProfileSaveInfo" onclick="javascript:UserProfileUpdate('/UserProfileUpdate/')">保存</button>
             {% elif ExportItem_UserInfo.0.1|GetDictValue:'VisitorOAuth-Read' == 'readonly' and ExportItem_UserInfo.0.1|GetDictValue:'VisitorOAuth-Link' == 'Link' %}
-                <button id='LinkButton' class="Button Button--blue BtnUserProfileSaveInfo" onclick="javascript:UserLink('/UserLink/','{{ csrf_token }}','{{ExportItem_UserInfo.0.0.id}}','add')">关注</button>
+                <button id='LinkButton' class="Button Button--blue BtnUserProfileSaveInfo" onclick="javascript:UserLink('/UserLink/','{{ExportItem_UserInfo.0.0.id}}','add')">关注</button>
             {% elif ExportItem_UserInfo.0.1|GetDictValue:'VisitorOAuth-Read' == 'readonly' and ExportItem_UserInfo.0.1|GetDictValue:'VisitorOAuth-Link' == 'Linked' %}
-                <button id='LinkButton' class="Button Button--blue BtnUserProfileSaveInfo" onclick="javascript:UserLink('/UserLink/','{{ csrf_token }}','{{ExportItem_UserInfo.0.0.id}}','delete')">取消关注</button>
+                <button id='LinkButton' class="Button Button--blue BtnUserProfileSaveInfo" onclick="javascript:UserLink('/UserLink/','{{ExportItem_UserInfo.0.0.id}}','delete')">取消关注</button>
             {% endif %} 
             </span>
             <span>
             {% if ExportItem_UserInfo.0.1|GetDictValue:'VisitorOAuth-Read' == 'readonly' and ExportItem_UserInfo.0.1|GetDictValue:'VisitorOAuth-Block' == 'Blocked' %} 
-                <button id='LinkButton' class="Button Button--red BtnUserProfileSaveInfo" onclick="javascript:BlackListOperation('delete','{{ExportItem_UserInfo.0.0.id}}','{{ csrf_token }}')">取消屏蔽</button>
+                <button id='LinkButton' class="Button Button--red BtnUserProfileSaveInfo" onclick="javascript:BlackListOperation('delete','{{ExportItem_UserInfo.0.0.id}}')">取消屏蔽</button>
             {% elif ExportItem_UserInfo.0.1|GetDictValue:'VisitorOAuth-Read' == 'readonly' and ExportItem_UserInfo.0.1|GetDictValue:'VisitorOAuth-Block' == 'Block' %}
-                <button id='LinkButton' class="Button Button--red BtnUserProfileSaveInfo" onclick="javascript:BlackListOperation('add','{{ExportItem_UserInfo.0.0.id}}','{{ csrf_token }}')">屏蔽</button>  
+                <button id='LinkButton' class="Button Button--red BtnUserProfileSaveInfo" onclick="javascript:BlackListOperation('add','{{ExportItem_UserInfo.0.0.id}}')">屏蔽</button>  
             {% endif %}  
             </span>
             <div>
