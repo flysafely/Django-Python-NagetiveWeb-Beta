@@ -240,3 +240,4 @@ def AddNotification(Type, Object, Source, Target):
 
 if __name__ == "__main__":
     SendMail('616604060@qq.com')
+    print("123")
