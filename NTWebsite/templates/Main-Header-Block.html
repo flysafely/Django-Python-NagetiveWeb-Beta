@@ -1,8 +1,23 @@
+{% load CustomFuncTags %}
 <head>
-    <title>差评!</title>
+    {% if Layout_Sizer|GetDictValue:'Part' == 'Content' %}
+        {% if Layout_Sizer|GetDictValue:'Region' == 'RollCall' %}
+            <title>{{Export_Object.0.Title}}</title>
+        {% else %}
+            <title>{{ExportList_Topic.0.0.Title}}</title>
+        {% endif %}
+    {% else %}
+        <title>差评!</title>
+    {% endif %}
     <meta charset="utf-8">
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static "css/mafioso-main.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/mafioso-extra.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/mafioso-bootstrap.min.css" %}">
+
+    <link data-react-helmet="true" rel="apple-touch-icon" href="{{ MEDIA_URL }}Logo.png"/>
+    <link data-react-helmet="true" rel="apple-touch-icon" href="{{ MEDIA_URL }}Logo152.png" sizes="152x152"/>
+    <link data-react-helmet="true" rel="apple-touch-icon" href="{{ MEDIA_URL }}Logo120.png" sizes="120x120"/>
+    <link data-react-helmet="true" rel="apple-touch-icon" href="{{ MEDIA_URL }}Logo76.png" sizes="76x76"/>
+    <link data-react-helmet="true" rel="apple-touch-icon" href="{{ MEDIA_URL }}Logo60.png" sizes="60x60"/>
 </head>
