@@ -27,7 +27,7 @@ import xadmin
 urlpatterns = [
     # views中有返回页面的导航
     #path('admin/', admin.site.urls),
-    path('admin19901101/', xadmin.site.urls),
+    path('admin/', xadmin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),    
     # Processor中没有返回页面的操作
     path('', P.indexView),
