@@ -50,7 +50,7 @@
 ### 配置
 配置都是在`setting.py`中.部分配置迁移到了后台配置中。
 
-`bin`目录是在`linux`环境中使用`Nginx`+`Gunicorn`+`virtualenv`+`supervisor`来部署的脚本和`Nginx`配置文件.可以参考我的文章:
+`bin`目录是在`linux`环境中使用`Nginx`+`uWSGI`+`Redis`+`Docker`来部署的脚本和`Nginx`配置文件.可以参考我的文章:
 
 >[使用Nginx+uWSGI来部署django项目](https://www.cnblogs.com/chenice/p/6921727.html)
 有详细的部署介绍.
